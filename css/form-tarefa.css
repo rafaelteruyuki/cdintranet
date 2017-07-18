@@ -1,0 +1,141 @@
+/*--------FORM---------*/
+
+input[type=text] {
+		height: 40px;
+    padding: 12px 12px !important;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+		border-radius: 4px;
+		background-color: #fafafa;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}
+
+input[type=text]:focus {
+    border: 1px solid #2185d0;
+}
+
+.acf-field input[type="number"] {
+    padding: 5px 1em !important;
+    border-radius: 5px;
+    background: #fafafa;
+    border: 1px solid #CCC;
+    height: 40px;
+}
+.acf-field input[type="number"]:focus {
+    border-radius: 5px;
+    border: 1px solid #2185d0;
+}
+
+.acf-field textarea  {
+    padding: 12px 12px !important;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+		border-radius: 4px;
+		background-color: #fafafa;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}
+
+.acf-field textarea:focus {
+    border: 1px solid #2185d0;
+}
+
+.acf-url input[type="url"] {
+		height: 40px;
+    padding: 12px 30px !important;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+		border-radius: 4px;
+		background-color: #fafafa;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}
+
+.acf-url input[type="url"]:focus {
+    border: 1px solid #2185d0;
+}
+
+.acf-field select {
+    width: 100%;
+		height: 40px;
+    background-color: #fafafa;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+}
+
+.acf-field select:focus {
+    border: 1px solid #2185d0;
+}
+
+.acf-icon.small {
+    width: 28px;
+    height: 28px;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.acf-field .description {
+	font-style:italic;
+	color: #848484;
+}
+
+.cd-box #acf-form {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 30px;
+	background-color:#FFF;
+}
+
+.acf-field {
+
+    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+            animation: fadein 1s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.acf-field.acf-field-repeater.acf-field-593171a7fcd35 {
+	padding: 0;
+}
+
+.acf-field.acf-field-repeater.acf-field-593171a7fcd35 ul li {
+	float: left;
+	margin-left: 0;
+	margin-bottom: 5px;
+}
+.acf-field.acf-field-repeater.acf-field-593171a7fcd35 thead {
+	display: none;
+}

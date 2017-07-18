@@ -1,0 +1,106 @@
+.form-solicitacao form{
+	position: relative;
+	padding-bottom: 70px;
+	margin-bottom: 50px;
+}
+.form-solicitacao h2{
+	margin-top: 30px;
+	margin-bottom: 50px;
+}
+
+.form-solicitacao input[type=text],
+.form-solicitacao textarea,
+.form-solicitacao select{
+	width: 100%;
+	border: 1px solid #CCC;
+	height: 2.5em;
+	border-radius: 5px;
+	padding: 5px 1em;
+}
+
+.form-solicitacao textarea{
+	height: 150px;
+	resize: none;
+}
+
+
+.form-solicitacao input[type=radio]{
+	display: none;
+}
+
+.form-solicitacao input[type=radio] + label{
+	display: inline-block;
+	width: 50%;
+	position: relative;
+	padding-left: 1.6em;
+	margin-bottom: 8px;
+	line-height: 1.2;
+}
+
+.form-solicitacao input[type=radio] + label::before{
+	content: "";
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 0;
+	width: 16px;
+	height: 16px;
+	border: 1px solid #CCC;
+	border-radius: 50%;
+}
+
+.form-solicitacao input[type=radio]:checked + label::after{
+	content: "";
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 4px;
+	width: 8px;
+	height: 8px;
+	background-color: #000000;
+	border-radius: 50%;
+}
+
+
+.form-solicitacao input[type=checkbox]{
+	display: none;
+}
+
+.form-solicitacao input[type=checkbox] + label{
+	display: inline-block;
+	width: 50%;
+	position: relative;
+	padding-left: 1.6em;
+	margin-bottom: 8px;
+	line-height: 1.2;
+}
+
+.form-solicitacao input[type=checkbox] + label::before{
+	content: "";
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 0;
+	width: 16px;
+	height: 16px;
+	border: 1px solid #CCC;
+	border-radius: 2px;
+}
+
+.form-solicitacao input[type=checkbox]:checked + label::after{
+	content: "";
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 4px;
+	width: 8px;
+	height: 8px;
+	background-color: #000000;
+	border-radius: 2px;
+}
+
+.form-solicitacao button{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
