@@ -302,7 +302,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <i class="right triangle icon"></i>
           <div class="content">
             <div class="header">Observações</div>
-            <div class="description" style="word-break: break-all;">
+            <div class="description" style="word-break: break-word;">
               <?php if ( get_field('observacoes') ) {
                 the_field('observacoes');
               } else {
