@@ -8,6 +8,17 @@ if ( current_user_can( 'designer_gd2_gd4' ) ) {
 
   $feed_cd =
 
+  array(
+
+      'relation'		=> 'OR',
+
+      // PARTICIPANTE
+      array(
+        'key' => 'participante',
+        'value' => 46, // ID Thiago
+        'compare' 	=> 'LIKE', // ANTES ESTAVA IN
+      ),
+
       array(
 
           'relation'		=> 'AND',
@@ -56,7 +67,8 @@ if ( current_user_can( 'designer_gd2_gd4' ) ) {
                   'compare'	=> 'IN',
                 ),
           ),
-    );
+    ),
+);
 
 }
 
