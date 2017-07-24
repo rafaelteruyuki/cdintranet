@@ -526,23 +526,9 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <i class="right triangle icon"></i>
           <div class="content">
             <div class="header">Última atualização</div>
-            <div class="description">
-              <?php the_modified_date(); ?>, às <?php the_modified_time('G:i');?>
-              <?php if ( get_post_meta(get_post()->ID, '_edit_last') ) { echo '<br>por '; the_modified_author(); } ?><br>
-              <?php
-
-              // $modificado = get_post_modified_time('d/m/Y G:i');
-              // $atual = date( 'd/m/Y G:i', current_time( 'timestamp', 0 ) );
-              //
-              // echo $modificado . '<br>' . $atual;
-              //
-              // if ( $modificado == $atual ) {
-              //   echo 'igual';
-              // } else {
-              //   echo 'diferente';
-              // }
-
-              ?>
+            <div class="description cd-nd">
+              <?php // the_modified_date(); echo ', às '; the_modified_time('G:i');?>
+              <?php // if ( get_post_meta(get_post()->ID, '_edit_last') ) { echo '<br>por '; the_modified_author(); } ?>
             </div>
           </div>
         </div>
