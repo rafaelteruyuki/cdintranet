@@ -288,8 +288,8 @@ include ( locate_template('template-parts/var-tarefas.php') );
             <div class="content">
               <div class="header">Arquivos</div>
               <div class="description">
-                <?php while( have_rows('arquivos') ): the_row(); $linkFormArquivos = get_sub_field('sub_arquivos'); ?>
-                <a href="<?php echo $linkFormArquivos; ?>" class="ui small primary button" target="_blank" style="margin-top:10px;" download>Baixar</a>
+                <?php while( have_rows('arquivos') ): the_row(); $sub_arquivos = get_sub_field('sub_arquivos'); ?>
+                <a href="<?= $sub_arquivos['url']; ?>" class="ui small primary button cd-popup" target="_blank" style="margin-top:10px;" title="<?= $sub_arquivos['name'] ?>">Baixar</a>
                 <?php endwhile;?>
               </div>
             </div>
