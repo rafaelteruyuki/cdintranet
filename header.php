@@ -179,10 +179,10 @@
       <!-- CD-FEED -->
       <?php if ( is_user_logged_in() ) : ?>
       <div class="ui scrolling dropdown item cd-user-logado">
-        <i class="refresh icon" style="margin:0;"></i>
+        <i class="comment icon" style="margin:0;"></i>
         <div class="contador"></div>
         <div class="menu" id="refresh">
-          <?php get_template_part('feed','loop') ?>
+          <?php get_template_part('comment','feed') ?>
         </div>
       </div>
       <?php endif; ?>
