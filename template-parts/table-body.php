@@ -21,7 +21,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
   </td>
   <td class="left aligned">
-    <strong class="<?php lido_nao_lido(); ?>"><?php the_title(); ?></strong>
+    <strong><?php the_title(); ?></strong>
     <?php if ( !current_user_can('portal') ) : ?>
     <span style="float:right">
       <?php if (!$texto_luares) : ?><i class="file text icon" style="float:right; color: #CCC;"></i><?php endif; ?>

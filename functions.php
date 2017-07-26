@@ -649,8 +649,8 @@ function mytheme_comment($comment, $args, $depth) {
 		</span>
   </a>
   <div class="content">
-    <a class="author"><?php comment_author(''); ?></a>
-    <div class="metadata">
+    <a class="author"><?php comment_author(''); ?></a><br>
+    <div class="metadata" style="margin-left:0">
       <div class="date"><?php printf(__('%1$s at %2$s'), get_comment_date(),  get_comment_time()) ?></div>
     </div>
     <div class="text">
@@ -993,31 +993,31 @@ AO CRIAR/ATUALIZAR TAREFA
   // run after ACF saves the $_POST['fields'] data
   add_action('acf/save_post', 'my_acf_save_post', 20);
 
-	/* --------------------------
-
-	ATUALIZA O POST APOS O COMENTARIO (PARA O POST SUBIR NO FEED)
-
-	---------------------------- */
-
-	add_filter( 'comment_post', 'comment_notification' );
-
-	function comment_notification( $comment_id ) {
-
-		$comment = get_comment( $comment_id );
-		$post_id = get_post( $comment->comment_post_ID );
-
-		if ( get_post_type( $post_id ) == 'tarefa' ) {
-
-		  // Update the post into the database
-		  wp_update_post( $post_id );
-
-			// Atualizar feed == checked
-			global $wpdb;
-			$wpdb->query($wpdb->prepare("UPDATE wp_usermeta SET meta_value=1 WHERE meta_key='atualizar_feed'", ''));
-
-		}
-
-	}
+	// /* --------------------------
+	//
+	// ATUALIZA O POST APOS O COMENTARIO (PARA O POST SUBIR NO FEED)
+	//
+	// ---------------------------- */
+	//
+	// add_filter( 'comment_post', 'comment_notification' );
+	//
+	// function comment_notification( $comment_id ) {
+	//
+	// 	$comment = get_comment( $comment_id );
+	// 	$post_id = get_post( $comment->comment_post_ID );
+	//
+	// 	if ( get_post_type( $post_id ) == 'tarefa' ) {
+	//
+	// 	  // Update the post into the database
+	// 	  wp_update_post( $post_id );
+	//
+	// 		// Atualizar feed == checked
+	// 		global $wpdb;
+	// 		$wpdb->query($wpdb->prepare("UPDATE wp_usermeta SET meta_value=1 WHERE meta_key='atualizar_feed'", ''));
+	//
+	// 	}
+	//
+	// }
 
 	/* --------------------------
 
@@ -1242,16 +1242,19 @@ function get_lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
 	global $current_user;
 
 	$modificado = get_the_modified_time('YmdHis');
+	$comment_modificado = get_comment_time('YmdHis');
+	$comment = get_comment( $comment_id );
+	$post_id = get_post( $comment->comment_post_ID );
 
 	$usuario_registrado = array();
 	$acesso_registrado = array();
 
-	if( have_rows('visitas') ):
+	if( have_rows('visitas', $post_id) ):
 
-	    while ( have_rows('visitas') ) : the_row();
+	    while ( have_rows('visitas', $post_id) ) : the_row();
 
-	        $usuario_registrado[] = get_sub_field('usuario'); // Array usuários registrados
-	        $acesso_registrado[] = get_sub_field('acesso'); // Array acessos registrados
+	        $usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
+	        $acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
 
 	    endwhile;
 
@@ -1264,7 +1267,7 @@ function get_lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
     // se existir a key do usuário, executa a função
     if ($key !== false) {
 
-      if ($modificado > $acesso_registrado[$key]) {
+      if ($comment_modificado > $acesso_registrado[$key]) {
         return $nao_lido;
       } else {
         return $lido;

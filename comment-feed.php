@@ -3,43 +3,58 @@
 // CD-FEED
 include ( locate_template('template-parts/cd-feed.php') );
 
-//$teste = get_field('finalidade', 'comment_post_ID');
-
-$args = array(
-  // 'status'         => 'approve',
-	// 'type'           => 'comment',
-	// 'post_author'    => $current_user->ID,
-	'post_type'      => 'tarefa',
-	'number'         => '10',
-	'order'          => 'DESC',
-	'orderby'        => 'comment_date',
-  // 'meta_key'        => 'finalidade',
-  // 'meta_value'      => 'devento',
-  //'meta_query'     => array( 'meta_key' => 'privado_interacao, comment_post_ID', 'meta_value' => '1' )
+$post_args = array(
+  'post_type'              => array( 'tarefa' ),
+  'posts_per_page'         => -1,
+  'order'                  => 'DESC',
+  //'orderby'                => 'comment_date',
+  'author'                 => $feed_rc,
+  'meta_query'             => array( $feed_cd ),
 );
 
-// The comment query
+$post_query = new WP_Query( $post_args );
+$posts_array= array();
+if ( $post_query->have_posts() ) {
+    while ( $post_query->have_posts() ) {
+        $post_query->the_post();
+        $posts_array[] = get_the_ID(); //Array of post ids
+    }
+    wp_reset_postdata();
+}
+
+$comment_args = array(
+    //'post_type'      => 'tarefa',
+    'number'         => '31',
+    'order'          => 'DESC',
+    'orderby'        => 'comment_date',
+    'post__in'        => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+);
+
 $comments_query = new WP_Comment_Query;
-$comments = $comments_query->query( $args );
+$comments = $comments_query->query( $comment_args );
+
 ?>
 
 <?php if ( !empty( $comments ) ) : ?>
 
   <?php foreach ( $comments as $comment ) : ?>
 
-    <?php // $teste = get_field('finalidade', $comment->comment_post_ID); ?>
-    <?php // if ($teste['value'] == 'devento') : ?>
+    <a href="<?php the_permalink($comment->comment_post_ID); ?>" class="item <?php lido_nao_lido('feed-lido', 'feed-nao-lido'); ?>" style="border-top: 1px solid #dedede !important;">
 
-    <a href="<?php the_permalink($comment->comment_post_ID); ?>" class="item" style="border-top: 1px solid #dedede !important;">
-      <strong style="line-height: 2;"><?php the_field('unidade', $comment->comment_post_ID); echo '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID); ?></strong><br>
-      <span class="cd-disabled">
-        <i class="user icon"></i><?php echo '<strong>' . $comment->comment_author . '</strong>' . ' disse:<br><i class="purple comments icon"></i><em>' . $comment->comment_content . '</em>'; ?><br>
+			<span style="line-height:1.5;">
+        <strong><?= $comment->comment_author ?></strong> disse:
+				<br>
+				<em><?php comment_excerpt(); ?></em>
+			</span>
+			<br>
+			<span class="cd-disabled">
         <?php // comment_date('d/m'); echo ', às '; comment_date('H:i') ?>
-        <i class="green refresh icon"></i><?php echo 'Há ' . human_time_diff( get_comment_date('U'), current_time('timestamp') ); ?>
-      </span>
-    </a>
+        <i class="purple comment icon"></i><?php echo 'Há ' . human_time_diff( get_comment_date('U'), current_time('timestamp') ); ?>
+      	<br>
+				<i class="green file text icon"></i><?php the_field('unidade', $comment->comment_post_ID); echo '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID); ?>
+			</span>
 
-    <?php // endif; ?>
+    </a>
 
   <?php endforeach; ?>
 
