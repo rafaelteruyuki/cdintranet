@@ -3,9 +3,22 @@
 // VARIAVEIS TAREFAS
 include ( locate_template('template-parts/var-tarefas.php') );
 
+// NOVA TAREFA
+global $current_user;
+    while ( have_rows('visitas') ) : the_row();
+        $usuario_registrado[] = get_sub_field('usuario');
+        $acesso_registrado[] = get_sub_field('acesso');
+    endwhile;
+
+  // Procura o usuário no array de usuários registrados
+  if ( !in_array($current_user->user_login, $usuario_registrado) ) {
+    $new_task_label = '<span class="ui blue mini label">Nova</span>';
+    $new_task_bg = 'background:#ebf7ff;';
+  }
+
 ?>
 
-<tr class="center aligned cd-tarefa" style="cursor:pointer" onclick="window.open('<?php the_permalink(); ?>');" >
+<tr class="center aligned cd-tarefa" style="cursor:pointer; <?= $new_task_bg ?>" onclick="window.open('<?php the_permalink(); ?>');" >
   <td class="collapsing"><?php the_field('unidade'); ?></td>
   <td class="collapsing">
 
@@ -21,6 +34,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
   </td>
   <td class="left aligned">
+    <?= $new_task_label ?>
     <strong><?php the_title(); ?></strong>
     <?php if ( !current_user_can('portal') ) : ?>
     <span style="float:right">
