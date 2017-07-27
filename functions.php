@@ -1372,6 +1372,36 @@ add_action('wp_ajax_nopriv_is_user_logged_in', 'ajax_check_user_logged_in');
 
 /* --------------------------
 
+NEW TASK
+
+---------------------------- */
+
+function new_task( $new_task = '<span class="ui blue mini label">Nova</span>' ) {
+
+	global $current_user;
+	$post_id = get_the_ID();
+
+	if ( !is_archive() ) { // Não exibe na página Todas as Tarefas
+
+	  if ( have_rows('visitas', $post_id) ) {
+	      while ( have_rows('visitas', $post_id) ) { the_row();
+	          $usuario_registrado[] = get_sub_field('usuario', $post_id);
+	          $acesso_registrado[] = get_sub_field('acesso', $post_id);
+	      }
+
+	    // Procura o usuário no array de usuários registrados
+	    if ( !in_array($current_user->user_login, $usuario_registrado) ) {
+	      echo $new_task;
+	    }
+	  } else {
+			echo $new_task;
+	  }
+	}
+
+}
+
+/* --------------------------
+
 MUDA O DIRETORIO DE UPLOAD
 
 ---------------------------- */
