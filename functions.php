@@ -651,7 +651,10 @@ function mytheme_comment($comment, $args, $depth) {
   <div class="content">
     <a class="author"><?php comment_author(''); ?></a><br>
     <div class="metadata" style="margin-left:0">
-      <div class="date"><?php printf(__('%1$s at %2$s'), get_comment_date(),  get_comment_time()) ?></div>
+      <div class="date">
+				<?php printf(__('%1$s at %2$s'), get_comment_date(),  get_comment_time()) ?>
+				<?php if ( get_field('privado_interacao', $comment) ) { echo '<i class="lock icon"></i>'; } ?>
+			</div>
     </div>
     <div class="text">
         <?php if ($comment->comment_approved == '0') : ?>
@@ -660,6 +663,14 @@ function mytheme_comment($comment, $args, $depth) {
       <?php endif; ?>
       <?php comment_text() ?>
     </div>
+		<div class="attachment">
+			<?php
+			$anexo_interacao = get_field('anexo_interacao', $comment);
+			if ( $anexo_interacao ) {
+				echo '<a href="' . $anexo_interacao['url'] . '" target="_blank"><i class="attach icon"></i>' . $anexo_interacao['name'] . '</a>';
+			}
+			?>
+		</div>
     <!--<div class="actions">
       <a class="reply"><?php // comment_reply_link(array_merge( $args, array('depth' => $depth, 'max_depth' => $args['max_depth']))) ?></a>
     </div>-->

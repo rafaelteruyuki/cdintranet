@@ -61,7 +61,7 @@
 
 								<?php else : ?>
 
-                <a class="ui primary fluid button" href="<?php echo wp_login_url(get_permalink()); ?>">Faça login para deixar uma mensagem</a>
+                <a class="ui fluid button" href="<?php echo wp_login_url(get_permalink()); ?>">Faça login para deixar uma mensagem</a>
 
                 <?php endif; ?>
 
