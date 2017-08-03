@@ -21,13 +21,22 @@ if ( $post_query->have_posts() ) {
     }
     wp_reset_postdata();
 }
+// Se o usuário for Senac, não mostra os comentários privados
+if ( current_user_can('senac') ) {
+  $privado = array(
+  'key' => 'privado_interacao',
+  'value' => '1',
+  'compare' => '!=',
+  );
+}
 
 $comment_args = array(
     //'post_type'      => 'tarefa',
     'number'         => '31',
     'order'          => 'DESC',
     'orderby'        => 'comment_date',
-    'post__in'        => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+    'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+    'meta_query'     => array( $privado ),
 );
 
 $comments_query = new WP_Comment_Query;
@@ -50,6 +59,8 @@ $comments = $comments_query->query( $comment_args );
 			<span class="cd-disabled">
         <?php // comment_date('d/m'); echo ', às '; comment_date('H:i') ?>
         <i class="purple comment icon"></i><?php echo 'Há ' . human_time_diff( get_comment_date('U'), current_time('timestamp') ); ?>
+        <?php if ( get_field('privado_interacao', $comment) ) { echo ' <i class="lock icon" style="margin:0;"></i>'; } ?>
+        <?php if ( have_rows('arquivos_interacao', $comment) ) { echo '<i class="attach icon"></i>'; } ?>
       	<br>
 				<i class="green file text icon"></i><?php the_field('unidade', $comment->comment_post_ID); echo '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID); ?>
 			</span>

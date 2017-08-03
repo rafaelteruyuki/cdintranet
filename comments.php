@@ -17,7 +17,6 @@
   'echo'              => true     // boolean, default is true
 ); ?>
 
-
 <?php
 // Do not delete these lines
     if (!empty($_SERVER['SCRIPT_FILENAME']) && 'comments.php' == basename($_SERVER['SCRIPT_FILENAME']))
@@ -30,50 +29,103 @@
     }
 ?>
 
+<!-- LISTA DE COMENTARIOS -->
 
+<?php // Se o usuário for Senac, não mostra os comentários privados
+if ( current_user_can('senac') ) {
+  $privado = array(
+  'key' => 'privado_interacao',
+  'value' => '1',
+  'compare' => '!=',
+  );
+}
 
-    <?php if ( have_comments() ) : ?>
+$comment_list_args = array(
+	'post_id' => get_the_ID(),
+	'order' => 'ASC',
+	'meta_query' => array( $privado ),
+);
 
-        <div class="ui threaded comments">
-       		<?php wp_list_comments($args); ?>
-    		</div>
+$comments = get_comments($comment_list_args); ?>
 
-    <?php endif; ?>
+<div class="ui threaded comments">
 
-    <?php if ( comments_open() ) : ?>
+<?php foreach ( $comments as $comment ) : ?>
 
-    <div id="respond">
+	<div id="comment-<?php comment_ID() ?>" class="comment">
+	  <a class="avatar">
+			<span class="ui mini circular image">
+	    <?php echo get_avatar( $comment, 100 ); ?>
+			</span>
+	  </a>
+	  <div class="content">
+	    <a class="author"><?php comment_author(''); ?></a><br>
+	    <div class="metadata" style="margin-left:0">
+	      <div class="date">
+					<?php printf(__('%1$s at %2$s'), get_comment_date(),  get_comment_time()) ?>
+					<?php if ( get_field('privado_interacao', $comment) ) { echo '<i class="lock icon cd-popup" title="Interação privada"></i>'; } ?>
+				</div>
+	    </div>
+	    <div class="text">
+	        <?php if ($comment->comment_approved == '0') : ?>
+	         <em><?php _e('Your comment is awaiting moderation.') ?></em>
+	         <br />
+	      <?php endif; ?>
+	      <?php comment_text() ?>
+	    </div>
+			<div class="attachment">
+			<?php $i=1;
+			if( have_rows('arquivos_interacao', $comment) ) {
+				while( have_rows('arquivos_interacao', $comment) ) { the_row();
+					$anexo_interacao = get_sub_field('arquivo_interacao', $comment);
+					echo '<a href="' . $anexo_interacao['url'] . '" target="_blank" class="cd-popup" title="' . $anexo_interacao['name'] . '"><i class="attach icon"></i>Anexo ' . $i++ . '</a><br>';
+				}
+			} ?>
+			</div>
+	  </div>
+	</div>
 
-            <form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" id="commentform" class="ui form">
+<?php endforeach; ?>
 
+</div>
 
-              	<?php if ( $user_ID ) : ?>
+<!-- COMMENT FORM -->
 
-                <!-- <p><i class="user icon"></i><?php // $current_user = wp_get_current_user(); echo $current_user->first_name . '&nbsp' . $current_user->last_name ?><br>
-                <i class="sign out icon"></i><a href="<?php // echo wp_logout_url(get_permalink()); ?>" title="Sair desta conta">Sair &raquo;</a></p> -->
-                <div>
-                  <div class="field">
-                    <label for="comment">Mensagem:</label>
-										<textarea name="comment" id="comment" rows="" cols=""></textarea>
-										<input type="submit" class="ui submit purple small button" value="Enviar" style="margin-top:10px" />
-                  </div>
-                </div>
+<?php if ( !current_user_can('edit_pages') ) : ?>
+<style media="screen">
+	/* Esconde o checkbox de interação privada */
+	.acf-field-596e6548e5ad5 {
+		display: none;
+	}
+</style>
+<?php endif; ?>
 
-								<?php else : ?>
+<?php if ( comments_open() ) : ?>
 
-                <a class="ui fluid button" href="<?php echo wp_login_url(get_permalink()); ?>">Faça login para deixar uma mensagem</a>
+<style media="screen">
+	/* Esconde o header da tabela */
+	#respond thead {
+		display: none;
+	}
+</style>
 
-                <?php endif; ?>
+<?php $comment_form_args = array(
+	'comment_field'	=> '<p><label for="comment">' . '<strong>Mensagem:</strong>' . '</label><textarea id="comment" name="comment" cols="45" rows="4" aria-required="true"></textarea></p>',
+	'logged_in_as'	=> '',
+	'class_submit'	=> 'ui submit purple small button',
+	'label_submit'	=> 'Enviar',
+	'comment_notes_before'	=> '',
+	'title_reply'	=> '',
+); ?>
 
-                <?php comment_id_fields(); ?>
-                <?php do_action('comment_form', $post->ID); ?>
+<div id="respond" class="ui form">
+	<?php if ( $user_ID ) : ?>
+		<?php comment_form($comment_form_args); ?>
+	<?php else : ?>
+		<a class="ui fluid button" href="<?php echo wp_login_url(get_permalink()); ?>">Faça login para deixar uma mensagem</a>
+	<?php endif; ?>
+</div>
 
-
-            </form>
-
-
-        <p class="cancel"><?php cancel_comment_reply_link('Cancelar Resposta'); ?></p>
-        </div>
-     <?php else : ?>
-        <h3>Os comentários estão fechados.</h3>
+ <?php else : ?>
+    <h3>Os comentários estão fechados.</h3>
 <?php endif; ?>

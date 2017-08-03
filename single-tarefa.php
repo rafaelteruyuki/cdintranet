@@ -542,20 +542,18 @@ include ( locate_template('template-parts/var-tarefas.php') );
     <div class="column" style="border-left: 5px solid #d4d4d5; padding-left: 2rem; padding-right: 2rem;">
       <h3 class="ui dividing header"><i class="purple comments icon"></i><?php comments_number('0 INTERAÇÕES', '1 INTERAÇÃO', '% INTERAÇÕES' );?></h3><br>
       <?php comments_template(); ?>
-      <?php
-        $arquivosExtras = array(
-      	//'post_title'			=> true,
-        'field_groups'    => array (2712),
-      	'return' 			    => '%post_url%',
-      	'uploader' => 'basic',
-      	'submit_value'    => 'Enviar',
-      	'html_submit_button'	=> '<input type="submit" class="ui small purple button" value="%s" />',
-      	//'updated_message' => 'Salvo!'
-      	);
-      ?>
-      <br>
-      <h3 class="ui dividing header">ARQUIVOS EXTRAS</h3>
+
+      <h3 class="ui dividing header" style="color: rgba(0, 0, 0, 0.4);">ARQUIVOS EXTRAS</h3>
+      <em style="color: rgba(0, 0, 0, 0.4);">Os arquivos extras foram desativados. Caso queira enviar um novo arquivo, envie acima uma mensagem com anexo.</em><br><br>
       <?php acf_form( $arquivosExtras ); ?>
+      <?php $i=1;
+      if( have_rows('arquivos_extras') ) {
+				while( have_rows('arquivos_extras') ) { the_row();
+					$arquivo_extra = get_sub_field('arquivo_extra');
+					echo '<a href="' . $arquivo_extra['url'] . '" target="_blank" class="cd-popup" title="' . $arquivo_extra['name'] . '"><i class="file icon"></i>Arquivo extra ' . $i++ . '</a><br>';
+				}
+			}
+      ?>
     </div>
 
   </div>
@@ -624,6 +622,13 @@ include ( locate_template('template-parts/var-tarefas.php') );
 // 	$user->ID;
 //   update_field( 'field_5953b0fa6c4f9', true,'user_' . $user->ID); // Notificações por email == checked
 //   update_field( 'field_595feb818431d', true,'user_' . $user->ID); // Atualizar feed == checked
+// };
+
+// Atualizar comments privados
+// $comments = get_comments();
+// foreach ( $comments as $comment ) {
+// 	echo $comment->comment_ID . '<br>';
+//   update_field( 'field_596e6548e5ad5', false,'comment_' . $comment->comment_ID);
 // };
 
 ?>

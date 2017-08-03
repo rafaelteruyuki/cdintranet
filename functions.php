@@ -631,54 +631,6 @@ function wpse27856_set_content_type(){
 }
 add_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
 
-
-/* --------------------------
-
-COMENTÁRIOS CALLBACK
-
----------------------------- */
-
-function mytheme_comment($comment, $args, $depth) {
-   $GLOBALS['comment'] = $comment; ?>
-
-
-<div id="comment-<?php comment_ID() ?>" class="comment">
-  <a class="avatar">
-		<span class="ui mini circular image">
-    <?php echo get_avatar( $comment, 100 ); ?>
-		</span>
-  </a>
-  <div class="content">
-    <a class="author"><?php comment_author(''); ?></a><br>
-    <div class="metadata" style="margin-left:0">
-      <div class="date">
-				<?php printf(__('%1$s at %2$s'), get_comment_date(),  get_comment_time()) ?>
-				<?php if ( get_field('privado_interacao', $comment) ) { echo '<i class="lock icon"></i>'; } ?>
-			</div>
-    </div>
-    <div class="text">
-        <?php if ($comment->comment_approved == '0') : ?>
-         <em><?php _e('Your comment is awaiting moderation.') ?></em>
-         <br />
-      <?php endif; ?>
-      <?php comment_text() ?>
-    </div>
-		<div class="attachment">
-			<?php
-			$anexo_interacao = get_field('anexo_interacao', $comment);
-			if ( $anexo_interacao ) {
-				echo '<a href="' . $anexo_interacao['url'] . '" target="_blank"><i class="attach icon"></i>' . $anexo_interacao['name'] . '</a>';
-			}
-			?>
-		</div>
-    <!--<div class="actions">
-      <a class="reply"><?php // comment_reply_link(array_merge( $args, array('depth' => $depth, 'max_depth' => $args['max_depth']))) ?></a>
-    </div>-->
-  </div>
-</div>
-<?php
-}
-
 /* --------------------------
 
 ADMIN - CUSTOM WORDPRESS FOOTER MESSAGE
@@ -1410,6 +1362,29 @@ function new_task( $new_task = '<span class="ui blue mini label">Nova</span>' ) 
 	}
 
 }
+
+/* --------------------------
+
+BASIC UPLOADER
+
+---------------------------- */
+
+// force basic uploader for a certain field
+function my_acf_force_basic_uploader( $field ) {
+
+    // don't do this on the backend
+    if(is_admin()) return $field;
+
+    // set the uploader setting before rendering the field
+    acf_update_setting('uploader', 'basic');
+
+    // return the field data
+    return $field;
+
+}
+
+// target the field using its name
+add_filter('acf/prepare_field/name=arquivo_interacao', 'my_acf_force_basic_uploader');
 
 /* --------------------------
 
