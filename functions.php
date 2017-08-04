@@ -1013,7 +1013,7 @@ AO CRIAR/ATUALIZAR TAREFA
 				'order'                  => 'DESC',
 				'orderby'                => 'modified',
 				'author'                 => $feed_rc,
-				'meta_query'             => $feed_cd,
+				'meta_query'             => array( $feed_cd ),
 			);
 
 			$query = new WP_Query( $args );
@@ -1097,11 +1097,39 @@ REDIRECT USUARIOS PARA A HOME APOS LOGIN
 		//if search form ID = XX, the do something with this query
 		if ( $sfid == 2817 ) {
 
+			// $args_query1 = array(
+			// 		'post_type'		=> 'tarefa',
+			// 		'posts_per_page' => -1,
+			//     'fields' => 'ids',
+			//     'meta_query'  =>  array(
+			//       array(
+			//       'key' => 'participante',
+			//       'value' => $current_user->ID,
+			//       'compare' => 'LIKE',
+			//       ),
+			//     ),
+			// );
+			// $query1 = new WP_Query($args_query1);
+			//
+			// $args_query2 = array(
+			// 		'post_type'		=> 'tarefa',
+			// 		'posts_per_page' => -1,
+			//     'fields' => 'ids',
+			// 		'author' => $feed_rc,
+			// 		'meta_query'	=> array( $feed_cd ),
+			// );
+			//
+			// $query2 = new WP_Query($args_query2);
+			//
+			// $allTheIDs = array_merge($query1->posts,$query2->posts);
+
 			// $args['post_type'] = 'tarefa';
 	    // $args['posts_per_page'] = 50;
 	    // $args['order'] = 'DESC';
 	    $args['author'] = $feed_rc;
 	    $args['meta_query'] = array( $feed_cd );
+			// $args['p'] = 3662;
+			// $args['post__in'] = $allTheIDs;
 
 		}
 

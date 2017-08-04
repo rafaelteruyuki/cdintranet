@@ -16,20 +16,42 @@ Template Name: Minhas Solicitações
 
 $current_user = wp_get_current_user();
 
-$args = array(
+$args_query1 = array(
 		'post_type'		=> 'tarefa',
-		'show_posts'	=> -1,
 		'posts_per_page' => -1,
-		'order'			=> 'DESC',
-		'orderby'		=> 'modified',
+    'fields' => 'ids',
+    'meta_query'  =>  array(
+      array(
+      'key' => 'participante',
+      'value' => $current_user->ID,
+      'compare' => 'LIKE',
+      ),
+    ),
+);
+
+$query1 = new WP_Query($args_query1);
+
+$args_query2 = array(
+		'post_type'		=> 'tarefa',
+		'posts_per_page' => -1,
+    'fields' => 'ids',
 		'author'		=> $current_user->ID,
-	);
+);
+
+$query2 = new WP_Query($args_query2);
+
+$allTheIDs = array_merge($query1->posts,$query2->posts);
+
+$args_final = array(
+    'post_type'		=> 'tarefa',
+		'post__in' => $allTheIDs,
+);
+
+$wp_query = new WP_Query($args_final);
 
 ?>
 
 <div class="ui container center aligned cd-margem" style="width:95%;">
-
-	<?php $wp_query = new WP_Query($args); ?>
 
   <?php if ( $wp_query->have_posts() && is_user_logged_in() ) : ?>
 
