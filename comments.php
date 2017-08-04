@@ -94,7 +94,7 @@ $comments = get_comments($comment_list_args); ?>
 <?php if ( !current_user_can('edit_pages') ) : ?>
 <style media="screen">
 	/* Esconde o checkbox de interação privada */
-	.acf-field-596e6548e5ad5 {
+	.acf-field-5984a7402ced4 {
 		display: none;
 	}
 </style>

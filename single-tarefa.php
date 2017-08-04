@@ -628,8 +628,8 @@ include ( locate_template('template-parts/var-tarefas.php') );
 // Atualizar comments privados
 // $comments = get_comments();
 // foreach ( $comments as $comment ) {
-// 	echo $comment->comment_ID . '<br>';
-//   update_field( 'field_596e6548e5ad5', false,'comment_' . $comment->comment_ID);
+// 	// echo $comment->comment_ID . '<br>';
+//   update_field( 'field_5984a7402ced4', false,'comment_' . $comment->comment_ID);
 // };
 
 ?>
