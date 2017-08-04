@@ -543,11 +543,12 @@ include ( locate_template('template-parts/var-tarefas.php') );
       <h3 class="ui dividing header"><i class="purple comments icon"></i><?php comments_number('0 INTERAÇÕES', '1 INTERAÇÃO', '% INTERAÇÕES' );?></h3><br>
       <?php comments_template(); ?>
 
-      <h3 class="ui dividing header" style="color: rgba(0, 0, 0, 0.4);">ARQUIVOS EXTRAS</h3>
-      <em style="color: rgba(0, 0, 0, 0.4);">Os arquivos extras foram desativados. Caso queira enviar um novo arquivo, envie acima uma mensagem com anexo.</em><br><br>
+      <!-- <h3 class="ui dividing header" style="color: rgba(0, 0, 0, 0.4);">ARQUIVOS EXTRAS</h3> -->
+      <em style="color: rgba(0, 0, 0, 0.4);"><i class="info circle icon"></i>Os arquivos extras foram desativados. Para enviar novos arquivos, digite uma mensagem acima, clique em "adicionar anexos" e depois em "enviar".</em><br><br>
       <?php acf_form( $arquivosExtras ); ?>
       <?php $i=1;
       if( have_rows('arquivos_extras') ) {
+        // echo '<span style="color: rgba(0, 0, 0, 0.4);">Adicionados anteriormente:</span><br>';
 				while( have_rows('arquivos_extras') ) { the_row();
 					$arquivo_extra = get_sub_field('arquivo_extra');
 					echo '<a href="' . $arquivo_extra['url'] . '" target="_blank" class="cd-popup" title="' . $arquivo_extra['name'] . '"><i class="file icon"></i>Arquivo extra ' . $i++ . '</a><br>';
