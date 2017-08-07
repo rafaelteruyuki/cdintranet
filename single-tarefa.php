@@ -526,9 +526,9 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <i class="right triangle icon"></i>
           <div class="content">
             <div class="header">Última atualização</div>
-            <div class="description cd-nd">
-              <?php // the_modified_date(); echo ', às '; the_modified_time('G:i');?>
-              <?php // if ( get_post_meta(get_post()->ID, '_edit_last') ) { echo '<br>por '; the_modified_author(); } ?>
+            <div class="description">
+              <?php the_modified_date(); echo ', às '; the_modified_time('G:i');?>
+              <?php if ( get_post_meta(get_post()->ID, '_edit_last') ) { echo '<br>por '; the_modified_author(); } ?>
             </div>
           </div>
         </div>
