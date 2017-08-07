@@ -148,6 +148,25 @@ include ( locate_template('template-parts/var-tarefas.php') );
           </div>
         </div>
 
+        <?php if ( $finalidade ['value'] === 'dcurso' ) : ?>
+
+        <!-- DATA DE INICIO DO CURSO -->
+        <div class="item">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Data de início do curso</div>
+            <div class="description">
+              <?php if ( get_field('data_de_inicio_do_curso') ) {
+                the_field('data_de_inicio_do_evento');
+              } else {
+                echo '<span class="cd-nd"></span>';
+              } ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
         <?php if ( $finalidade ['value'] === 'devento' ) : ?>
 
           <!-- DATA DE INICIO DO EVENTO -->

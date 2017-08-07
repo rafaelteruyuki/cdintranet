@@ -36,7 +36,11 @@ include ( locate_template('template-parts/var-tarefas.php') );
   </td>
   <td class="collapsing"><?php the_field('area_divulgacao_tarefa'); ?></td>
   <td class="collapsing"><?php $data = get_the_date('d/m/y'); echo $data; ?></td>
-  <td class="collapsing"><?php if ( get_field('data_de_inicio_do_evento') ) { the_field('data_de_inicio_do_evento'); } else { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } ?></td>
+  <td class="collapsing">
+    <?php if ( get_field('data_de_inicio_do_evento') ) { the_field('data_de_inicio_do_evento'); }
+    elseif ( get_field('data_de_inicio_do_curso') ) { the_field('data_de_inicio_do_curso'); }
+    else { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } ?>
+  </td>
   <td class="collapsing"><?php if ( $publicacao && in_array('publicacao', $publicacao) ) the_field('previsao_de_publicacao'); else echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Sem publicação</span>'; ?></td>
   <td class="collapsing"><?php the_field('previsao_conclusao'); ?></td>
   <td class="left aligned collapsing">
