@@ -1338,6 +1338,58 @@ function lido_nao_lido_single() {
 
 /* --------------------------
 
+HIGHLIGHT TAREFAS COM COMENTARIOS (MINHAS TAREFAS)
+
+---------------------------- */
+
+function comment_nao_lido($nao_lido = 'background:#ebf7ff;') {
+
+global $current_user;
+$post_id = get_the_ID();
+
+	if ( is_user_logged_in() ) {
+
+		if( have_rows('visitas', $post_id) ):
+
+				while ( have_rows('visitas', $post_id) ) : the_row();
+
+						$usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
+						$acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
+
+				endwhile;
+
+		endif;
+
+		$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
+
+		$args = array(
+							'number' => '1',
+							'post_id' => $post_id
+		);
+
+		$comments = get_comments($args);
+
+		if ($comments) {
+			foreach($comments as $comment) :
+					$last_comment_time[] = get_comment_date('YmdHis', $comment->comment_ID);
+			endforeach;
+		}
+
+		// se existir a key do usuário, executa a função
+		if ($key !== false) {
+
+			if ($last_comment_time[0] > $acesso_registrado[$key]) {
+				return $nao_lido;
+			}
+
+		}
+
+	}
+
+}
+
+/* --------------------------
+
 MANTER USUARIOS LOGADOS
 
 ---------------------------- */
@@ -1372,7 +1424,7 @@ function new_task( $new_task = '<span class="ui blue mini label">Nova</span>' ) 
 	global $current_user;
 	$post_id = get_the_ID();
 
-	if ( !is_archive() ) { // Não exibe na página Todas as Tarefas
+	if ( !is_archive() && current_user_can('edit_pages') ) { // Não exibe na página Todas as Tarefas nem para usuários Senac
 
 	  if ( have_rows('visitas', $post_id) ) {
 	      while ( have_rows('visitas', $post_id) ) { the_row();

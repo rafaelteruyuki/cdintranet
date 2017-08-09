@@ -5,7 +5,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
 ?>
 
-<tr class="center aligned cd-tarefa" style="cursor:pointer; <?php new_task('background:#ebf7ff;'); ?>" onclick="window.open('<?php the_permalink(); ?>');" >
+<tr class="center aligned cd-tarefa" style="cursor:pointer; <?php new_task('background:#ebf7ff;'); ?><?= comment_nao_lido(); ?>" onclick="window.open('<?php the_permalink(); ?>');" >
   <td class="collapsing"><?php the_field('unidade'); ?></td>
   <td class="collapsing">
 
