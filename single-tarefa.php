@@ -144,7 +144,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <i class="right triangle icon"></i>
           <div class="content">
             <div class="header">Data da solicitação</div>
-            <div class="description"><?php echo get_the_date('d/m/Y') . ', às ' . get_the_date('H:m'); ?></div>
+            <div class="description"><?php echo get_the_date('d/m/y') . ', às ' . get_the_date('H:m'); ?></div>
           </div>
         </div>
 
@@ -157,7 +157,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
             <div class="header">Data de início do curso</div>
             <div class="description">
               <?php if ( get_field('data_de_inicio_do_curso') ) {
-                the_field('data_de_inicio_do_evento');
+                the_field('data_de_inicio_do_curso');
               } else {
                 echo '<span class="cd-nd"></span>';
               } ?>
@@ -546,7 +546,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <div class="content">
             <div class="header">Última atualização</div>
             <div class="description">
-              <?php the_modified_date(); echo ', às '; the_modified_time('G:i');?>
+              <?php the_modified_date('d/m/y'); echo ', às '; the_modified_time('G:i');?>
               <?php if ( get_post_meta(get_post()->ID, '_edit_last') ) { echo '<br>por '; the_modified_author(); } ?>
             </div>
           </div>
