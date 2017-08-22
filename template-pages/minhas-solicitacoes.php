@@ -45,6 +45,7 @@ $allTheIDs = array_merge($query1->posts,$query2->posts);
 $args_final = array(
     'post_type'		=> 'tarefa',
 		'post__in' => $allTheIDs,
+    'posts_per_page' => -1,
 );
 
 $wp_query = new WP_Query($args_final);
