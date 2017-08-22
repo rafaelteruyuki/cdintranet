@@ -16,12 +16,26 @@ get_header(); ?>
 
 <div class="ui basic segment cd-margem">
 	<div class="ui center aligned container">
+
+		<?php if(isset($_GET['trashed'])) : ?>
+
+		<h2 class="ui center aligned icon header">
+		  <i class="green checkmark icon"></i>
+		  Solicitação excluída
+		</h2>
+		<p>Voltar para <a href="<?php bloginfo('url') ?>/minhas-solicitacoes">minhas solicitações</a>.</p>
+
+		<?php else : ?>
+
 		<h2 class="ui center aligned icon header">
 		  <i class="yellow warning sign icon"></i>
 		  Página não encontrada
 		</h2>
 		<p>Voltar para a <a href="<?php bloginfo('url') ?>">home</a>.</p>
 		<?php // get_search_form(); ?>
+
+		<?php endif; ?>
+
 	</div>
 </div>
 

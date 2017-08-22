@@ -331,6 +331,23 @@ include ( locate_template('template-parts/var-tarefas.php') );
           </div>
         </div>
 
+        <?php if( current_user_can('edit_pages') ) : ?>
+
+        <!-- DELETAR -->
+        <div class="item">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Deletar solicitação?</div>
+            <div class="description">
+              <a href="<?php echo get_delete_post_link(); ?>" class="ui red button cd-popup" style="margin-top:10px;" title="Tem certeza?">
+                Deletar
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
       </div>
 
     </div>
