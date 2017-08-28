@@ -339,10 +339,25 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <div class="content">
             <div class="header">Deletar solicitação?</div>
             <div class="description">
-              <a href="<?php echo get_delete_post_link(); ?>" class="ui red button cd-popup" style="margin-top:10px;" title="Tem certeza?">
+              <div class="ui red button cd-delete-btn" style="margin-top:10px;">
                 Deletar
-              </a>
+              </div>
             </div>
+          </div>
+        </div>
+
+        <!-- DELETE POST MODAL -->
+        <div class="ui mini modal cd-delete">
+          <i class="close icon"></i>
+          <div class="header">
+            Deletar solicitação
+          </div>
+          <div class="content">
+            <p>Tem certeza que deseja deletar essa solicitação?</p>
+          </div>
+          <div class="actions">
+            <div class="ui cd-cancel-btn button">Cancelar</div>
+            <a href="<?php echo get_delete_post_link(); ?>" class="ui negative button">Deletar</a>
           </div>
         </div>
 

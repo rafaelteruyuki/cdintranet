@@ -151,6 +151,11 @@ $('.acf-field-58f4c987e479e .acf-input').append( $('#acf-_post_title') ); //Inse
 //$('.hide-if-value p').html($('.hide-if-value p').html().replace('Nenhum arquivo selecionado ','')); //remove "Nenhum arquivo selecionado" no Form front-end
 //$('.button').text("Teste");
 
+$('.cd-delete.modal')
+  .modal('attach events', '.cd-delete-btn', 'show')
+  .modal('attach events', '.cd-cancel-btn', 'hide')
+;
+
 </script>
 
 <?php wp_footer();?>
