@@ -23,7 +23,7 @@ get_header(); ?>
 		  <i class="green checkmark icon"></i>
 		  Solicitação excluída
 		</h2>
-		<p>Voltar para <a href="<?php bloginfo('url') ?>/minhas-solicitacoes">minhas solicitações</a>.</p>
+		<p>Voltar para <a href="<?php bloginfo('url') ?>/minhas-tarefas">minhas tarefas</a>.</p>
 
 		<?php else : ?>
 

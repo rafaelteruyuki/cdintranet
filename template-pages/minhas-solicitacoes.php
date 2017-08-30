@@ -46,6 +46,7 @@ $args_final = array(
     'post_type'		=> 'tarefa',
 		'post__in' => $allTheIDs,
     'posts_per_page' => -1,
+    'author'		=> $current_user->ID,
 );
 
 $wp_query = new WP_Query($args_final);

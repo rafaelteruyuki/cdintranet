@@ -36,6 +36,7 @@ $comment_args = array(
     'order'          => 'DESC',
     'orderby'        => 'comment_date',
     'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+    'post_author'    => $feed_rc,
     'meta_query'     => array( $privado ),
 );
 
