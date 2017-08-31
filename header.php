@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="<?php bloginfo('charset'); ?>">
+<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title class="title-contador"><?php if(is_home()) { echo bloginfo("name"); echo " | "; echo bloginfo("description"); } else { echo wp_title(" | ", false, right); echo bloginfo("name"); } ?></title>
@@ -165,6 +166,9 @@
             <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
             <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
             <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+            <?php endif; ?>
+            <?php if ( current_user_can( 'portal' ) ) : ?>
+            <a href="<?php bloginfo( 'url' ); ?>/exportar-tarefas/" class="item"><i class="download icon"></i>Exportar tarefas</a>
             <?php endif; ?>
             <!--LOGIN OUTROS-->
             <?php if ( current_user_can( 'senac' ) ) : ?>
