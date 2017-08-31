@@ -156,40 +156,6 @@ $('.cd-delete.modal')
   .modal('attach events', '.cd-cancel-btn', 'hide')
 ;
 
-
-function fnExcelReport() {
-    var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
-    tab_text = tab_text + '<head><meta charset="UTF-8" /><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet‌​>';
-
-    tab_text = tab_text + '<x:Name>Test Sheet</x:Name>';
-
-    tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
-    tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
-
-    tab_text = tab_text + "<table border='1px'>";
-    tab_text = tab_text + $('#table_wrapper').html();
-    tab_text = tab_text + '</table></body></html>';
-
-    var data_type = 'data:application/vnd.ms-excel';
-
-    var ua = window.navigator.userAgent;
-    var msie = ua.indexOf("MSIE ");
-
-    var data_hoje = <?php echo date( 'Ymd', current_time( 'timestamp', 0 ) ); ?>;
-    var file_name = data_hoje + '_tafefas_exportadas' + '.xls';
-
-    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
-        if (window.navigator.msSaveBlob) {
-            var blob = new Blob([tab_text], {
-                type: "application/csv;charset=utf-8;"
-            });
-            navigator.msSaveBlob(blob, file_name);
-        }
-    } else {
-        $('#btnExport').attr('href', data_type + ', ' + encodeURIComponent(tab_text));
-        $('#btnExport').attr('download', file_name);
-    }
-}
 </script>
 
 <?php wp_footer();?>

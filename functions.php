@@ -1009,7 +1009,7 @@ AO CRIAR/ATUALIZAR TAREFA
 
 			$args = array(
 				'post_type'              => 'tarefa',
-				'posts_per_page'         => 31,
+				'posts_per_page'         => '31',
 				'order'                  => 'DESC',
 				'orderby'                => 'modified',
 				'author'                 => $feed_rc,
