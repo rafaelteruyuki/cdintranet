@@ -20,6 +20,9 @@ $test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 9
     .acf-field-5787b4caf1816 ul li:nth-child(3){
        display:none;
     }
+    .cd-hidden {
+      display: none;
+    }
   </style>
 
 <?php endif; ?>
