@@ -11,7 +11,7 @@ Template Name: Exportar Tarefas
   <?php the_title(); ?>
 </h2>
 
-<?php if ( current_user_can('edit_pages') ) : ?>
+<?php if ( current_user_can('portal') ) : ?>
 
 <style media="screen">
 
@@ -77,6 +77,13 @@ $args = array(
   // 'orderby'                => 'modified',
   // 'author'                 => $feed_rc,
   // 'meta_query'             => array( $feed_cd ),
+  'meta_query'             => array(
+    array(
+      'key'		=> 'publicacao_pecas',
+      'value'		=> '"publicacao"',
+      'compare' => 'LIKE'
+    ),
+  ),
 );
 
 $query = new WP_Query( $args );
@@ -95,14 +102,14 @@ $query = new WP_Query( $args );
         <tr>
           <th>Unidade</th>
           <th>Finalidade</th>
-          <th>Modalidade do Curso</th>
+          <!-- <th>Modalidade do Curso</th> -->
           <th>Publicação / Peças</th>
           <th>Nº atividades</th>
           <th>Título</th>
           <th>Área</th>
           <th>Sub-área</th>
           <th>Data da solicitação</th>
-          <th>Data início evento/curso</th>
+          <th>Data início evento<!-- /curso --></th>
           <th>Previsão publicação</th>
           <th>Previsão peças</th>
           <th>Tipo de criação</th>
@@ -128,7 +135,7 @@ $query = new WP_Query( $args );
       <tr>
         <td><?php if ( get_field('unidade') ) { the_field('unidade'); } ?></td>
         <td><?php if ($finalidade) { echo $finalidade['label']; } ?></td>
-        <td><?php if ($modalidade) { echo $modalidade['label']; } ?></td>
+        <!-- <td><?php // if ($modalidade) { echo $modalidade['label']; } ?></td> -->
         <td><?php if( $opcoes ) : foreach( $opcoes as $opcao ): ?><?php $i++; if ($i >= 2) { echo ', ';}; echo $field['choices'][ $opcao ]; ?><?php endforeach; endif; ?></td>
         <td><?php if ( get_field('numero_de_atividades') ) { the_field('numero_de_atividades'); } ?></td>
         <td><?php the_title(); ?></td>
@@ -144,7 +151,7 @@ $query = new WP_Query( $args );
         <td><?php if ($responsavel3) : echo $responsavel3['display_name']; endif; ?></td>
         <td><?php if ($responsavel4) : echo $responsavel4['display_name']; endif; ?></td>
         <td><?php echo $status['label'] ?></td>
-        <td><?php the_permalink(); ?></td>
+        <td><a href="<?php the_permalink(); ?>">Link</a></td>
       </tr>
 
 		  <?php endwhile; ?>
