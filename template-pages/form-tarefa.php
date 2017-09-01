@@ -9,8 +9,22 @@ get_header(); ?>
 <link rel="stylesheet" href="<?php bloginfo('url'); ?>/wp-content/themes/comunicacao-digital/css/form-tarefa.css">
 
 <?php
+$current_user = wp_get_current_user();
+$current_user_id = get_current_user_id();
+$test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 97, 37, 99);
+?>
 
- $current_user = wp_get_current_user();
+<?php if ( !in_array($current_user_id, $test_users) ) : ?>
+
+  <style media="screen">
+    .acf-field-5787b4caf1816 ul li:nth-child(3){
+       display:none;
+    }
+  </style>
+
+<?php endif; ?>
+
+<?php
 
  if ( is_user_logged_in() ) :
 

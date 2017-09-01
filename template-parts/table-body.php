@@ -17,7 +17,11 @@ include ( locate_template('template-parts/var-tarefas.php') );
     }
     elseif($finalidade['value'] === "outrafinalidade"){
       echo 'Outra';
-    } ?>
+    }
+    elseif($finalidade['value'] === "pauta"){
+      echo 'Pauta';
+    }
+    ?>
 
   </td>
   <td class="left aligned">
@@ -41,8 +45,8 @@ include ( locate_template('template-parts/var-tarefas.php') );
     elseif ( get_field('data_de_inicio_do_curso') ) { the_field('data_de_inicio_do_curso'); }
     else { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } ?>
   </td>
-  <td class="collapsing"><?php if ( $publicacao && in_array('publicacao', $publicacao) ) the_field('previsao_de_publicacao'); else echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Sem publicação</span>'; ?></td>
-  <td class="collapsing"><?php the_field('previsao_conclusao'); ?></td>
+  <td class="collapsing"><?php if ( $publicacao && in_array('publicacao', $publicacao) ) the_field('previsao_de_publicacao'); elseif ($finalidade['value'] === "pauta") the_field('previsao_de_publicacao'); else echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Sem publicação</span>'; ?></td>
+  <td class="collapsing"><?php if ( $finalidade['value'] === "pauta" ) { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } else { the_field('previsao_conclusao'); } ?></td>
   <td class="left aligned collapsing">
 		<?php if ($responsavel1) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel1['display_name'] ?>"><?php echo $responsavel1['user_avatar']; ?></span><?php endif; ?>
 		<?php if ($responsavel2) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel2['display_name'] ?>"><?php echo $responsavel2['user_avatar']; ?></span><?php endif; ?>

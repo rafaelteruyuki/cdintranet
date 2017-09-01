@@ -184,12 +184,24 @@ if ( current_user_can( 'portal' ) ) {
 
   $feed_cd =
 
-      // PUBLICACAO
-      array(
-        'key'		=> 'publicacao_pecas',
-        'value'		=> '"publicacao"',
-        'compare' => 'LIKE'
-      );
+  array(
+
+    'relation'		=> 'OR',
+
+    // PUBLICACAO
+    array(
+      'key'		=> 'publicacao_pecas',
+      'value'		=> '"publicacao"',
+      'compare' => 'LIKE'
+    ),
+
+    // PAUTA
+    array(
+      'key'		=> 'finalidade',
+      'value'		=> array('pauta'),
+      'compare'	=> 'IN',
+    ),
+  );
 
 }
 

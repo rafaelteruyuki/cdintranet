@@ -4,30 +4,6 @@
 
 <link rel="stylesheet" href="<?php bloginfo('url'); ?>/wp-content/themes/comunicacao-digital/css/form-tarefa.css">
 
-<?php
-
-// Tarefas sem status = Não iniciadas
-// if ( !get_field('status') ) {
-//   update_field('status', 'naoiniciado');
-// }
-
-?>
-
-
-<?php // if ( $publicacao && in_array('publicacao', $publicacao) ): ?>
-<!-- <p>Publicação de Evento</p> -->
-<?php // elseif ( $publicacao && in_array('pecas', $publicacao) ): ?>
-<!-- <p>Criação de Peças</p> -->
-<?php // endif; ?>
-
-<?php
-//if (get_field('field_name') == 'Field Value') {
-  // code to run if the above is true
-//} else if (get_field('other_field_name') == 'Other Field Value') {
-        // more code
-//}
-?>
-
 <style type="text/css">
 .cd-nd {
   color: rgba(0, 0, 0, 0.4);
@@ -60,19 +36,6 @@ display: none;
         </div>
     </div>
   </div>
-
-  <!-- <div class="ui cd-tab center aligned container cd-margem">
-    <div class="ui buttons">
-      <a class="ui labeled icon button item active" data-tab="first">
-        <i class="file text icon"></i>
-        Tarefa
-      </a>
-      <a class="ui right labeled icon button item" data-tab="second">
-        Editar
-        <i class="edit icon"></i>
-      </a>
-    </div>
-  </div> -->
 
 <?php endif; ?>
 
@@ -122,10 +85,9 @@ include ( locate_template('template-parts/var-tarefas.php') );
     <div class="column">
       <h3 class="ui dividing header"><i class="blue file text icon"></i>SOLICITAÇÃO</h3><br>
 
-      <!-- DADOS SOLICITANTE -->
-
       <div class="ui list">
 
+        <!-- DADOS SOLICITANTE -->
         <div class="item">
           <i class="right triangle icon"></i>
           <div class="content">
@@ -148,7 +110,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
           </div>
         </div>
 
-        <?php if ( $finalidade ['value'] === 'dcurso' ) : ?>
+        <?php if ( get_field('data_de_inicio_do_curso') ) : ?>
 
         <!-- DATA DE INICIO DO CURSO -->
         <div class="item">
@@ -167,7 +129,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
         <?php endif; ?>
 
-        <?php if ( $finalidade ['value'] === 'devento' ) : ?>
+        <?php if ( get_field('data_de_inicio_do_evento') ) : ?>
 
           <!-- DATA DE INICIO DO EVENTO -->
           <div class="item">
@@ -184,6 +146,10 @@ include ( locate_template('template-parts/var-tarefas.php') );
             </div>
           </div>
 
+          <?php endif; ?>
+
+          <?php if ( get_field('publicacao_pecas') ) : ?>
+
           <!-- PUBLICACAO / PECAS -->
           <div class="item">
             <i class="right triangle icon"></i>
@@ -198,6 +164,10 @@ include ( locate_template('template-parts/var-tarefas.php') );
               </div>
             </div>
           </div>
+
+          <?php endif; ?>
+
+          <?php if ( get_field('numero_de_atividades') ) : ?>
 
           <!-- NUMERO DE ATIVIDADES -->
           <div class="item">
@@ -214,25 +184,27 @@ include ( locate_template('template-parts/var-tarefas.php') );
             </div>
           </div>
 
+          <?php endif; ?>
+
+          <?php if ( have_rows('formulario_arquivos') ) : ?>
+
           <!-- FORMULARIO E ARQUIVOS DO EVENTO -->
           <div class="item">
             <i class="right triangle icon"></i>
             <div class="content">
               <div class="header">Formulário e arquivos do evento</div>
               <div class="description">
-                <?php if( have_rows('formulario_arquivos') ) : ?>
         				<?php while( have_rows('formulario_arquivos') ): the_row(); $linkFormArquivos = get_sub_field('sub_formulario_arquivos'); ?>
                 <a href="<?= $linkFormArquivos['url']; ?>" class="ui small primary button cd-popup" target="_blank" style="margin-top:10px;" title="<?= $linkFormArquivos['name']; ?>" download>Baixar</a>
                 <!-- <a class="ui small primary button cd-popup" href="https://docs.google.com/viewerng/viewer?url=http://www3.sp.senac.br/hotsites/temp/teste.docx" title="<?= $linkFormArquivos['name']; ?>" style="margin-top:10px;" target="_blank">Visualizar</a> -->
                 <?php endwhile;?>
-                <?php else : ?>
-                  <span class="cd-nd"></span>
-                <?php endif;?>
               </div>
             </div>
           </div>
 
         <?php endif; ?>
+
+        <?php if ( get_field('tipo_de_criacao') ) : ?>
 
         <!-- TIPO DE CRIACAO -->
         <div class="item">
@@ -249,8 +221,11 @@ include ( locate_template('template-parts/var-tarefas.php') );
           </div>
         </div>
 
-        <!-- OUTRA CRIACAO -->
+        <?php endif; ?>
+
         <?php if ( get_field('outrotipocriacao') ) : ?>
+
+        <!-- OUTRA CRIACAO -->
           <div class="item">
             <i class="right triangle icon"></i>
             <div class="content">
@@ -264,10 +239,8 @@ include ( locate_template('template-parts/var-tarefas.php') );
               </div>
             </div>
           </div>
-        <?php endif; ?>
 
-        <?php // if ( $finalidade['value'] === 'dcurso' || $finalidade['value'] === 'outrafinalidade' ) : ?>
-        <?php // if ( $publicacao && !in_array('publicacao', $publicacao) ): ?>
+        <?php endif; ?>
 
           <?php if ( get_field('publicado_portal') ): ?>
 
@@ -316,6 +289,44 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
         <?php endif; ?>
 
+        <?php if ( get_field('breve_descricao') ) : ?>
+
+        <!-- BREVE DESCRIÇAO -->
+        <div class="item">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Breve descrição</div>
+            <div class="description" style="word-break: break-word;">
+              <?php if ( get_field('breve_descricao') ) {
+                the_field('breve_descricao');
+              } else {
+                echo '<span class="cd-nd"></span>';
+              } ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if( have_rows('fotos_pauta') ) : ?>
+
+        <!-- FOTOS PAUTA -->
+        <div class="item">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Fotos</div>
+            <div class="description">
+              <?php while( have_rows('fotos_pauta') ): the_row(); $sub_fotos_pauta = get_sub_field('sub_fotos_pauta'); ?>
+              <a href="<?= $sub_fotos_pauta['url']; ?>" class="ui small primary button cd-popup" target="_blank" style="margin-top:10px;" title="<?= $sub_fotos_pauta['name'] ?>">Baixar</a>
+              <?php endwhile;?>
+            </div>
+          </div>
+        </div>
+
+      <?php endif; ?>
+
+      <?php if ( get_field('observacoes') ) : ?>
+
         <!-- OBSERVACOES -->
         <div class="item">
           <i class="right triangle icon"></i>
@@ -330,6 +341,8 @@ include ( locate_template('template-parts/var-tarefas.php') );
             </div>
           </div>
         </div>
+
+        <?php endif; ?>
 
         <?php if( current_user_can('edit_pages') ) : ?>
 
@@ -381,7 +394,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <div class="content">
             <div class="header">Responsáveis</div>
             <div class="description">
-              <?php if ($responsavel1 || $responsavel2 || $responsavel3) : ?>
+              <?php if ($responsavel1 || $responsavel2 || $responsavel3 || $responsavel4) : ?>
 
                 <div style="margin-top:10px;">
                   <?php if ($responsavel1) : ?>
@@ -417,7 +430,9 @@ include ( locate_template('template-parts/var-tarefas.php') );
           </div>
         </div>
 
-        <?php if ( $publicacao && in_array('publicacao', $publicacao) ): ?>
+        <?php // if ( $publicacao && in_array('publicacao', $publicacao) ): ?>
+
+          <?php if ( get_field('previsao_de_publicacao') ) : ?>
 
           <!-- PREVISAO DE PUBLICACAO NO PORTAL -->
           <div class="item">
@@ -434,14 +449,16 @@ include ( locate_template('template-parts/var-tarefas.php') );
             </div>
           </div>
 
+          <?php endif; ?>
+
+          <?php if ( $imagem_capa || $imagem_miniatura || $imagem_rodape || $imagem_lateral ) : ?>
+
           <!-- IMAGENS PORTAL -->
           <div class="item">
             <i class="right triangle icon"></i>
             <div class="content">
               <div class="header">Imagens portal</div>
               <div class="description">
-
-                <?php if ( $imagem_capa || $imagem_miniatura || $imagem_rodape || $imagem_lateral ) : ?>
 
                   <div style="margin-top:10px;">
 
@@ -471,13 +488,13 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
                   </div>
 
-                <?php else : ?>
-                  <span class="cd-nd"></span>
-                <?php endif; ?>
-
               </div>
             </div>
           </div>
+
+          <?php endif; ?>
+
+          <?php if ( get_field('sugestao_de_texto') ) : ?>
 
           <!-- SUGESTAO DE TEXTO -->
           <div class="item">
@@ -493,6 +510,10 @@ include ( locate_template('template-parts/var-tarefas.php') );
               </div>
             </div>
           </div>
+
+          <?php endif; ?>
+
+          <?php if ( get_field('link_evento_publicado') ) : ?>
 
           <!-- LINK DO EVENTO PUBLICADO -->
           <div class="item">
@@ -511,6 +532,8 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
         <?php endif; ?>
 
+        <?php if ( get_field('previsao_conclusao') ) : ?>
+
         <!-- PREVISAO DE PRODUCAO DAS PECAS -->
         <div class="item">
           <i class="right triangle icon"></i>
@@ -527,50 +550,57 @@ include ( locate_template('template-parts/var-tarefas.php') );
           </div>
         </div>
 
-        <?php if ( !current_user_can('portal') || !current_user_can('senac') ) : ?>
-        <!-- SOLICITAR TEXTO/IMAGEM -->
-        <div class="item">
-          <i class="right triangle icon"></i>
-          <div class="content">
-            <div class="header">Solicitar texto / imagem</div>
-            <div class="description">
-              <?php if (!$texto_luares) : ?><i class="file text icon" style="color: #CCC;"></i><?php endif; ?>
-              <?php if ($texto_luares['value'] == 'solicitar-texto') : ?><i class="red file text icon cd-popup" title="Solicitar texto"></i><?php endif; ?>
-              <?php if ($texto_luares['value'] == 'texto-solicitado') : ?><i class="green file text icon cd-popup" title="Texto solicitado"></i><?php endif; ?>
-              <?php if (!$imagem_gd) : ?><i class="file image outline icon" style="color: #CCC;"></i><?php endif; ?>
-              <?php if ($imagem_gd['value'] == 'solicitar-imagem') : ?><i class="red file image outline icon cd-popup" title="Solicitar imagem"></i><?php endif; ?>
-              <?php if ($imagem_gd['value'] == 'imagem-solicitada') : ?><i class="green file image outline icon cd-popup" title="Imagem solicitada"></i><?php endif; ?>
-            </div>
-          </div>
-        </div>
         <?php endif; ?>
 
-        <!-- PECAS FINALIZADAS-->
-        <div class="item">
-          <i class="right triangle icon"></i>
-          <div class="content">
-            <div class="header">Peças finalizadas</div>
-            <div class="description">
-              <?php if( have_rows('pecas_flex') ) : ?>
-              <?php while( have_rows('pecas_flex') ): the_row(); ?>
+        <?php if ( $texto_luares || $imagem_gd ) : ?>
 
-                <?php if( get_row_layout() == 'links_flex' ): ?>
-
-                  <a href="<?php the_sub_field('link_flex'); ?>" class="ui small green button" target="_blank" style="margin-top:10px;"><?php the_sub_field('nome_link_flex') ?></a>
-
-                <?php elseif( get_row_layout() == 'arquivos_flex' ): ?>
-
-                  <a href="<?php the_sub_field('arquivo_flex'); ?>" class="ui small green button" target="_blank" style="margin-top:10px;"><?php the_sub_field('nome_arquivo_flex') ?></a>
-
-                <?php endif; ?>
-
-              <?php endwhile; ?>
-              <?php else : ?>
-                <span class="cd-nd"></span>
-              <?php endif; ?>
+          <?php if ( !current_user_can('portal') || !current_user_can('senac') ) : ?>
+          <!-- SOLICITAR TEXTO/IMAGEM -->
+          <div class="item">
+            <i class="right triangle icon"></i>
+            <div class="content">
+              <div class="header">Solicitar texto / imagem</div>
+              <div class="description">
+                <?php if (!$texto_luares) : ?><i class="file text icon" style="color: #CCC;"></i><?php endif; ?>
+                <?php if ($texto_luares['value'] == 'solicitar-texto') : ?><i class="red file text icon cd-popup" title="Solicitar texto"></i><?php endif; ?>
+                <?php if ($texto_luares['value'] == 'texto-solicitado') : ?><i class="green file text icon cd-popup" title="Texto solicitado"></i><?php endif; ?>
+                <?php if (!$imagem_gd) : ?><i class="file image outline icon" style="color: #CCC;"></i><?php endif; ?>
+                <?php if ($imagem_gd['value'] == 'solicitar-imagem') : ?><i class="red file image outline icon cd-popup" title="Solicitar imagem"></i><?php endif; ?>
+                <?php if ($imagem_gd['value'] == 'imagem-solicitada') : ?><i class="green file image outline icon cd-popup" title="Imagem solicitada"></i><?php endif; ?>
+              </div>
             </div>
           </div>
-        </div>
+          <?php endif; ?>
+
+        <?php endif; ?>
+
+        <?php if ( have_rows('pecas_flex') ) : ?>
+
+          <!-- PECAS FINALIZADAS-->
+          <div class="item">
+            <i class="right triangle icon"></i>
+            <div class="content">
+              <div class="header">Peças finalizadas</div>
+              <div class="description">
+                <?php while( have_rows('pecas_flex') ): the_row(); ?>
+
+                  <?php if( get_row_layout() == 'links_flex' ): ?>
+
+                    <a href="<?php the_sub_field('link_flex'); ?>" class="ui small green button" target="_blank" style="margin-top:10px;"><?php the_sub_field('nome_link_flex') ?></a>
+
+                  <?php elseif( get_row_layout() == 'arquivos_flex' ): ?>
+
+                    <a href="<?php the_sub_field('arquivo_flex'); ?>" class="ui small green button" target="_blank" style="margin-top:10px;"><?php the_sub_field('nome_arquivo_flex') ?></a>
+
+                  <?php endif; ?>
+
+                <?php endwhile; ?>
+
+              </div>
+            </div>
+          </div>
+
+        <?php endif; ?>
 
         <!-- ULTIMA ATUALIZACAO -->
         <div class="item">
@@ -643,7 +673,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
   <div class="ui vertical basic segment" style="background:rgba(0,0,0,.05);">
     <div class="ui center aligned container" style="margin-top: 20px;">
-      <strong>Data da solicitação: </strong><?= get_the_date('d/m/Y') . ', às ' . get_the_date('H:m'); ?>
+      <strong>Data da solicitação: </strong><?= get_the_date('d/m/Y') . ', às ' . get_the_date('G:i'); ?>
     </div>
     <div class="ui grid container stackable">
 
