@@ -7,27 +7,22 @@ $post_args = array(
   'post_type'              => array( 'tarefa' ),
   'posts_per_page'         => -1,
   'order'                  => 'DESC',
+  'post__in'               => $allTheIDs,
   //'orderby'                => 'comment_date',
   'author'                 => $feed_rc,
   'meta_query'             => array( $feed_cd ),
 );
 
 $post_query = new WP_Query( $post_args );
+
 $posts_array= array();
+
 if ( $post_query->have_posts() ) {
     while ( $post_query->have_posts() ) {
         $post_query->the_post();
         $posts_array[] = get_the_ID(); //Array of post ids
     }
     wp_reset_postdata();
-}
-// Se o usuário for Senac, não mostra os comentários privados
-if ( current_user_can('senac') ) {
-  $privado = array(
-  'key' => 'privado_interacao',
-  'value' => '1',
-  'compare' => '!=',
-  );
 }
 
 $comment_args = array(
@@ -36,7 +31,7 @@ $comment_args = array(
     'order'          => 'DESC',
     'orderby'        => 'comment_date',
     'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
-    'post_author'    => $feed_rc,
+    // 'post_author'    => $feed_rc,
     'meta_query'     => array( $privado ),
 );
 

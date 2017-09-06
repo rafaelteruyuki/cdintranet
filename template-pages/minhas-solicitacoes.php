@@ -16,37 +16,13 @@ Template Name: Minhas Solicitações
 
 $current_user = wp_get_current_user();
 
-$args_query1 = array(
-		'post_type'		=> 'tarefa',
-		'posts_per_page' => -1,
-    'fields' => 'ids',
-    'meta_query'  =>  array(
-      array(
-      'key' => 'participante',
-      'value' => $current_user->ID,
-      'compare' => 'LIKE',
-      ),
-    ),
-);
-
-$query1 = new WP_Query($args_query1);
-
-$args_query2 = array(
-		'post_type'		=> 'tarefa',
-		'posts_per_page' => -1,
-    'fields' => 'ids',
-		'author'		=> $current_user->ID,
-);
-
-$query2 = new WP_Query($args_query2);
-
-$allTheIDs = array_merge($query1->posts,$query2->posts);
+include ( locate_template('template-parts/cd-feed.php') );
 
 $args_final = array(
     'post_type'		=> 'tarefa',
 		'post__in' => $allTheIDs,
     'posts_per_page' => -1,
-    'author'		=> $current_user->ID,
+    'author'		=> $cd_author,
 );
 
 $wp_query = new WP_Query($args_final);

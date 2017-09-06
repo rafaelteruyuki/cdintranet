@@ -101,6 +101,23 @@ include ( locate_template('template-parts/var-tarefas.php') );
           </div>
         </div>
 
+        <?php $participantes = get_field('participante'); if( $participantes ): ?>
+
+        <!-- PARTICIPANTES -->
+        <div class="item">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Participante(s)</div>
+            <div class="description">
+              	<?php foreach( $participantes as $participante ): ?>
+              		<?php echo $participante['display_name']; ?><br>
+              	<?php endforeach; ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
         <!-- DATA DA SOLICITACAO -->
         <div class="item">
           <i class="right triangle icon"></i>
