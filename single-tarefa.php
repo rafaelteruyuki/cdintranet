@@ -66,7 +66,12 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <?php the_title(); ?>
         </div>
       </h2>
-      <h3><em><?php the_field('area_divulgacao_tarefa'); ?><?php if ( get_field('subarea_tarefa') ) { echo ' - '; the_field('subarea_tarefa'); }?></em></h3>
+      <h3>
+        <em>
+          <?php $area = get_field('area_divulgacao_tarefa'); if ($area) { echo $area['label']; } ?>
+          <?php if ( get_field('subarea_tarefa') ) { echo ' - '; the_field('subarea_tarefa'); }?>
+        </em>
+      </h3>
 
       <!-- BARRA PORCENTAGEM -->
       <div class="ui hidden divider"></div>
@@ -729,6 +734,22 @@ include ( locate_template('template-parts/var-tarefas.php') );
 // 	// echo $comment->comment_ID . '<br>';
 //   update_field( 'field_5984a7402ced4', false,'comment_' . $comment->comment_ID);
 // };
+
+// // Atualizar posts
+// $lastposts = get_posts( array(
+//     'posts_per_page' => -1,
+//     'post_type' => 'tarefa',
+// ) );
+//
+// if ( $lastposts ) {
+//     foreach ( $lastposts as $post ) :
+//
+//       $post_id = $post->ID;
+//       include ( locate_template('template-parts/cd-feed-new.php') );
+//
+//     endforeach;
+//     wp_reset_postdata();
+// }
 
 ?>
 

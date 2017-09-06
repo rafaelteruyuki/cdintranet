@@ -2,7 +2,7 @@
 
 global $current_user;
 
-if ( current_user_can( 'administrator' ) ) {
+if ( current_user_can( 'edit_pages' ) ) {
   $cd_author = $current_user->ID;
 }
 
@@ -10,59 +10,23 @@ if ( current_user_can( 'administrator' ) ) {
 
 if ( current_user_can( 'designer_gd2_gd4' ) ) {
 
-  $feed_cd =
+  $feed_cd = array(
 
-      array(
+  'relation'		=> 'OR',
 
-          'relation'		=> 'AND',
+    array(
+      'key'		=> 'segmentacao',
+      'value'		=> 'gd2_gd4',
+      'compare' => 'IN'
+    ),
 
-          // AREA
-          array(
-            'key' => 'area_divulgacao_tarefa',
-            'value' => array(
-              'educacao',
-              'gestao-negocios',
-              'meio-ambiente',
-              'saude-bem-estar',
-              'sst',
-              'tecnologia-informacao',
-            ),
-            'compare' 	=> 'IN',
-          ),
+    array(
+      'key' => 'participante',
+      'value' => $current_user->ID,
+      'compare' => 'LIKE',
+    ),
 
-          array(
-
-                'relation'		=> 'OR',
-
-                // MODALIDADE
-                array(
-                  'key'		=> 'modalidade_curso',
-                  'value'		=> array(
-                    'curso-livre',
-                    'extensao',
-                    //'curso-tecnico',
-                    //'pos',
-                    //'vestibular',
-                    //'gratuidade',
-                    //'aprendizagem',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-
-                //FINALIDADE
-                array(
-                  'key'		=> 'finalidade',
-                  'value'		=> array(
-                    //'dcurso',
-                    'devento',
-                    'outrafinalidade',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-          ),
-    );
-
-    $cd_author = $current_user->ID;
+  );
 
 }
 
@@ -70,62 +34,23 @@ if ( current_user_can( 'designer_gd2_gd4' ) ) {
 
 if ( current_user_can( 'designer_gd1_gd3' ) ) {
 
-  $feed_cd =
+  $feed_cd = array(
 
-      array(
+  'relation'		=> 'OR',
 
-          'relation'		=> 'AND',
+    array(
+      'key'		=> 'segmentacao',
+      'value'		=> 'gd1_gd3',
+      'compare' => 'IN'
+    ),
 
-          // AREA
-          array(
-            'key' => 'area_divulgacao_tarefa',
-            'value' => array(
-              'arquitetura-urbanismo',
-              'comunicacao-artes',
-              'desenvolvimento-social',
-              'design',
-              'eventos-lazer',
-              'gastronomia',
-              'hotelaria-turismo',
-              'limpeza-conservacao-zeladoria',
-              'moda',
-            ),
-            'compare' 	=> 'IN',
-          ),
+    array(
+      'key' => 'participante',
+      'value' => $current_user->ID,
+      'compare' => 'LIKE',
+    ),
 
-          array(
-
-                'relation'		=> 'OR',
-
-                // MODALIDADE
-                array(
-                  'key'		=> 'modalidade_curso',
-                  'value'		=> array(
-                    'curso-livre',
-                    'extensao',
-                    //'curso-tecnico',
-                    //'pos',
-                    //'vestibular',
-                    //'gratuidade',
-                    //'aprendizagem',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-
-                //FINALIDADE
-                array(
-                  'key'		=> 'finalidade',
-                  'value'		=> array(
-                    //'dcurso',
-                    'devento',
-                    'outrafinalidade',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-          ),
-    );
-
-    $cd_author = $current_user->ID;
+  );
 
 }
 
@@ -133,58 +58,23 @@ if ( current_user_can( 'designer_gd1_gd3' ) ) {
 
 if ( current_user_can( 'designer_institucional' ) ) {
 
-  $feed_cd =
+  $feed_cd = array(
 
-      array(
+  'relation'		=> 'OR',
 
-          'relation'		=> 'OR',
+    array(
+      'key'		=> 'segmentacao',
+      'value'		=> 'institucional',
+      'compare' => 'IN'
+    ),
 
-          // MODALIDADE
-          array(
-            'key'		=> 'modalidade_curso',
-            'value'		=> array(
-              // 'curso-livre',
-              // 'extensao',
-              'curso-tecnico',
-              'pos',
-              'vestibular',
-              'gratuidade',
-              'aprendizagem',
-            ),
-            'compare'	=> 'IN',
-          ),
+    array(
+      'key' => 'participante',
+      'value' => $current_user->ID,
+      'compare' => 'LIKE',
+    ),
 
-          array(
-
-                'relation'		=> 'AND',
-
-                // AREA
-                array(
-                  'key' => 'area_divulgacao_tarefa',
-                  'value' => array(
-                    'idiomas',
-                    'gerencias',
-                    'campanhas',
-                    'editora',
-                    'hoteis',
-                  ),
-                  'compare' 	=> 'IN',
-                ),
-
-                //FINALIDADE
-                array(
-                  'key'		=> 'finalidade',
-                  'value'		=> array(
-                    'dcurso',
-                    'devento',
-                    'outrafinalidade',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-          ),
-    );
-
-    $cd_author = $current_user->ID;
+  );
 
 }
 
@@ -192,28 +82,23 @@ if ( current_user_can( 'designer_institucional' ) ) {
 
 if ( current_user_can( 'portal' ) ) {
 
-  $feed_cd =
+  $feed_cd = array(
 
-  array(
+  'relation'		=> 'OR',
 
-    'relation'		=> 'OR',
-
-    // PUBLICACAO
     array(
-      'key'		=> 'publicacao_pecas',
-      'value'		=> '"publicacao"',
-      'compare' => 'LIKE'
+      'key'		=> 'segmentacao',
+      'value'		=> array('pauta', 'evento'),
+      'compare' => 'IN'
     ),
 
-    // PAUTA
     array(
-      'key'		=> 'finalidade',
-      'value'		=> array('pauta'),
-      'compare'	=> 'IN',
+      'key' => 'participante',
+      'value' => $current_user->ID,
+      'compare' => 'LIKE',
     ),
+
   );
-
-  $cd_author = $current_user->ID;
 
 }
 

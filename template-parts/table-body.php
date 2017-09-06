@@ -38,7 +38,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
     </span>
     <?php endif; ?>
   </td>
-  <td class="collapsing"><?php the_field('area_divulgacao_tarefa'); ?></td>
+  <td class="collapsing"><?php $area = get_field('area_divulgacao_tarefa'); if ($area) { echo $area['label']; } ?></td>
   <td class="collapsing"><?php $data = get_the_date('d/m/y'); echo $data; ?></td>
   <td class="collapsing">
     <?php if ( get_field('data_de_inicio_do_evento') ) { the_field('data_de_inicio_do_evento'); }

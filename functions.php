@@ -938,6 +938,8 @@ AO CRIAR/ATUALIZAR TAREFA
 		$status = get_field('status');
 				if ( $status === null ) {
 					update_field('status', 'naoiniciado', $post_id );
+					// Define a segmentação da tarefa (ao criá-la apenas)
+					include ( locate_template('template-parts/cd-feed-new.php') );
 				}
 
     // Update the post into the database - Se não não atualiza o cache do Search & Filter
