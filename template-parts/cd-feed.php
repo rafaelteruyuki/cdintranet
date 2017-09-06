@@ -17,7 +17,7 @@ if ( current_user_can( 'designer_gd2_gd4' ) ) {
     array(
       'key'		=> 'segmentacao',
       'value'		=> 'gd2_gd4',
-      'compare' => 'IN'
+      'compare' => 'LIKE'
     ),
 
     array(
@@ -41,7 +41,7 @@ if ( current_user_can( 'designer_gd1_gd3' ) ) {
     array(
       'key'		=> 'segmentacao',
       'value'		=> 'gd1_gd3',
-      'compare' => 'IN'
+      'compare' => 'LIKE'
     ),
 
     array(
@@ -65,7 +65,7 @@ if ( current_user_can( 'designer_institucional' ) ) {
     array(
       'key'		=> 'segmentacao',
       'value'		=> 'institucional',
-      'compare' => 'IN'
+      'compare' => 'LIKE'
     ),
 
     array(
@@ -88,8 +88,14 @@ if ( current_user_can( 'portal' ) ) {
 
     array(
       'key'		=> 'segmentacao',
-      'value'		=> array('pauta', 'evento'),
-      'compare' => 'IN'
+      'value'		=> 'evento',
+      'compare' => 'LIKE'
+    ),
+
+    array(
+      'key'		=> 'segmentacao',
+      'value'		=> 'pauta',
+      'compare' => 'LIKE'
     ),
 
     array(
