@@ -1739,7 +1739,7 @@ NOTIFICAÇÃO EMAIL POST NOVO/UPDATE - GERAL (TAREFAS)
 
 /* --------------------------
 
-NOTIFICAÇÃO EMAIL COMENTÁRIOS PARA O AUTOR
+NOTIFICAÇÃO EMAIL COMENTÁRIOS
 
 ---------------------------- */
 
@@ -1758,52 +1758,177 @@ function comment_notification_email( $comment_id ) {
 		$email = $current_user->user_email;
 
 		$unidade = get_field('unidade', $post);
-		$notificacaoEmail = get_field('receber_notificacoes_por_email', 'user_' . $user->ID);
+
 		$interacao_privada = get_field('privado_interacao', $comment);
+
+		$destinos = array();
+
+		//AUTOR
+
 		$author_email = $user->user_email;
+
+		if ( get_field('receber_notificacoes_por_email', 'user_' . $user->ID) ) {
+
+			if ( in_array('senac', $user->roles) && $interacao_privada ) {
+
+			} else {
+
+				$destinos = array($author_email);
+
+			}
+
+		}
+
+		//SEGMENTAÇÃO
+
+		$segmentacao = get_field('segmentacao', $post);
+
+		if ($segmentacao) {
+
+			//DESIGNERS GD2 E GD4
+			if( in_array('gd2_gd4', $segmentacao) || $segmentacao == 'gd2_gd4' ) {
+
+				$designers = get_users('role=designer_gd2_gd4');
+
+				foreach ( $designers as $designer ) {
+
+	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+	        			$array_designers[] = $designer->user_email;
+
+	        		}
+
+				}
+
+	  		}
+	  		//DESIGNERS GD1 E GD3
+	  		if( in_array('gd1_gd3', $segmentacao) || $segmentacao == 'gd1_gd3' ) {
+
+				$designers = get_users('role=designer_gd1_gd3');
+
+				foreach ( $designers as $designer ) {
+
+	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+	        			$array_designers[] = $designer->user_email;
+
+	        		}
+
+				}
+
+	  		}
+	  		//DESIGNERS INSTITUCIONAL
+	  		if( in_array('institucional', $segmentacao) || $segmentacao == 'institucional' ) {
+
+				$designers = get_users('role=designer_institucional');
+
+				foreach ( $designers as $designer ) {
+
+	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+	        			$array_designers[] = $designer->user_email;
+
+	        		}
+
+				}
+
+	  		}
+	  		//PORTAL - EVENTO
+	  		if( in_array('evento', $segmentacao) || $segmentacao == 'evento' ) {
+
+				$designers = get_users('role=portal');
+
+				foreach ( $designers as $designer ) {
+
+	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+	        			$array_designers[] = $designer->user_email;
+
+	        		}
+
+				}
+
+	  		}
+	  		//PORTAL - PAUTA
+	  		if( in_array('pauta', $segmentacao) || $segmentacao == 'pauta' ) {
+
+				$designers = get_users('role=portal');
+
+				foreach ( $designers as $designer ) {
+
+	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+	        			$array_designers[] = $designer->user_email;
+
+	        		}
+
+				}
+
+	  		}
+
+  		}
+
+		$destinos = array_merge($destinos, $array_designers);
+
+		//PARTICIPANTES
 
 		$participantes = get_field('participante', $post);
 
-		$destinos = array($author_email);
+		if( $participantes ) {
 
-		if( $participantes ) :
-		foreach( $participantes as $participante ) :
-			$array_participantes[] = $participante['user_email'];
-		endforeach;
-		$destinos = array_merge($destinos, $array_participantes);
-		endif;
+			foreach( $participantes as $participante ) {
+
+				if ( get_field('receber_notificacoes_por_email', 'user_' . $participante['ID']) ) {
+
+					$user_meta = get_userdata($participante['ID']);
+					$user_role = $user_meta->roles;
+
+					if ( in_array('senac', $user_role) && $interacao_privada ) {
+
+					} else {
+
+						$array_participantes[] = $participante['user_email'];
+
+					}
+
+				}
+
+			}
+
+			$destinos = array_merge($destinos, $array_participantes);
+
+		}
+
+		//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
 
 		$to = array();
 
-		//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
-		foreach($destinos as $d){
-			if($email != $d){
+		foreach ($destinos as $d) {
+
+			if ($email != $d) {
+
 				array_push($to, $d);
+
 			}
+
 		}
 
-		// Se a interação for privada, não envia email
-		if( $interacao_privada ) {
-			return;
-		}
 
-		if ( $notificacaoEmail ) {
+		$subject = $unidade . ' | ' . $post->post_title;
+		$message =
+		'<h2>[Nova interação]</h2><br>' .
+		'<strong>' . $name . '</strong>' . ' disse:<br>' . '<em>' . $comment->comment_content . '</em>' . '<br><br><br>' .
+		'<strong>' . '> Referente à solicitação: </strong>' . $unidade . ' | ' . $post->post_title . '<br>' .
+		'<strong>' . '> Para responder, acesse: </strong>' . $post_url .
+		'<br><br><br>' .
+		'<hr>' .
+		'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
 
-			$subject = $unidade . ' | ' . $post->post_title;
-			$message =
-			'<h2>[Nova interação]</h2><br>' .
-			'<strong>' . $name . '</strong>' . ' disse:<br>' . '<em>' . $comment->comment_content . '</em>' . '<br><br><br>' .
-			'<strong>' . '> Referente à solicitação: </strong>' . $unidade . ' | ' . $post->post_title . '<br>' .
-			'<strong>' . '> Para responder, acesse: </strong>' . $post_url .
-			'<br><br><br>' .
-			'<hr>' .
-			'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
-
-			$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
+		$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
 
 		wp_mail( $to, $subject, $message, $headers );
 
-	}
+
 
 }
 

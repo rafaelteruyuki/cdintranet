@@ -166,6 +166,7 @@
             <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
             <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
             <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+            <a href="<?php bloginfo( 'url' ); ?>/notificacoes-por-e-mail/" class="item"><i class="mail square icon"></i>Notificações por e-mail</a>
             <?php endif; ?>
             <?php if ( current_user_can( 'portal' ) ) : ?>
             <a href="<?php bloginfo( 'url' ); ?>/exportar-tarefas/" class="item"><i class="download icon"></i>Exportar tarefas</a>
