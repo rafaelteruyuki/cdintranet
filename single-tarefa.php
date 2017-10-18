@@ -22,9 +22,9 @@ display: none;
   float: left;
   margin-left: 0;
 }
-.acf-field-59b05a664b6c2 {
+/*.acf-field-59b05a664b6c2 {
   display: none;
-}
+}*/
 </style>
 
 <?php if( current_user_can('edit_pages') ) : ?>
