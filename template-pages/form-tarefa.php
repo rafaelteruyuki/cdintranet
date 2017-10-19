@@ -11,7 +11,7 @@ get_header(); ?>
 <?php
 $current_user = wp_get_current_user();
 $current_user_id = get_current_user_id();
-$test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 97, 37, 99);
+$test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 97, 37, 99, 76, 67, 146);
 ?>
 
 <?php if ( !in_array($current_user_id, $test_users) ) : ?>
