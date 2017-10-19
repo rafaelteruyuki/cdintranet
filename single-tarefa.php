@@ -754,6 +754,64 @@ include ( locate_template('template-parts/var-tarefas.php') );
 //     wp_reset_postdata();
 // }
 
+// Atualizar dados Walter
+// $lastposts = get_posts( array(
+//     'posts_per_page' => -1,
+//     'post_type' => 'tarefa',
+// ) );
+//
+// if ( $lastposts ) {
+//     foreach ( $lastposts as $post ) :
+//
+//       $post_id = $post->ID;
+//
+//       $responsavel1 = get_field('responsavel_1');
+//       $responsavel2 = get_field('responsavel_2');
+//
+//       if ($responsavel1['ID'] == 6) {
+//         update_field( 'responsavel_1', 177, $post_id);
+//       }
+//
+//       if ($responsavel2['ID'] == 6) {
+//         update_field( 'responsavel_2', 177, $post_id);
+//       }
+//
+//
+//
+//       $usuario_registrado = array();
+//
+//       $row = array(
+//         'usuario'	=> 'walter.pfjunior',
+//       );
+//
+//       if( have_rows('visitas') ):
+//           while( have_rows('visitas') ) : the_row();
+//               $usuario_registrado[] = get_sub_field('usuario');
+//           endwhile;
+//       endif;
+//
+//       // Faz a key do array começar em 1, não em 0, pq a row do ACF começa em 1. O número da key do usuário é igual ao número da row onde ele está inserido
+//       array_unshift($usuario_registrado,"");
+//       unset($usuario_registrado[0]);
+//
+//         // Procura o usuário no array de usuários registrados
+//         if ( in_array('walter', $usuario_registrado) ) {
+//
+//           // Identifica sua posição (key) no array
+//           $key = array_search('walter', $usuario_registrado);
+//           $row_number = $key;
+//
+//           // Como ele já está registrado, apenas atualiza seu acesso na row dele
+//           update_row('visitas', $row_number, $row);
+//
+//         }
+//
+//
+//
+//     endforeach;
+//     wp_reset_postdata();
+// }
+
 ?>
 
 <?php get_footer(); ?>
