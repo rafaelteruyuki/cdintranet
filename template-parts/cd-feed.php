@@ -92,11 +92,11 @@ if ( current_user_can( 'portal' ) ) {
       'compare' => 'LIKE'
     ),
 
-    array(
-      'key'		=> 'segmentacao',
-      'value'		=> 'pauta',
-      'compare' => 'LIKE'
-    ),
+    // array(
+    //   'key'		=> 'segmentacao',
+    //   'value'		=> 'pauta',
+    //   'compare' => 'LIKE'
+    // ),
 
     array(
       'key' => 'participante',
