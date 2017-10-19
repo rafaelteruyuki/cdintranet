@@ -956,7 +956,7 @@ AO CRIAR/ATUALIZAR TAREFA
   }
 
   // run after ACF saves the $_POST['fields'] data
-  add_action('acf/save_post', 'my_acf_save_post', 20);
+  add_action('acf/save_post', 'my_acf_save_post', 19);
 
 	// /* --------------------------
 	//
@@ -1468,142 +1468,140 @@ function my_acf_force_basic_uploader( $field ) {
 // target the field using its name
 add_filter('acf/prepare_field/name=arquivo_interacao', 'my_acf_force_basic_uploader');
 
+/* --------------------------
+
+NOTIFICAÇÃO EMAIL - NOVA SOLICITACAO
+
+---------------------------- */
+
+add_action('acf/save_post', 'my_save_post', 20);
+
+function my_save_post( $post_id ) {
+
+	// bail early if not a contact_form post
+	if( get_post_type($post_id) !== 'tarefa' ) {
+		return;
+	}
+
+	// bail early if editing in admin
+	if( is_admin() || !is_page(168) ) {
+		return;
+	}
+
+	$post = get_post( $post_id );
+
+	global $current_user; get_currentuserinfo();
+	$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
+	$email = $current_user->user_email;
+	$finalidade = get_field('finalidade', $post_id);
+	$unidade = get_field('unidade', $post_id);
+
+	$destinos = array();
+
+	//SEGMENTAÇÃO
+
+	$segmentacao = get_field('segmentacao', $post_id);
+
+	if ($segmentacao) {
+
+		//DESIGNERS GD2 E GD4
+		if( in_array('gd2_gd4', $segmentacao) || $segmentacao == 'gd2_gd4' ) {
+
+			$designers = get_users('role=designer_gd2_gd4');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							$array_designers[] = $designer->user_email;
+
+						}
+
+			}
+
+			}
+			//DESIGNERS GD1 E GD3
+			if( in_array('gd1_gd3', $segmentacao) || $segmentacao == 'gd1_gd3' ) {
+
+			$designers = get_users('role=designer_gd1_gd3');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							$array_designers[] = $designer->user_email;
+
+						}
+
+			}
+
+			}
+			//DESIGNERS INSTITUCIONAL
+			if( in_array('institucional', $segmentacao) || $segmentacao == 'institucional' ) {
+
+			$designers = get_users('role=designer_institucional');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							$array_designers[] = $designer->user_email;
+
+						}
+
+			}
+
+			}
+			//PORTAL
+			if( in_array('evento', $segmentacao) || $segmentacao == 'evento' ) {
+
+			$designers = get_users('role=portal');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							$array_designers[] = $designer->user_email;
+
+						}
+
+			}
+
+			}
+
+		}
+
+	$destinos = array_merge($destinos, $array_designers);
+
+
+	$to = array();
+
+	foreach ($destinos as $d) {
+
+			array_push($to, $d);
+
+	}
+
+	$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
+	$subject = $unidade . ' | ' . $post->post_title;
+	$body =
+	'<h2>[Nova solicitação]</h2><br>' .
+	'<strong>' . '> Para visualizar, acesse: </strong>' . get_post_permalink($post_id) .
+	'<br><br><br>' .
+	'<hr>' .
+	'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
+
+	// send email
+	wp_mail($to, $subject, $body, $headers );
+
+	// }
+
+}
+
+
 // /* --------------------------
 //
-// NOTIFICAÇÃO EMAIL PORTAL AO ENVIAR O FORM (SE ESTÁ MARCADO PUBLICAÇÃO)
-//
-// ---------------------------- */
-//
-// add_action('acf/save_post', 'my_save_post');
-//
-// function my_save_post( $post_id ) {
-//
-// 	// bail early if not a contact_form post
-// 	if( get_post_type($post_id) !== 'tarefa' ) {
-//
-// 		return;
-//
-// 	}
-//
-// 	// bail early if editing in admin
-//
-// 	if( is_admin() || !is_page(168) ) {
-//
-// 		return;
-//
-// 	}
-//
-// 	// checa se está marcado publicacao
-// 	$publicacao = get_field('publicacao_pecas', $post_id);
-// 	if( $publicacao && in_array('publicacao', $publicacao) ) {
-//
-// 	// vars
-// 	$post = get_post( $post_id );
-//
-// 	// get custom fields (field group exists for content_form)
-// 	global $current_user; get_currentuserinfo();
-// 	$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
-// 	$email = $current_user->user_email;
-// 	$finalidade = get_field('finalidade', $post_id);
-//
-// 	// email data
-// 	$to = 'rafael.franchin@sp.senac.br';
-// 	$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
-// 	$subject = get_field('unidade', $post_id) . ' | ' . $post->post_title;
-// 	$body =
-// 	'<strong>Nova Solicitação - Publicação de Evento Local</strong>' . '<br>' .
-// 	'<br>' .
-// 	'<strong>Solicitante: </strong>' . $name . '<br>' .
-// 	'<strong>Email: </strong>' . $email . '<br>' .
-// 	'<strong>Telefone: </strong>' . get_field('telefone', $post_id) . '<br>' .
-// 	'<strong>Unidade: </strong>' . get_field('unidade', $post_id) . '<br>' .
-// 	'<br>' .
-// 	'<strong>Título: </strong>' . $post->post_title . '<br>' .
-// 	'<strong>Área: </strong>' . get_field('area_divulgacao', $post_id) . '<br>' .
-// 	'<strong>Observações: </strong>' . get_field('observacoes', $post_id) . '<br>' .
-// 	'<br>' .
-// 	'<strong>Visualizar: </strong>' . get_post_permalink($post_id)
-// 	;
-//
-// 	// send email
-// 	wp_mail($to, $subject, $body, $headers );
-//
-// 	}
-//
-// }
-//
-// /* --------------------------
-//
-// NOTIFICAÇÃO EMAIL COMENTÁRIOS
-//
-// ---------------------------- */
-//
-// add_filter( 'comment_post', 'comment_notification' );
-//
-// function comment_notification( $comment_id) {
-//
-// 		$comment = get_comment( $comment_id );
-// 		$post = get_post( $comment->comment_post_ID );
-// 		$user = get_user_by( 'id', $post->post_author );
-// 		global $current_user; get_currentuserinfo();
-// 		$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
-// 		$email = $current_user->user_email;
-// 		$unidade = get_field('unidade', $post);
-// 		$responsavel1 = get_field('responsavel_1', $post);
-// 		$responsavel2 = get_field('responsavel_2', $post);
-//
-// 			//$finalidade = get_field('finalidade', $post);
-// 			//if ( $finalidade && in_array('dcurso', $finalidade) ) {
-//
-//
-// 			// User Roles
-// 			//$user_info1 = get_userdata($responsavel1['ID']);
-// 			//$user_info2 = get_userdata($responsavel2['ID']);
-// 			//if ( $user_info1->roles && in_array('designer_gd2_gd4', $user_info1->roles) ) {
-//
-// 			// User Roles Front End
-// 			//$user_info = get_userdata($responsavel1['ID']);
-// 			//echo 'Username: ' . $user_info->user_login . "\n";
-// 			//echo 'User roles: ' . implode(', ', $user_info->roles) . "\n";
-// 			//echo 'User ID: ' . $user_info->ID . "\n";
-//
-// 			if ($responsavel1 == NULL && $responsavel2 == NULL ) {
-//
-// 				// Se não há responsável atribuído, insere a variável $grupo em $destinos.
-// 				$grupo = 'davi.tgasparotti@sp.senac.br'; //GrupoGCRComunicacaoDigitalProducao@sp.senac.br
-//
-// 			} else {
-//
-// 				// Se há responsável atribuído, vai o valor vazio.
-// 				$grupo = '';
-//
-// 			};
-//
-// 			// Manda para o autor + responsáveis (menos para o usuário logado). Se não tiver responsável atribuído, manda para o grupo.
-// 			$destinos = array($user->user_email, $responsavel1['user_email'], $responsavel2['user_email'], $grupo);
-//
-// 			$to = array();
-//
-// 			//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
-// 			foreach($destinos as $d){
-// 				if($email != $d){
-// 					array_push($to, $d);
-// 				}
-// 			}
-//
-// 			$subject = '[Nova Interação] ' . $unidade . ' | ' . $post->post_title;
-// 			$message =
-// 			'<strong>' . $name . '</strong>' . ' disse:<br>' . '<em>' . $comment->comment_content . '</em>' . '<br><br>' .
-// 			'<strong>Visualizar</strong><br>' . get_permalink( $post->ID );
-// 			$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
-//
-// 		wp_mail( $to, $subject, $message, $headers );
-//
-// }
-//
-// /* --------------------------
-//
-// NOTIFICAÇÃO EMAIL FIELD=STATUS UPDATE PARA O AUTOR
+// NOTIFICAÇÃO EMAIL - STATUS UPDATE PARA O AUTOR E PARTICIPANTE
 //
 // ---------------------------- */
 
@@ -1617,55 +1615,63 @@ function check_status_change($value, $post_id, $field) {
 
 	$post = get_post( $post_id );
 	$user = get_user_by( 'id', $post->post_author );
-	$author_email = $user->user_email;
 
 	$post_title = get_the_title( $post_id );
 	$post_url = get_permalink( $post_id );
 	$unidade = get_field('unidade', $post_id);
 	//$status = get_field('status', $post_id);
-	$notificacaoEmail = get_field('receber_notificacoes_por_email', 'user_' . $user->ID);
 
-  	$old_value = get_post_meta($post_id, 'status', true);
+  $old_value = get_post_meta($post_id, 'status', true);
 
-  	$participantes = get_field('participante', $post_id);
+  $participantes = get_field('participante', $post_id);
 
+	$destinos = array();
 
-	$destinos = array($author_email);
+	//AUTOR
 
-	if( $participantes ) :
-	foreach( $participantes as $participante ) :
-		$array_participantes[] = $participante['user_email'];
-	endforeach;
-	$destinos = array_merge($destinos, $array_participantes);
-	endif;
+	$author_email = $user->user_email;
+
+	if ( get_field('receber_notificacoes_por_email', 'user_' . $user->ID) ) {
+
+		$destinos = array($author_email);
+
+	}
+
+	//PARTICIPANTES
+
+	$participantes = get_field('participante', $post_id);
+
+	if( $participantes ) {
+
+		foreach( $participantes as $participante ) {
+
+			if ( get_field('receber_notificacoes_por_email', 'user_' . $participante['ID']) ) {
+
+					$array_participantes[] = $participante['user_email'];
+
+			}
+
+		}
+
+		$destinos = array_merge($destinos, $array_participantes);
+
+	}
+
+	//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
 
 	$to = array();
 
-	//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
-	foreach($destinos as $d){
-		if($email != $d){
+	foreach ($destinos as $d) {
+
+		if ($email != $d) {
+
 			array_push($to, $d);
+
 		}
+
 	}
 
-
-  if ($old_value != $value && $notificacaoEmail ) {
-
-		// if ($value == 'naoiniciado') {
-		// 	$status_label == 'Em análise';
-		// } else if ($value == 'cancelado') {
-		// 	$status_label == 'Cancelado';
-		// } else if ($value == 'incompleto') {
-		// 	$status_label == 'Incompleto';
-		// } else if ($value == 'aguardandoinformacao') {
-		// 	$status_label == 'Aguardando';
-		// } else if ($value == 'emproducao') {
-		// 	$status_label == 'Em produção';
-		// } else if ($value == 'publicado') {
-		// 	$status_label == 'Publicado';
-		// } else if ($value == 'finalizado') {
-		// 	$status_label == 'Finalizado';
-		// }
+  if ( $old_value != $value ) {
 
 		$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
 		$subject = $unidade . ' | ' . $post_title;
@@ -1681,7 +1687,9 @@ function check_status_change($value, $post_id, $field) {
 		wp_mail( $to , $subject, $message, $headers );
 
   }
+
   return $value;
+
 }
 
 /* --------------------------
@@ -1739,7 +1747,7 @@ NOTIFICAÇÃO EMAIL POST NOVO/UPDATE - GERAL (TAREFAS)
 
 /* --------------------------
 
-NOTIFICAÇÃO EMAIL COMENTÁRIOS
+NOTIFICAÇÃO EMAIL - COMENTÁRIOS
 
 ---------------------------- */
 
@@ -1833,24 +1841,8 @@ function comment_notification_email( $comment_id ) {
 				}
 
 	  		}
-	  		//PORTAL - EVENTO
+	  		//PORTAL
 	  		if( in_array('evento', $segmentacao) || $segmentacao == 'evento' ) {
-
-				$designers = get_users('role=portal');
-
-				foreach ( $designers as $designer ) {
-
-	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
-
-	        			$array_designers[] = $designer->user_email;
-
-	        		}
-
-				}
-
-	  		}
-	  		//PORTAL - PAUTA
-	  		if( in_array('pauta', $segmentacao) || $segmentacao == 'pauta' ) {
 
 				$designers = get_users('role=portal');
 

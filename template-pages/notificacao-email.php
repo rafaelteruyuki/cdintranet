@@ -19,6 +19,19 @@ global $current_user;
   <a href="<?php the_permalink(); ?>?notificacao_email=sim" class="ui large button">Sim</a>
   <a href="<?php the_permalink(); ?>?notificacao_email=nao" class="ui large button">Não</a>
   <div class="ui hidden divider"></div>
+  <div class="ui hidden divider"></div>
+
+  <?php if (!$_GET["notificacao_email"]) {
+
+    $notificacao = get_field('receber_notificacoes_por_email', 'user_' . $current_user->ID);
+
+    if ( $notificacao ) {
+      echo '<i class="green check icon"></i> Status atual: <strong>ativado</strong>.';
+    } else {
+      echo '<i class="red close icon"></i> Status atual: <strong>desativado</strong>.';
+    }
+
+  } ?>
 
   <?php
 
