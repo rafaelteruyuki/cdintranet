@@ -131,7 +131,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <i class="right triangle icon"></i>
           <div class="content">
             <div class="header">Data da solicitação</div>
-            <div class="description"><?php echo get_the_date('d/m/y') . ', às ' . get_the_date('H:m'); ?></div>
+            <div class="description"><?php echo get_the_date('d/m/y') . ', às ' . get_the_date('G:i'); ?></div>
           </div>
         </div>
 
