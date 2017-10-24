@@ -6,7 +6,7 @@
       <div class="column">
         <h4 class="ui dividing header inverted">GD1 e GD3</h4>
           <!-- Rafael Teruyuki Yamaguchi -->
-          Ariel Fajtlowicz
+          Ana Carolina da Silva Sarneiro
           <br>
           Walter Pereira da Fonseca Junior
         <h4 class="ui dividing header inverted">GD2 e GD4</h4>
