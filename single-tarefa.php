@@ -646,7 +646,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
     <!-- COLUNA INTERAÇÃO -->
 
     <div class="column" style="border-left: 5px solid #d4d4d5; padding-left: 2rem; padding-right: 2rem;">
-      <h3 class="ui dividing header"><i class="purple comments icon"></i><?php comments_number('0 INTERAÇÕES', '1 INTERAÇÃO', '% INTERAÇÕES' );?></h3><br>
+      <h3 class="ui dividing header"><i class="purple comments icon"></i><?php num_comentarios();?></h3><br>
       <?php comments_template(); ?>
 
       <!-- <h3 class="ui dividing header" style="color: rgba(0, 0, 0, 0.4);">ARQUIVOS EXTRAS</h3> -->

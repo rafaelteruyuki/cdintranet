@@ -53,6 +53,6 @@ include ( locate_template('template-parts/var-tarefas.php') );
     <?php if ($responsavel3) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel3['display_name'] ?>"><?php echo $responsavel3['user_avatar']; ?></span><?php endif; ?>
     <?php if ($responsavel4) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel4['display_name'] ?>"><?php echo $responsavel4['user_avatar']; ?></span><?php endif; ?>
   </td>
-  <td class="collapsing"><?php $num_comments = get_comments_number(); if ( $num_comments == 0 ) echo '0'; else echo $num_comments; ?></td>
+  <td class="collapsing"><?php num_comentarios(false);?></td>
   <td class="collapsing" style="color:#FFF;"><a class="ui <?= $corStatus ?> label" style="width:100%;"><?php echo $status['label'] ?></a></td>
 </tr>

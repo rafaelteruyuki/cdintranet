@@ -1926,6 +1926,48 @@ function comment_notification_email( $comment_id ) {
 
 /* --------------------------
 
+NUMERO DE INTERACOES (PRIVADAS)
+
+---------------------------- */
+
+function num_comentarios($text = true) {
+
+	$post_id = get_the_ID();
+
+	if ( current_user_can('senac') ) {
+	  $privado = array(
+	  'key' => 'privado_interacao',
+	  'value' => '1',
+	  'compare' => '!=',
+	  );
+	}
+
+	$args = array(
+	  'post_id' => $post_id, // use post_id, not post_ID
+	  'count' => true, //return only the count
+	  'meta_query' => array( $privado )
+	);
+
+	$comments = get_comments($args);
+
+	if ($text) {
+
+	  if ( $comments == 0 ) {
+	    $comments = __('0 INTERAÇÕES');
+	  } elseif ( $comments > 1 ) {
+	    $comments = $comments . __(' INTERAÇÕES');
+	  } else {
+	    $comments = __('1 INTERAÇÃO');
+	  }
+
+	}
+
+	echo $comments;
+
+}
+
+/* --------------------------
+
 MUDA O DIRETORIO DE UPLOAD
 
 ---------------------------- */
