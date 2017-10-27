@@ -17,13 +17,12 @@ $post_query = new WP_Query( $post_args );
 
 $posts_array= array();
 
-if ( $post_query->have_posts() ) {
-    while ( $post_query->have_posts() ) {
-        $post_query->the_post();
-        $posts_array[] = get_the_ID(); //Array of post ids
-    }
-    wp_reset_postdata();
-}
+global $post;
+$lastposts = get_posts( $post_args );
+foreach ( $lastposts as $post ) : setup_postdata( $post );
+  $posts_array[] = get_the_ID(); //Array of post ids
+endforeach;
+wp_reset_postdata();
 
 $comment_args = array(
     //'post_type'      => 'tarefa',
