@@ -8,7 +8,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
 ?>
 
-<?php if ( is_user_logged_in() && current_user_can( 'edit_pages' ) ) : ?>
+<?php if ( current_user_can( 'edit_pages' ) ) : ?>
 
 <!-- Archive-tarefa -->
 
@@ -219,9 +219,9 @@ $('#totalConcluido').text(somaTotal('finalizado'));
 
     <h3 class="ui center aligned icon header">
       <a href="<?php echo wp_login_url('http://cd.intranet.sp.senac.br/index.php/tarefa/'); ?>"><i class="yellow sign in icon"></i></a>
-      Você não está logado.
+      Você não tem permissão para acessar essa página.
     </h3>
-    <p>Faça <a href="<?php echo wp_login_url('http://cd.intranet.sp.senac.br/index.php/tarefa/'); ?>"><strong>login</strong></a> para continuar.</p>
+    <p>Faça <a href="<?php echo wp_login_url('http://cd.intranet.sp.senac.br/index.php/tarefa/'); ?>"><strong>login</strong></a> com um usuário específico para continuar.</p>
 
   </div>
 
