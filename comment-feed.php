@@ -3,34 +3,43 @@
 // CD-FEED
 include ( locate_template('template-parts/cd-feed.php') );
 
+// REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC
+if ( current_user_can( 'senac' ) ) {
+  $privado = array(
+  'key' => 'privado_interacao',
+  'value' => '1',
+  'compare' => '!=',
+  );
+}
+
+// META_QUERY DOS POSTS IDS
 $post_args = array(
   'post_type'              => array( 'tarefa' ),
   'posts_per_page'         => -1,
   'order'                  => 'DESC',
-  'post__in'               => $allTheIDs,
-  //'orderby'                => 'comment_date',
-  'author'                 => $feed_rc,
-  'meta_query'             => array( $feed_cd ),
+  // 'post__in'               => $allTheIDs,
+  // 'orderby'                => 'comment_date',
+  // 'author'                 => $feed_rc,
+  'meta_query'             => array( $comment_feed ),
 );
 
 $post_query = new WP_Query( $post_args );
-
 $posts_array= array();
-
 global $post;
+
 $lastposts = get_posts( $post_args );
 foreach ( $lastposts as $post ) : setup_postdata( $post );
   $posts_array[] = get_the_ID(); //Array of post ids
 endforeach;
 wp_reset_postdata();
 
+// COMMENT QUERY
 $comment_args = array(
     //'post_type'      => 'tarefa',
     'number'         => '31',
     'order'          => 'DESC',
     'orderby'        => 'comment_date',
     'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
-    // 'post_author'    => $feed_rc,
     'meta_query'     => array( $privado ),
 );
 

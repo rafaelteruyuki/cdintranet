@@ -2,153 +2,89 @@
 
 global $current_user;
 
-if ( current_user_can( 'edit_pages' ) ) {
-  $cd_author = $current_user->ID;
-}
-
 //FEED GD2 E GD4
 
 if ( current_user_can( 'designer_gd2_gd4' ) ) {
-
-  $feed_cd = array(
-
-  'relation'		=> 'OR',
-
-    array(
-      'key'		=> 'segmentacao',
-      'value'		=> 'gd2_gd4',
-      'compare' => 'LIKE'
-    ),
-
-    array(
-      'key' => 'participante',
-      'value' => $current_user->ID,
-      'compare' => 'LIKE',
-    ),
-
+  $segmentacao = array(
+    'key'		=> 'segmentacao',
+    'value'		=> 'gd2_gd4',
+    'compare' => 'LIKE'
   );
-
 }
 
 //FEED GD1 E GD3
 
 if ( current_user_can( 'designer_gd1_gd3' ) ) {
-
-  $feed_cd = array(
-
-  'relation'		=> 'OR',
-
-    array(
-      'key'		=> 'segmentacao',
-      'value'		=> 'gd1_gd3',
-      'compare' => 'LIKE'
-    ),
-
-    array(
-      'key' => 'participante',
-      'value' => $current_user->ID,
-      'compare' => 'LIKE',
-    ),
-
+  $segmentacao = array(
+    'key'		=> 'segmentacao',
+    'value'		=> 'gd1_gd3',
+    'compare' => 'LIKE'
   );
-
 }
 
 //FEED INSTITUCIONAL
 
 if ( current_user_can( 'designer_institucional' ) ) {
-
-  $feed_cd = array(
-
-  'relation'		=> 'OR',
-
-    array(
-      'key'		=> 'segmentacao',
-      'value'		=> 'institucional',
-      'compare' => 'LIKE'
-    ),
-
-    array(
-      'key' => 'participante',
-      'value' => $current_user->ID,
-      'compare' => 'LIKE',
-    ),
-
+  $segmentacao = array(
+    'key'		=> 'segmentacao',
+    'value'		=> 'institucional',
+    'compare' => 'LIKE'
   );
-
 }
 
 //FEED PORTAL
 
 if ( current_user_can( 'portal' ) ) {
-
-  $feed_cd = array(
-
-  'relation'		=> 'OR',
-
-    array(
-      'key'		=> 'segmentacao',
-      'value'		=> 'evento',
-      'compare' => 'LIKE'
-    ),
-
-    // array(
-    //   'key'		=> 'segmentacao',
-    //   'value'		=> 'pauta',
-    //   'compare' => 'LIKE'
-    // ),
-
-    array(
-      'key' => 'participante',
-      'value' => $current_user->ID,
-      'compare' => 'LIKE',
-    ),
-
+  $segmentacao = array(
+    'key'		=> 'segmentacao',
+    'value'		=> 'evento',
+    'compare' => 'LIKE'
   );
-
 }
 
-// FEED REPRESENTANTES
+// PARTICIPANTE
 
-if ( current_user_can( 'senac' ) ) {
+$participante = array(
+  'key' => 'participante',
+  'value' => $current_user->ID,
+  'compare' => 'LIKE',
+);
 
-  $args_query1 = array(
-  		'post_type'		=> 'tarefa',
-  		'posts_per_page' => -1,
-      'fields' => 'ids',
-      'meta_query'  =>  array(
-        array(
-        'key' => 'participante',
-        'value' => $current_user->ID,
-        'compare' => 'LIKE',
-        ),
-      ),
-  );
+// CD_AUTHOR
 
-  $query1 = new WP_Query($args_query1);
+$cd_author = array(
+  'key'		=> 'cd_author',
+  'value'		=> $current_user->ID,
+  'compare' => 'LIKE'
+);
 
-  $args_query2 = array(
-  		'post_type'		=> 'tarefa',
-  		'posts_per_page' => -1,
-      'fields' => 'ids',
-  		'author'		=> $current_user->ID,
-  );
+// --------------------------- FEED ---------------------------- //
 
-  $query2 = new WP_Query($args_query2);
+// MINHAS TAREFAS
 
-  $allTheIDs = array_merge($query1->posts,$query2->posts);
+$minhas_tarefas_feed = array(
+'relation'		=> 'OR',
+  $segmentacao,
+  $participante,
+  // $cd_author,
+);
 
-  if (empty($allTheIDs)) {
-       $cd_author = $current_user->ID;
-       $feed_rc = $current_user->ID;
-  }
+// MINHAS SOLICITACOES
 
-  $privado = array(
-  'key' => 'privado_interacao',
-  'value' => '1',
-  'compare' => '!=',
-  );
+$minhas_solicitacoes_feed = array(
+'relation'		=> 'OR',
+  // $segmentacao,
+  $participante,
+  $cd_author,
+);
 
-};
+// COMENTARIOS
+
+$comment_feed = array(
+'relation'		=> 'OR',
+  $segmentacao,
+  $participante,
+  $cd_author,
+);
 
 ?>

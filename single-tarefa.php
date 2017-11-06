@@ -812,6 +812,26 @@ include ( locate_template('template-parts/var-tarefas.php') );
 //     wp_reset_postdata();
 // }
 
+// // CD Author Update
+// $lastposts = get_posts( array(
+//     'posts_per_page' => -1,
+//     'post_type' => 'tarefa',
+// ) );
+//
+// if ( $lastposts ) {
+//     foreach ( $lastposts as $post ) :
+//
+//       $post_id = $post->ID;
+//       $author_id = $post->post_author;
+//
+//       $cd_author = get_field('cd_author');
+//
+//       // update_field( 'cd_author', $author_id, $post_id);
+//
+//     endforeach;
+//     wp_reset_postdata();
+// }
+
 ?>
 
 <?php get_footer(); ?>

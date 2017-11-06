@@ -933,6 +933,7 @@ AO CRIAR/ATUALIZAR TAREFA
 
     $my_post = array();
     $my_post['ID'] = $post_id;
+		$author_id = get_post_field( 'post_author', $post_id );
 
 		// Muda o status para Não iniciado
 		$status = get_field('status');
@@ -940,6 +941,8 @@ AO CRIAR/ATUALIZAR TAREFA
 					update_field('status', 'naoiniciado', $post_id );
 					// Define a segmentação da tarefa (ao criá-la apenas)
 					include ( locate_template('template-parts/cd-feed-new.php') );
+					// Define o cd_author
+					update_field( 'cd_author', $author_id, $post_id);
 				}
 
     // Update the post into the database - Se não não atualiza o cache do Search & Filter
@@ -1096,46 +1099,22 @@ REDIRECT USUARIOS PARA A HOME APOS LOGIN
 		// CD-FEED
 		include ( locate_template('template-parts/cd-feed.php') );
 
-		//if search form ID = XX, the do something with this query
+		// Minhas tarefas
 		if ( $sfid == 2817 ) {
 
-			// $args_query1 = array(
-			// 		'post_type'		=> 'tarefa',
-			// 		'posts_per_page' => -1,
-			//     'fields' => 'ids',
-			//     'meta_query'  =>  array(
-			//       array(
-			//       'key' => 'participante',
-			//       'value' => $current_user->ID,
-			//       'compare' => 'LIKE',
-			//       ),
-			//     ),
-			// );
-			// $query1 = new WP_Query($args_query1);
-			//
-			// $args_query2 = array(
-			// 		'post_type'		=> 'tarefa',
-			// 		'posts_per_page' => -1,
-			//     'fields' => 'ids',
-			// 		'author' => $feed_rc,
-			// 		'meta_query'	=> array( $feed_cd ),
-			// );
-			//
-			// $query2 = new WP_Query($args_query2);
-			//
-			// $allTheIDs = array_merge($query1->posts,$query2->posts);
+	    $args['meta_query'] = array( $minhas_tarefas_feed );
 
-			// $args['post_type'] = 'tarefa';
-	    // $args['posts_per_page'] = 50;
-	    // $args['order'] = 'DESC';
-	    $args['author'] = $feed_rc;
-	    $args['meta_query'] = array( $feed_cd );
-			// $args['p'] = 3662;
-			// $args['post__in'] = $allTheIDs;
+		}
+
+		// Minhas solicitações
+		if ( $sfid == 12379 ) {
+
+			$args['meta_query'] = array( $minhas_solicitacoes_feed );
 
 		}
 
 		return $args;
+
 	}
 	add_filter( 'sf_edit_query_args', 'filter_function_name', 20, 2 );
 
@@ -1344,7 +1323,7 @@ HIGHLIGHT TAREFAS COM COMENTARIOS (MINHAS TAREFAS)
 
 ---------------------------- */
 
-function comment_nao_lido($nao_lido = 'background:#ebf7ff;') {
+function comment_nao_lido($nao_lido = 'background:#ebf7ff;', $comment_privado) {
 
 global $current_user;
 $post_id = get_the_ID();
@@ -1374,6 +1353,7 @@ $post_id = get_the_ID();
 		if ($comments) {
 			foreach($comments as $comment) :
 					$last_comment_time[] = get_comment_date('YmdHis', $comment->comment_ID);
+					$privado[] = get_field('privado_interacao', $comment);
 			endforeach;
 		}
 
@@ -1381,7 +1361,12 @@ $post_id = get_the_ID();
 		if ($key !== false) {
 
 			if ($last_comment_time[0] > $acesso_registrado[$key]) {
-				return $nao_lido;
+				// se for usuário Senac e comentário privado, não coloca highlight.
+				if (current_user_can('senac') && $privado[0] == true) {
+					return $comment_privado;
+				} else {
+					return $nao_lido;
+				}
 			}
 
 		}

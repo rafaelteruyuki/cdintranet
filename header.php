@@ -90,6 +90,10 @@
       // echo 'Filtros Minhas Tarefas' . '<br>';
       echo do_shortcode( '[searchandfilter id="2817"]' );
     };
+    if ( is_page( 951 ) ) {
+      // echo 'Filtros Minhas Solicitacoes' . '<br>';
+      echo do_shortcode( '[searchandfilter id="12379"]' );
+    };
     if ( is_post_type_archive('tarefa') ) {
       // echo 'Filtros Todas as Tarefas' . '<br>';
       echo do_shortcode( '[searchandfilter id="4806"]' );
