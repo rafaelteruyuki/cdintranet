@@ -937,20 +937,23 @@ AO CRIAR/ATUALIZAR TAREFA
 
 		// Muda o status para Não iniciado
 		$status = get_field('status');
+
 				if ( $status === null ) {
 					update_field('status', 'naoiniciado', $post_id );
+
 					// Define a segmentação da tarefa (ao criá-la apenas)
 					include ( locate_template('template-parts/cd-feed-new.php') );
+
 					// Define o cd_author
 					update_field( 'cd_author', $author_id, $post_id);
 
-					// // Registra o acesso - não mais necessário
-					// $acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
-					// $row = array(
-					// 	'usuario'	=> $current_user->user_login,
-					// 	'acesso'	=> $acesso,
-					// );
-					// $i = add_row('visitas', $row, $post_id);
+					// Registra o acesso
+					$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
+					$row = array(
+						'usuario'	=> $current_user->user_login,
+						'acesso'	=> $acesso,
+					);
+					$i = add_row('visitas', $row, $post_id);
 
 				}
 
