@@ -47,7 +47,7 @@ if ( current_user_can( 'portal' ) ) {
 $participante = array(
   'key' => 'participante',
   'value' => $current_user->ID,
-  'compare' => 'LIKE',
+  'compare' => '=',
 );
 
 // CD_AUTHOR
@@ -55,7 +55,7 @@ $participante = array(
 $cd_author = array(
   'key'		=> 'cd_author',
   'value'		=> $current_user->ID,
-  'compare' => 'LIKE'
+  'compare' => '='
 );
 
 // --------------------------- FEED ---------------------------- //
