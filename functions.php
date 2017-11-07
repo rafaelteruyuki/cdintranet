@@ -943,6 +943,15 @@ AO CRIAR/ATUALIZAR TAREFA
 					include ( locate_template('template-parts/cd-feed-new.php') );
 					// Define o cd_author
 					update_field( 'cd_author', $author_id, $post_id);
+
+					// // Registra o acesso - não mais necessário
+					// $acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
+					// $row = array(
+					// 	'usuario'	=> $current_user->user_login,
+					// 	'acesso'	=> $acesso,
+					// );
+					// $i = add_row('visitas', $row, $post_id);
+
 				}
 
     // Update the post into the database - Se não não atualiza o cache do Search & Filter
@@ -1319,7 +1328,7 @@ function lido_nao_lido_single() {
 
 /* --------------------------
 
-HIGHLIGHT TAREFAS COM COMENTARIOS (MINHAS TAREFAS)
+HIGHLIGHT TAREFAS COM COMENTARIOS (MINHAS TAREFAS e MINHAS SOLICITACOES)
 
 ---------------------------- */
 
@@ -1328,45 +1337,54 @@ function comment_nao_lido($nao_lido = 'background:#ebf7ff;', $comment_privado) {
 global $current_user;
 $post_id = get_the_ID();
 
-	if ( is_user_logged_in() ) {
+	if ( !is_archive() && is_user_logged_in() ) {
 
-		if( have_rows('visitas', $post_id) ):
+		// Tira os comentários privados da comparação para usuários Senac
+		if ( current_user_can( 'senac' ) ) {
+		  $privado = array(
+		  'key' => 'privado_interacao',
+		  'value' => '1',
+		  'compare' => '!=',
+		  );
+		}
 
-				while ( have_rows('visitas', $post_id) ) : the_row();
-
-						$usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
-						$acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
-
-				endwhile;
-
-		endif;
-
-		$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
-
+		// Checa se há comentários
 		$args = array(
-							'number' => '1',
-							'post_id' => $post_id
+			'number' => '1',
+			'post_id' => $post_id,
+			'meta_query' => array( $privado )
 		);
-
 		$comments = get_comments($args);
 
 		if ($comments) {
-			foreach($comments as $comment) :
-					$last_comment_time[] = get_comment_date('YmdHis', $comment->comment_ID);
-					$privado[] = get_field('privado_interacao', $comment);
-			endforeach;
-		}
 
-		// se existir a key do usuário, executa a função
-		if ($key !== false) {
+			// Checa se há visita e quem visitou
+			if( have_rows('visitas', $post_id) ) {
 
-			if ($last_comment_time[0] > $acesso_registrado[$key]) {
-				// se for usuário Senac e comentário privado, não coloca highlight.
-				if (current_user_can('senac') && $privado[0] == true) {
-					return $comment_privado;
-				} else {
-					return $nao_lido;
+				while ( have_rows('visitas', $post_id) ) {
+					the_row();
+					$usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
+					$acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
 				}
+
+				$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
+
+				// Usuário logado visitou
+				if ($key !== false) {
+
+					// Faz a comparação com o último comentário
+					foreach($comments as $comment) {
+
+						$last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
+
+						if ($last_comment_time > $acesso_registrado[$key]) {
+							return $nao_lido;
+						}
+
+					}
+
+				}
+
 			}
 
 		}
