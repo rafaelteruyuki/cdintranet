@@ -189,8 +189,12 @@
       <?php if ( is_user_logged_in() ) : ?>
       <div class="ui scrolling dropdown item cd-user-logado">
         <i class="comment icon" style="margin:0;"></i>
+        <i class="info circle icon" style="margin:0 0 0 10px;"></i>
+        <!-- <i class="comments icon" style="margin:0;"></i> -->
         <div class="contador"></div>
         <div class="menu" id="refresh">
+          <?php echo '<a href="' . get_site_url() . '/minhas-tarefas/" class="item" style="padding: 15px !important;" onclick="notificacao_new_task();"><i class="blue info circle icon"></i><strong>Você tem novas solicitações.' . $array_acesso_registrado[$key] . '</strong></a>';
+          notificacao_new_task(); ?>
           <?php get_template_part('comment','feed') ?>
         </div>
       </div>
