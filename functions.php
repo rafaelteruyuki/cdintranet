@@ -29,7 +29,7 @@ function carrega_scripts() {
 	//wp_enqueue_script( 'semantic-js', get_template_directory_uri() . '/js/semantic.min.js', array('jquery'), '', true );
 	//wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '', true );
 	//wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '', true );
-	//wp_enqueue_script( 'main', get_template_directory_uri() . '/js/main.js', array('jquery'), '', true );
+	wp_enqueue_script( 'main-js', get_template_directory_uri()."/js/main.js", array('jquery'), false, true);
 
 	wp_localize_script('custom-js', 'ajax_object',
 		array(
@@ -1451,75 +1451,141 @@ function new_task( $new_task = '<span class="ui blue mini label">Nova</span>' ) 
 
 }
 
+// /* --------------------------
+//
+// NOTIFICACAO NEW TASK
+//
+// ---------------------------- */
+//
+// function notificacao_new_task() {
+//
+// 	// No header.php
+//
+// 	$response = false;
+//
+// 	if ( current_user_can('edit_pages') && have_rows('notificacao_new_task', 946) ) :
+//
+// 		global $current_user;
+// 		$row_number = 1;
+// 		$new_user = true;
+//
+// 		while ( have_rows('notificacao_new_task', 946) ) : the_row();
+//
+// 		  $usuario_registrado = get_sub_field('user_new_task', 946);
+// 		  $acesso_registrado = get_sub_field('acesso_new_task', 946);
+//
+// 		  // Usuário já acessou
+// 		  if ( $current_user->ID == $usuario_registrado['ID'] ) {
+// 		    $new_user = false;
+// 		    $key = $row_number;
+// 		    $key_acesso_registrado = $acesso_registrado;
+// 		  }
+//
+// 		  $row_number++;
+//
+// 		endwhile;
+//
+// 		// Pega o post mais recente de cada segmentação
+// 		include ( locate_template('template-parts/cd-feed.php') );
+// 		$args = array(
+// 			'numberposts' => 1,
+// 			'post_type' => 'tarefa',
+// 			'meta_query' => $minhas_tarefas_feed,
+// 		);
+// 		$recent_posts = wp_get_recent_posts($args);
+// 		foreach ( $recent_posts as $recent ) {
+// 			$post_recente = get_post_time('YmdHis', '' , $recent["ID"]);
+// 		}
+// 		wp_reset_query();
+//
+// 		$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
+//
+// 		// Row do ACF
+// 		$row = array(
+// 			'user_new_task'	=> $current_user->ID,
+// 			'acesso_new_task'	=> $acesso,
+// 		);
+//
+// 		if ( $new_user == false ) {
+// 			if ( is_page(946) ) {
+// 				update_sub_field( array('notificacao_new_task', $key, 'acesso_new_task'), $acesso );
+// 			}
+// 			if ($post_recente > $key_acesso_registrado) {
+// 				$response = true;
+// 			}
+// 		} else {
+// 			if ( is_page(946) ) {
+// 				$i = add_row('notificacao_new_task', $row, 946);
+// 			}
+// 		}
+//
+// 	endif;
+//
+// 	return $response;
+//
+// }
+//
+// function notificacao_new_task_ajax() {
+//
+// 	echo notificacao_new_task();
+//
+// 	wp_die();
+//
+// }
+//
+// add_action('wp_ajax_notificacao_new_task_ajax', 'notificacao_new_task_ajax');
+// add_action('wp_ajax_nopriv_notificacao_new_task_ajax', 'notificacao_new_task_ajax');
+
 /* --------------------------
 
-NOTIFICACAO NEW TASK
+NEW TASK PUSH
 
 ---------------------------- */
 
-function notificacao_new_task() {
+function new_task_push() {
 
-	// No header.php
+	include ( locate_template('template-parts/cd-feed.php') );
 
-	if ( current_user_can('edit_pages') && have_rows('notificacao_new_task', 946) ) :
-
-		global $current_user;
-
-		while ( have_rows('notificacao_new_task', 946) ) : the_row();
-
-			$usuario_registrado = get_sub_field('user_new_task', 946);
-			$acesso_registrado = get_sub_field('acesso_new_task', 946);
-			$new_user = true;
-			$row_number = 1;
-
-			// Usuário já acessou
-			if ( $current_user->ID == $usuario_registrado['ID'] ) {
-				$new_user = false;
-				$key = $row_number;
-				$key_acesso_registrado = $acesso_registrado;
-			}
-
-			$row_number++;
-
-		endwhile;
-
-		// Pega o post mais recente de cada segmentação
-		include ( locate_template('template-parts/cd-feed.php') );
-		$args = array(
-			'numberposts' => 1,
+	$query = new WP_Query(
+		array(
 			'post_type' => 'tarefa',
 			'meta_query' => $minhas_tarefas_feed,
-		);
-		$recent_posts = wp_get_recent_posts($args);
-		foreach ( $recent_posts as $recent ) {
-			$post_recente = get_post_time('YmdHis', '' , $recent["ID"]);
-		}
-		wp_reset_query();
+		)
+	);
 
-		$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
+	$response = $query->found_posts;
 
-		// Row do ACF
-		$row = array(
-			'user_new_task'	=> $current_user->ID,
-			'acesso_new_task'	=> $acesso,
-		);
+	echo $response;
 
-		if ( $new_user == false ) {
-			if ( is_page(946) ) {
-				// update_sub_field( array('notificacao_new_task', $key, 'acesso_new_task'), $acesso );
-			}
-			if ($post_recente > $key_acesso_registrado) {
-				echo '<a href="' . get_site_url() . '/minhas-tarefas/" class="item" style="padding: 15px !important;"><i class="blue info circle icon"></i><strong>Você tem novas solicitações.' . $array_acesso_registrado[$key] . '</strong></a>';
-			}
-		} else {
-			if ( is_page(946) ) {
-				// $i = add_row('notificacao_new_task', $row, 946);
-			}
-		}
-
-	endif;
+	wp_die();
 
 }
+
+add_action('wp_ajax_new_task_push', 'new_task_push');
+add_action('wp_ajax_nopriv_new_task_push', 'new_task_push');
+
+/* --------------------------
+
+USUARIO LOGADO AJAX
+
+---------------------------- */
+
+function usuario_logado() {
+
+	if ( current_user_can('edit_pages') ) {
+		$response = 'edit_pages';
+	} elseif (current_user_can('senac')) {
+		$response = 'senac';
+	}
+
+	echo $response;
+
+	wp_die();
+
+}
+
+add_action('wp_ajax_usuario_logado', 'usuario_logado');
+add_action('wp_ajax_nopriv_usuario_logado', 'usuario_logado');
 
 /* --------------------------
 
