@@ -1461,19 +1461,27 @@ function notificacao_new_task() {
 
 	// No header.php
 
-	if( current_user_can('edit_pages') && have_rows('notificacao_new_task', 946) ) {
+	if ( current_user_can('edit_pages') && have_rows('notificacao_new_task', 946) ) :
+
+		global $current_user;
 
 		while ( have_rows('notificacao_new_task', 946) ) : the_row();
 
 			$usuario_registrado = get_sub_field('user_new_task', 946);
-			$array_usuario_registrado[] = $usuario_registrado['ID'];
-			$array_acesso_registrado[] = get_sub_field('acesso_new_task', 946);
+			$acesso_registrado = get_sub_field('acesso_new_task', 946);
+			$new_user = true;
+			$row_number = 1;
+
+			// Usuário já acessou
+			if ( $current_user->ID == $usuario_registrado['ID'] ) {
+				$new_user = false;
+				$key = $row_number;
+				$key_acesso_registrado = $acesso_registrado;
+			}
+
+			$row_number++;
 
 		endwhile;
-
-		global $current_user;
-
-		$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
 
 		// Pega o post mais recente de cada segmentação
 		include ( locate_template('template-parts/cd-feed.php') );
@@ -1488,52 +1496,28 @@ function notificacao_new_task() {
 		}
 		wp_reset_query();
 
+		$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
+
 		// Row do ACF
 		$row = array(
 			'user_new_task'	=> $current_user->ID,
 			'acesso_new_task'	=> $acesso,
 		);
 
-		// Faz a key do array começar em 1, não em 0, pq a row do ACF começa em 1.
-		// O número da key do usuário é igual ao número da row onde ele está inserido
-		array_unshift($array_usuario_registrado,"");
-		unset($array_usuario_registrado[0]);
-
-		array_unshift($array_acesso_registrado,"");
-		unset($array_acesso_registrado[0]);
-
-		// Procura o usuário logado no array de usuários registrados
-		if ( in_array($current_user->ID, $array_usuario_registrado) ) {
-
-			// Identifica sua posição (key) no array
-			$key = array_search($current_user->ID, $array_usuario_registrado);
-			$row_number = $key;
-
-			//if ( is_page(946) ) {
-				// Como ele já está registrado, apenas atualiza seu acesso na row dele
-				//update_row('notificacao_new_task', $row_number, $row, 946);
-				update_sub_field( array('notificacao_new_task', $row_number, 'acesso_new_task'), $acesso );
-
-				// $array_acesso_registrado[$key] = get_sub_field('acesso_new_task', 946);
-				// while ( have_rows('notificacao_new_task', 946) ) : the_row();
-				// 	$array_acesso_registrado[] = get_sub_field('acesso_new_task', false);
-				// endwhile;
-			//}
-
-			if ($post_recente > $array_acesso_registrado[$key]) {
+		if ( $new_user == false ) {
+			if ( is_page(946) ) {
+				// update_sub_field( array('notificacao_new_task', $key, 'acesso_new_task'), $acesso );
+			}
+			if ($post_recente > $key_acesso_registrado) {
 				echo '<a href="' . get_site_url() . '/minhas-tarefas/" class="item" style="padding: 15px !important;"><i class="blue info circle icon"></i><strong>Você tem novas solicitações.' . $array_acesso_registrado[$key] . '</strong></a>';
 			}
-
 		} else {
-
 			if ( is_page(946) ) {
-				// Se não acessou nunca, uma row é criada para ele
-				$i = add_row('notificacao_new_task', $row, 946);
+				// $i = add_row('notificacao_new_task', $row, 946);
 			}
-
 		}
 
-	}
+	endif;
 
 }
 

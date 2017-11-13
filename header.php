@@ -209,98 +209,98 @@
 
 var naoLido_old;
 var cd_title = '<?php if(is_home()) { echo bloginfo("name"); echo " | "; echo bloginfo("description"); } else { echo wp_title(" | ", false, right); echo bloginfo("name"); } ?>';
-// var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; //Define o endereço AJAX
+var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; //Define o endereço AJAX
 
 <?php // if ( is_user_logged_in() ) : ?>
 
 <?php // update_field( 'field_595feb818431d', true,'user_' . $current_user->ID); // Atualizar feed == checked ?>
 
-// feed_refresh();
-//
-// setInterval(feed_refresh, 10000);
-//
-// function feed_refresh() {
-//
-//   $.post(
-//     ajaxurl,
-//     {action: 'verifica_atualizacao'},
-//     function(response) {
-//       if(response == '1') {
-//
-//         $('#refresh').load('<?php echo bloginfo('template_url')?>/feed-refresh.php');
-//         $('.refresh').addClass("loading");
-//
-//         // // FEED REFRESH - OUTRO METODO
-//         // jQuery.post({
-//         //     url: ajaxurl,
-//         //     data: {action: 'carrega_loop'},
-//         //     success: function(response) {
-//         //      $('#refresh').html(response);
-//         //     }
-//         // });
-//
-//         // Aguarda as requisições AJAX terminarem para realizar a contagem
-//         $(document).ajaxStop(function() {
-//
-//         // CONTADOR FEED
-//
-//         var naoLido = 0;
-//         naoLido = $('#refresh .feed-nao-lido').length;
-//
-//           $('.refresh').removeClass("loading");
-//           $('.contador').removeClass("green");
-//           $('.contador').removeClass("yellow");
-//           $('.contador').removeClass("red");
-//           $('.contador').empty();
-//
-//           if (naoLido <= 30 && naoLido  >= 1){
-//             $('.contador').html(naoLido);
-//             $('.contador').addClass("floating red ui label");
-//             $('.title-contador').html('(' + naoLido + ') ' + cd_title);
-//           } else if (naoLido == 0) {
-//             $('.contador').html('<i class="check icon" style="margin:0;"></i>');
-//             $('.contador').addClass("floating green ui label");
-//             $('.title-contador').html(cd_title);
-//           } else if (naoLido > 30) {
-//             $('.contador').html("30+");
-//             $('.contador').addClass("floating red ui label");
-//             $('.title-contador').html('(30+) ' + cd_title);
-//           }
-//
-//         // CD NOTIFICAÇAO PUSH
-//
-//         if (naoLido_old < naoLido) {
-//           $(".cd-push").hide();
-//         	$(".cd-push").html( '<div class="ui message"><i class="close icon"></i><div class="header"><i class="green refresh icon"></i> Você tem novas notificações</div></div>' );
-//           $(".cd-push").show();
-//           $(".cd-push").animate({right: '20px'});
-//           $(".close").click(function(){
-//               $(".cd-push").animate({right: '-400px'});
-//           });
-//         };
-//
-//         naoLido_old = naoLido;
-//
-//         $(this).unbind('ajaxStop');
-//
-//         });
-//       }
-//     }
-//   );
-//
-//   // Previne se o usuário for deslogado, suas notificações somem e aparece o botão de login. Função no functions.
-//
-//   $.post(
-//     ajaxurl,
-//     {action: 'is_user_logged_in'},
-//     function(response) {
-//       if(response == 'no') {
-//         location.reload(); // recarrega a página
-//       }
-//     }
-//   );
-//
-// };
+feed_refresh();
+
+setInterval(feed_refresh, 5000);
+
+function feed_refresh() {
+
+  $.post(
+    ajaxurl,
+    {action: 'verifica_atualizacao'},
+    function(response) {
+      if(response == '1') {
+
+        $('#refresh').load('<?php echo bloginfo('template_url')?>/feed-refresh.php');
+        $('.refresh').addClass("loading");
+
+        // // FEED REFRESH - OUTRO METODO
+        // jQuery.post({
+        //     url: ajaxurl,
+        //     data: {action: 'carrega_loop'},
+        //     success: function(response) {
+        //      $('#refresh').html(response);
+        //     }
+        // });
+
+        // Aguarda as requisições AJAX terminarem para realizar a contagem
+        $(document).ajaxStop(function() {
+
+        // CONTADOR FEED
+
+        var naoLido = 0;
+        naoLido = $('#refresh .feed-nao-lido').length;
+
+          $('.refresh').removeClass("loading");
+          $('.contador').removeClass("green");
+          $('.contador').removeClass("yellow");
+          $('.contador').removeClass("red");
+          $('.contador').empty();
+
+          if (naoLido <= 30 && naoLido  >= 1){
+            $('.contador').html(naoLido);
+            $('.contador').addClass("floating red ui label");
+            $('.title-contador').html('(' + naoLido + ') ' + cd_title);
+          } else if (naoLido == 0) {
+            $('.contador').html('<i class="check icon" style="margin:0;"></i>');
+            $('.contador').addClass("floating green ui label");
+            $('.title-contador').html(cd_title);
+          } else if (naoLido > 30) {
+            $('.contador').html("30+");
+            $('.contador').addClass("floating red ui label");
+            $('.title-contador').html('(30+) ' + cd_title);
+          }
+
+        // CD NOTIFICAÇAO PUSH
+
+        if (naoLido_old < naoLido) {
+          $(".cd-push").hide();
+        	$(".cd-push").html( '<div class="ui message"><i class="close icon"></i><div class="header"><i class="green refresh icon"></i> Você tem novas notificações</div></div>' );
+          $(".cd-push").show();
+          $(".cd-push").animate({right: '20px'});
+          $(".close").click(function(){
+              $(".cd-push").animate({right: '-400px'});
+          });
+        };
+
+        naoLido_old = naoLido;
+
+        $(this).unbind('ajaxStop');
+
+        });
+      }
+    }
+  );
+
+  // Previne se o usuário for deslogado, suas notificações somem e aparece o botão de login. Função no functions.
+
+  $.post(
+    ajaxurl,
+    {action: 'is_user_logged_in'},
+    function(response) {
+      if(response == 'no') {
+        location.reload(); // recarrega a página
+      }
+    }
+  );
+
+};
 
 <?php // else : ?>
 
@@ -316,33 +316,33 @@ var cd_title = '<?php if(is_home()) { echo bloginfo("name"); echo " | "; echo bl
 
 feed_refresh();
 
-function feed_refresh() {
-
-  // CONTADOR FEED
-
-  var naoLido = 0;
-  naoLido = $('#refresh .feed-nao-lido').length;
-
-    $('.contador').removeClass("green");
-    $('.contador').removeClass("yellow");
-    $('.contador').removeClass("red");
-    $('.contador').empty();
-
-    if (naoLido <= 30 && naoLido  >= 1){
-      $('.contador').html(naoLido);
-      $('.contador').addClass("floating red ui label");
-      $('.title-contador').html('(' + naoLido + ') ' + cd_title);
-    } else if (naoLido == 0) {
-      $('.contador').html('<i class="check icon" style="margin:0;"></i>');
-      $('.contador').addClass("floating green ui label");
-      $('.title-contador').html(cd_title);
-    } else if (naoLido > 30) {
-      $('.contador').html("30+");
-      $('.contador').addClass("floating red ui label");
-      $('.title-contador').html('(30+) ' + cd_title);
-    }
-
-};
+// function feed_refresh() {
+//
+//   // CONTADOR FEED
+//
+//   var naoLido = 0;
+//   naoLido = $('#refresh .feed-nao-lido').length;
+//
+//     $('.contador').removeClass("green");
+//     $('.contador').removeClass("yellow");
+//     $('.contador').removeClass("red");
+//     $('.contador').empty();
+//
+//     if (naoLido <= 30 && naoLido  >= 1){
+//       $('.contador').html(naoLido);
+//       $('.contador').addClass("floating red ui label");
+//       $('.title-contador').html('(' + naoLido + ') ' + cd_title);
+//     } else if (naoLido == 0) {
+//       $('.contador').html('<i class="check icon" style="margin:0;"></i>');
+//       $('.contador').addClass("floating green ui label");
+//       $('.title-contador').html(cd_title);
+//     } else if (naoLido > 30) {
+//       $('.contador').html("30+");
+//       $('.contador').addClass("floating red ui label");
+//       $('.title-contador').html('(30+) ' + cd_title);
+//     }
+//
+// };
 
 <?php endif; ?>
 
