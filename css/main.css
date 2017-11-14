@@ -169,6 +169,6 @@
 	position: absolute;
 	right: -400px;
 	width: 400px;
-	margin-top: 20px;
-	z-index: 100;
+	margin-top: 60px;
+	z-index: 10;
 }

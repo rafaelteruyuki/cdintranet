@@ -123,9 +123,9 @@
       <?php if ( is_user_logged_in() ) : ?>
       <div class="ui scrolling dropdown item cd-user-logado">
         <i class="comment icon" style="margin:0;"></i>
-        <div class="contador"></div>
+        <div class="contador floating ui label"><i class="loading refresh icon" style="margin:0;"></i></div>
         <div class="menu" id="refresh">
-          <?php get_template_part('comment','feed') ?>
+          <?php // get_template_part('comment','feed') ?>
         </div>
       </div>
       <?php endif; ?>
@@ -140,6 +140,16 @@
 <script type="text/javascript">
 var cd_title = '<?php if(is_home()) { echo bloginfo("name"); echo " | "; echo bloginfo("description"); } else { echo wp_title(" | ", false, right); echo bloginfo("name"); } ?>';
 var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; //Define o endereço AJAX
+</script>
+<script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/main.js?ver=4'></script>
+<script type="text/javascript">
+// // Refresh para todos os arquivos
+// window.onload = function() {
+//     if(!window.location.hash) {
+//         window.location = window.location + '#loaded';
+//         window.location.reload(true);
+//     }
+// }
 </script>
 
 <?php // update_field( 'field_595feb818431d', true,'user_' . $current_user->ID); // Atualizar feed == checked ?>

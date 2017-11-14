@@ -14,7 +14,7 @@ wp_enqueue_style( 'style', get_stylesheet_uri()); //style.css
 //wp_enqueue_style( 'semantic', get_template_directory_uri() . '/css/semantic.min.css',false,'1.1','all');
 //CONFLITO COM O CSS DO ACF NO BACK-END
 wp_enqueue_style( 'form-solicitacao', get_template_directory_uri() . '/css/form-solicitacao.css',false,'1.1','all');
-wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.1','all');
+wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.3','all');
 wp_enqueue_style( 'popup', get_template_directory_uri() . '/components/popup.css',false,'1.1','all');
 
 // Inside the functions.php file
@@ -29,7 +29,7 @@ function carrega_scripts() {
 	//wp_enqueue_script( 'semantic-js', get_template_directory_uri() . '/js/semantic.min.js', array('jquery'), '', true );
 	//wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '', true );
 	//wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '', true );
-	wp_enqueue_script( 'main-js', get_template_directory_uri()."/js/main.js", array('jquery'), false, true);
+	// wp_enqueue_script( 'main-js', get_template_directory_uri()."/js/main.js", array('jquery'), false, true);
 
 	wp_localize_script('custom-js', 'ajax_object',
 		array(
@@ -1005,75 +1005,87 @@ AO CRIAR/ATUALIZAR TAREFA
 
 	---------------------------- */
 
-	function verifica_atualizacao() {
+	// function verifica_atualizacao() {
+	//
+	// 	global $current_user;
+	// 	$atualizar_feed = get_field('atualizar_feed', 'user_'. $current_user->ID );
+	// 	echo $atualizar_feed;
+  //   wp_die();
+	//
+	// }
+	// add_action('wp_ajax_verifica_atualizacao', 'verifica_atualizacao');
+	// add_action('wp_ajax_nopriv_verifica_atualizacao', 'verifica_atualizacao');
+	//
+	// function carrega_loop (){
+	//
+	//   global $current_user;
+	// 	$response;
+	//   // $atualizar_feed = get_field('atualizar_feed', 'user_'. $current_user->ID );
+	//
+	// 		include ( locate_template('template-parts/cd-feed.php') );
+	//
+	// 		$args = array(
+	// 			'post_type'              => 'tarefa',
+	// 			'posts_per_page'         => 31,
+	// 			'order'                  => 'DESC',
+	// 			'orderby'                => 'modified',
+	// 			'author'                 => $feed_rc,
+	// 			'meta_query'             => array( $feed_cd ),
+	// 		);
+	//
+	// 		$query = new WP_Query( $args );
+	//
+	// 		if ( $query->have_posts() ) {
+	// 			while ( $query->have_posts() ) { $query->the_post();
+	//
+	// 				include ( locate_template('template-parts/var-tarefas.php') );
+	//
+	// 				if ( get_post_meta(get_post()->ID, '_edit_last') ) {
+	// 					$author = ', por ' . get_the_modified_author();
+	// 				};
+	//
+	// 				$response .= '<a href="'. get_the_permalink() .'" class="item '. get_lido_nao_lido('feed-lido', 'feed-nao-lido').'" style="border-top: 1px solid #dedede !important;">';
+	// 				$response .= '<strong style="line-height: 2;">'.get_field('unidade').'&nbsp;&nbsp;|&nbsp;&nbsp;'.get_the_title().'</strong><br>';
+	// 				$response .= '<span class="cd-disabled">';
+	// 				$response .= '<i class="green refresh icon"></i> Há '. human_time_diff(get_the_modified_time('U'), current_time('timestamp')) . $author;
+	// 				$response .= '<br><i class="purple comments icon"></i>'. get_comments_number() . ' interações' . '<br>';
+	// 				$response .= '<i class="power icon"></i>' . $status['label'] . '</span></a>';
+	//
+	// 			}
+	//
+	// 			if( current_user_can( 'edit_pages' )){
+	// 				$response .= '<a href="http://cd.intranet.sp.senac.br/minhas-tarefas/" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
+	// 			}else{
+	// 				$response .= '<a href="http://cd.intranet.sp.senac.br/minhas-solicitacoes/" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
+	// 			}
+	//
+	// 		}else{
+	// 			$response = '<div class="item"><i class="grey refresh icon"></i>Não há notificações</div>';
+	// 		}
+	// 		wp_reset_postdata();
+	//
+	//
+	// 	update_field( 'field_595feb818431d', false,'user_' . $current_user->ID); // Atualizar feed == unchecked
+	//
+	// 	echo $response;
+	//
+	// 	wp_die();
+	// }
+	//
+	// add_action('wp_ajax_carrega_loop', 'carrega_loop');
+	// add_action('wp_ajax_nopriv_carrega_loop', 'carrega_loop');
 
-		global $current_user;
-		$atualizar_feed = get_field('atualizar_feed', 'user_'. $current_user->ID );
-		echo $atualizar_feed;
-    wp_die();
+function carrega_loop () {
 
-	}
-	add_action('wp_ajax_verifica_atualizacao', 'verifica_atualizacao');
-	add_action('wp_ajax_nopriv_verifica_atualizacao', 'verifica_atualizacao');
+	$response = get_template_part('comment','feed');
 
-	function carrega_loop (){
+	echo $response;
 
-	  global $current_user;
-		$response;
-	  // $atualizar_feed = get_field('atualizar_feed', 'user_'. $current_user->ID );
+	wp_die();
 
-			include ( locate_template('template-parts/cd-feed.php') );
-
-			$args = array(
-				'post_type'              => 'tarefa',
-				'posts_per_page'         => 31,
-				'order'                  => 'DESC',
-				'orderby'                => 'modified',
-				'author'                 => $feed_rc,
-				'meta_query'             => array( $feed_cd ),
-			);
-
-			$query = new WP_Query( $args );
-
-			if ( $query->have_posts() ) {
-				while ( $query->have_posts() ) { $query->the_post();
-
-					include ( locate_template('template-parts/var-tarefas.php') );
-
-					if ( get_post_meta(get_post()->ID, '_edit_last') ) {
-						$author = ', por ' . get_the_modified_author();
-					};
-
-					$response .= '<a href="'. get_the_permalink() .'" class="item '. get_lido_nao_lido('feed-lido', 'feed-nao-lido').'" style="border-top: 1px solid #dedede !important;">';
-					$response .= '<strong style="line-height: 2;">'.get_field('unidade').'&nbsp;&nbsp;|&nbsp;&nbsp;'.get_the_title().'</strong><br>';
-					$response .= '<span class="cd-disabled">';
-					$response .= '<i class="green refresh icon"></i> Há '. human_time_diff(get_the_modified_time('U'), current_time('timestamp')) . $author;
-					$response .= '<br><i class="purple comments icon"></i>'. get_comments_number() . ' interações' . '<br>';
-					$response .= '<i class="power icon"></i>' . $status['label'] . '</span></a>';
-
-				}
-
-				if( current_user_can( 'edit_pages' )){
-					$response .= '<a href="http://cd.intranet.sp.senac.br/minhas-tarefas/" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
-				}else{
-					$response .= '<a href="http://cd.intranet.sp.senac.br/minhas-solicitacoes/" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
-				}
-
-			}else{
-				$response = '<div class="item"><i class="grey refresh icon"></i>Não há notificações</div>';
-			}
-			wp_reset_postdata();
-
-
-		update_field( 'field_595feb818431d', false,'user_' . $current_user->ID); // Atualizar feed == unchecked
-
-		echo $response;
-
-		wp_die();
-	}
-
-	add_action('wp_ajax_carrega_loop', 'carrega_loop');
-	add_action('wp_ajax_nopriv_carrega_loop', 'carrega_loop');
+}
+add_action('wp_ajax_carrega_loop', 'carrega_loop');
+add_action('wp_ajax_nopriv_carrega_loop', 'carrega_loop');
 
 /* --------------------------
 
