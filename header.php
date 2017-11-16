@@ -6,15 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title class="title-contador"><?php if(is_home()) { echo bloginfo("name"); echo " | "; echo bloginfo("description"); } else { echo wp_title(" | ", false, right); echo bloginfo("name"); } ?></title>
-
 <!--<link rel="shortcut icon" href="front_assets/images/icon.ico">-->
-
-<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/semantic.min.css">
-
-<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/jquery-3.1.0.min.js"></script>
-<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/semantic.min.js"></script>
-<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/tablesort.js"></script>
-<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/mustache.js"></script>
 
 <?php wp_head(); ?>
 
@@ -141,7 +133,7 @@
 var cd_title = '<?php if(is_home()) { echo bloginfo("name"); echo " | "; echo bloginfo("description"); } else { echo wp_title(" | ", false, right); echo bloginfo("name"); } ?>';
 var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; //Define o endereço AJAX
 </script>
-<script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/main.js?ver=4'></script>
+<script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=4'></script>
 <script type="text/javascript">
 // // Refresh para todos os arquivos
 // window.onload = function() {

@@ -9,27 +9,28 @@ add_image_size('redes-sociais', '400', '210', true);
 // Registrar menu no tema
 register_nav_menu( 'main-menu', 'Menu principal do tema que vai no header' );
 
-// Carrega os styles
-wp_enqueue_style( 'style', get_stylesheet_uri()); //style.css
-//wp_enqueue_style( 'semantic', get_template_directory_uri() . '/css/semantic.min.css',false,'1.1','all');
-//CONFLITO COM O CSS DO ACF NO BACK-END
-wp_enqueue_style( 'form-solicitacao', get_template_directory_uri() . '/css/form-solicitacao.css',false,'1.1','all');
-wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.3','all');
-wp_enqueue_style( 'popup', get_template_directory_uri() . '/components/popup.css',false,'1.1','all');
-
-// Inside the functions.php file
-//PostType::make('cpt-slug', 'PluralName', 'SingularName')->set(['public' => true]);
-
-// Carrega scripts
+// Carrega CSS e Scripts
 add_action('wp_enqueue_scripts', 'carrega_scripts');
 
 function carrega_scripts() {
-	wp_enqueue_script('custom-js', get_template_directory_uri()."/js/scripts.js", array('jquery'), false, true);
-	//scripts do Semantic
-	//wp_enqueue_script( 'semantic-js', get_template_directory_uri() . '/js/semantic.min.js', array('jquery'), '', true );
-	//wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '', true );
-	//wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '', true );
-	// wp_enqueue_script( 'main-js', get_template_directory_uri()."/js/main.js", array('jquery'), false, true);
+
+	// CSS
+	wp_enqueue_style( 'style', get_stylesheet_uri()); //style.css
+	if ( !is_admin() ) {
+		wp_enqueue_style( 'semantic', get_template_directory_uri() . '/css/semantic.min.css', array(), '1.2', 'all');
+	}
+	wp_enqueue_style( 'form-solicitacao', get_template_directory_uri() . '/css/form-solicitacao.css',false,'1.1','all');
+	wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.3','all');
+	wp_enqueue_style( 'popup', get_template_directory_uri() . '/components/popup.css',false,'1.1','all');
+
+	// Javascript
+	wp_deregister_script( 'jquery' ); // Remove o Jquery ogirinal do Wordpress
+	wp_enqueue_script( 'jquery', get_template_directory_uri() . '/js/jquery-3.1.0.min.js', array(), '3.1.0', true);
+	wp_enqueue_script( 'semantic-js', get_template_directory_uri() . '/js/semantic.min.js', array('jquery'), '1.0', true );
+	wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '1.0', true );
+	wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '1.0', true );
+	wp_enqueue_script( 'main', get_template_directory_uri()."/js/main.js", array('jquery'), '1.0', true);
+	wp_enqueue_script( 'custom-js', get_template_directory_uri()."/js/scripts.js", array('jquery'), '1.0', true);
 
 	wp_localize_script('custom-js', 'ajax_object',
 		array(
