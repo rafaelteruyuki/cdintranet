@@ -5,7 +5,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
 ?>
 
-<tr class="center aligned cd-tarefa" style="cursor:pointer" onclick="window.open('<?php the_permalink(); ?>');" >
+<tr class="center aligned cd-tarefa" style="cursor:pointer; <?php new_task('background:#ebf7ff;'); ?><?= comment_nao_lido(); ?>" onclick="window.open('<?php the_permalink(); ?>');" >
   <td class="collapsing"><?php the_field('unidade'); ?></td>
   <td class="collapsing">
 
@@ -17,11 +17,16 @@ include ( locate_template('template-parts/var-tarefas.php') );
     }
     elseif($finalidade['value'] === "outrafinalidade"){
       echo 'Outra';
-    } ?>
+    }
+    elseif($finalidade['value'] === "pauta"){
+      echo 'Pauta';
+    }
+    ?>
 
   </td>
   <td class="left aligned">
-    <strong class="<?php lido_nao_lido(); ?>"><?php the_title(); ?></strong>
+    <?php new_task(); ?>
+    <strong><?php the_title(); ?></strong>
     <?php if ( !current_user_can('portal') ) : ?>
     <span style="float:right">
       <?php if (!$texto_luares) : ?><i class="file text icon" style="float:right; color: #CCC;"></i><?php endif; ?>
@@ -33,17 +38,21 @@ include ( locate_template('template-parts/var-tarefas.php') );
     </span>
     <?php endif; ?>
   </td>
-  <td class="collapsing"><?php the_field('area_divulgacao_tarefa'); ?></td>
+  <td class="collapsing"><?php $area = get_field('area_divulgacao_tarefa'); if ($area) { echo $area['label']; } ?></td>
   <td class="collapsing"><?php $data = get_the_date('d/m/y'); echo $data; ?></td>
-  <td class="collapsing"><?php if ( get_field('data_de_inicio_do_evento') ) { the_field('data_de_inicio_do_evento'); } else { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } ?></td>
-  <td class="collapsing"><?php if ( $publicacao && in_array('publicacao', $publicacao) ) the_field('previsao_de_publicacao'); else echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Sem publicação</span>'; ?></td>
-  <td class="collapsing"><?php the_field('previsao_conclusao'); ?></td>
+  <td class="collapsing">
+    <?php if ( get_field('data_de_inicio_do_evento') ) { the_field('data_de_inicio_do_evento'); }
+    elseif ( get_field('data_de_inicio_do_curso') ) { the_field('data_de_inicio_do_curso'); }
+    else { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } ?>
+  </td>
+  <td class="collapsing"><?php if ( $publicacao && in_array('publicacao', $publicacao) ) the_field('previsao_de_publicacao'); elseif ($finalidade['value'] === "pauta") the_field('previsao_de_publicacao'); else echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Sem publicação</span>'; ?></td>
+  <td class="collapsing"><?php if ( $finalidade['value'] === "pauta" ) { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } else { the_field('previsao_conclusao'); } ?></td>
   <td class="left aligned collapsing">
 		<?php if ($responsavel1) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel1['display_name'] ?>"><?php echo $responsavel1['user_avatar']; ?></span><?php endif; ?>
 		<?php if ($responsavel2) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel2['display_name'] ?>"><?php echo $responsavel2['user_avatar']; ?></span><?php endif; ?>
     <?php if ($responsavel3) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel3['display_name'] ?>"><?php echo $responsavel3['user_avatar']; ?></span><?php endif; ?>
     <?php if ($responsavel4) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel4['display_name'] ?>"><?php echo $responsavel4['user_avatar']; ?></span><?php endif; ?>
   </td>
-  <td class="collapsing"><?php $num_comments = get_comments_number(); if ( $num_comments == 0 ) echo '0'; else echo $num_comments; ?></td>
+  <td class="collapsing"><?php num_comentarios(false);?></td>
   <td class="collapsing" style="color:#FFF;"><a class="ui <?= $corStatus ?> label" style="width:100%;"><?php echo $status['label'] ?></a></td>
 </tr>

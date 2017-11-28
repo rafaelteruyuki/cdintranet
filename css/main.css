@@ -94,6 +94,7 @@
 /* ============================================================
   CUSTOM PAGINATION
 ============================================================ */
+
 .cd-paginacao span,
 .cd-paginacao a {
   display: inline-block;
@@ -118,4 +119,56 @@
 .cd-paginacao span.current {
   background-color: #ff3c50;
   color: #fff;
+}
+
+/*SIDEBAR FILTROS*/
+.sidebar .searchandfilter ul li h4 {
+	font-size: 14px;
+}
+.sidebar .searchandfilter ul li ul {
+	padding-left: 0;
+}
+.searchandfilter select.sf-input-select {
+	border: 1px solid #CCC;
+	height: 2em;
+	border-radius: 5px;
+	padding: 5px 1em;
+}
+
+/* FEED TAREFAS */
+/*.ui.menu .ui.dropdown .menu>.item.feed-lido {
+	display: none!important;
+}*/
+.ui.menu .ui.dropdown .menu>.item.feed-nao-lido {
+	background-color: #ebf7ff !important;
+}
+.ui.menu .ui.dropdown .menu>.item.feed-nao-lido:hover {
+	background-color: #dfecf5 !important;
+}
+.ui.scrolling.dropdown .menu {
+		max-height: 35rem !important;
+}
+.ui.scrolling.dropdown .menu {
+		max-width: 480px !important;
+}
+/*.ui.menu .ui.dropdown .menu>.item.cd-feed .icon {
+	margin: 0 4px 0 0;
+}*/
+
+.cd-disabled {
+	color: rgba(0, 0, 0, 0.4);
+	line-height: 1.5;
+}
+
+/* LIDA / NAO LIDA */
+.cd-nao-lida {
+	color: #2185d0 !important;
+}
+
+.cd-push {
+	position: absolute;
+	right: -400px;
+	width: 400px;
+	margin-top: 60px;
+	z-index: 10;
 }

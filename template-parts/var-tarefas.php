@@ -21,13 +21,13 @@ $imagem_miniatura = get_field('imagem_miniatura');
 $imagem_rodape = get_field('imagem_rodape');
 $imagem_lateral = get_field('imagem_lateral');
 
-$count_naoiniciado = get_post_count_by_meta('status', 'naoiniciado', 'tarefa');
-$count_cancelado = get_post_count_by_meta('status', 'cancelado', 'tarefa');
-$count_incompleto = get_post_count_by_meta('status', 'incompleto', 'tarefa');
-$count_aguardando = get_post_count_by_meta('status', 'aguardandoinformacao', 'tarefa');
-$count_emproducao = get_post_count_by_meta('status', 'emproducao', 'tarefa');
-$count_publicado = get_post_count_by_meta('status', 'publicado', 'tarefa');
-$count_finalizado = get_post_count_by_meta('status', 'finalizado', 'tarefa');
+// $count_naoiniciado = get_post_count_by_meta('status', 'naoiniciado', 'tarefa');
+// $count_cancelado = get_post_count_by_meta('status', 'cancelado', 'tarefa');
+// $count_incompleto = get_post_count_by_meta('status', 'incompleto', 'tarefa');
+// $count_aguardando = get_post_count_by_meta('status', 'aguardandoinformacao', 'tarefa');
+// $count_emproducao = get_post_count_by_meta('status', 'emproducao', 'tarefa');
+// $count_publicado = get_post_count_by_meta('status', 'publicado', 'tarefa');
+// $count_finalizado = get_post_count_by_meta('status', 'finalizado', 'tarefa');
 
 $modificado = get_the_modified_time('dmYGis');
 $atual = date( 'd/m/Y G:i', current_time( 'timestamp', 0 ) );
@@ -50,6 +50,14 @@ switch ($status['value']) {
         $corStatus = 'orange';
         break;
     case "emproducao":
+        $percent = 50;
+        $corStatus = 'yellow';
+        break;
+    case "fluxors":
+        $percent = 50;
+        $corStatus = 'yellow';
+        break;
+    case "fluxoportal":
         $percent = 50;
         $corStatus = 'yellow';
         break;

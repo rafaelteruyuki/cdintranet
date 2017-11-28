@@ -6,7 +6,7 @@
       <div class="column">
         <h4 class="ui dividing header inverted">GD1 e GD3</h4>
           <!-- Rafael Teruyuki Yamaguchi -->
-          Ariel Fajtlowicz
+          Ana Carolina da Silva Sarneiro
           <br>
           Walter Pereira da Fonseca Junior
         <h4 class="ui dividing header inverted">GD2 e GD4</h4>
@@ -58,102 +58,47 @@
     </div>
 </div>
 
-<script src="<?php bloginfo('template_url'); ?>/components/popup.min.js"></script>
+<?php wp_footer();?>
 
-<script>
+<!-- Exportar Excel -->
 
-// Menu
-$('.ui.dropdown')
-	.dropdown({
-    on: 'click'
-  })
-;
+<script type="text/javascript">
 
-// Barra status
-$('#example1').progress();
+function fnExcelReport() {
+    var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+    tab_text = tab_text + '<head><meta charset="UTF-8" /><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet‌​>';
 
-// Tabela classificação
-$('table').tablesort();
+    tab_text = tab_text + '<x:Name>Test Sheet</x:Name>';
 
-// Botões Filtro Catálogo
-$('.combo.dropdown')
-  .dropdown({
-    action: 'combo'
-  })
-;
+    tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+    tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
 
-// Fade right imagem
-$('.imagem-single-curso')
-  .transition('hide')
-  .transition({
-    animation : 'fade in',
-    duration  : 600,
-  })
-;
+    tab_text = tab_text + "<table border='1px'>";
+    tab_text = tab_text + $('#table_wrapper').html();
+    tab_text = tab_text + '</table></body></html>';
 
-// SIDEBAR SCRIPTS
-$('.ui.sidebar.tarefas')
- 	.sidebar('attach events', '.cd-filtro.button.tarefas')
-	.sidebar('setting', 'transition', 'overlay')
-;
-$('.cd-filtro.button.tarefas')
-  .removeClass('disabled')
-;
-$('.ui.sidebar.cursos')
- 	.sidebar('attach events', '.cd-filtro.button.cursos')
-	.sidebar('setting', 'transition', 'overlay')
-;
-$('.cd-filtro.button.cursos')
-  .removeClass('disabled')
-;
+    var data_type = 'data:application/vnd.ms-excel';
 
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
 
-// POPUP
-$('.cd-popup')
-  .popup({
-    inline     : true,
-    hoverable  : true,
-    position   : 'top center',
-  })
-;
+    var data_hoje = <?php echo date( 'Ymd', current_time( 'timestamp', 0 ) ); ?>;
+    var file_name = data_hoje + '_tafefas_exportadas' + '.xls';
 
-// TABS
-$('.menu .item')
-  .tab()
-;
-
-$('.cd-tab .item')
-  .tab()
-;
-
-$('.form-solicitacao button').addClass('ui secondary button');
-
-//$('.hide-if-value p').html($('.hide-if-value p').html().replace('Nenhum arquivo selecionado ','')); //remove "Nenhum arquivo selecionado" no Form front-end
-
-// Reveal Itens Catálogo
-// $('.card')
-//   .transition('hide')
-//   .transition({
-//     animation : 'scale in',
-//     interval  : 50,
-//     duration  : 200,
-//   })
-// ;
-
-// Hover Itens Catálogo
-//$('.card .image').dimmer({
-//  on: 'hover'
-//});
-
-$('.acf-field-58f4c987e479e .acf-input').append( $('#acf-_post_title') ); //Inserir título WP em lugar específico do Form front-end
-//$('.acf-field-58f4c987e479e .acf-input').append( $('#titlewrap') ); //Inserir título
-//$('.button-large, .acf-button, .button').removeClass('button-large acf-button button').addClass('ui primary button'); //muda a classe do botão Adicionar Arquivo no Form front-end
-//$('.hide-if-value p').html($('.hide-if-value p').html().replace('Nenhum arquivo selecionado ','')); //remove "Nenhum arquivo selecionado" no Form front-end
-//$('.button').text("Teste");
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+        if (window.navigator.msSaveBlob) {
+            var blob = new Blob([tab_text], {
+                type: "application/csv;charset=utf-8;"
+            });
+            navigator.msSaveBlob(blob, file_name);
+        }
+    } else {
+        $('#btnExport').attr('href', data_type + ', ' + encodeURIComponent(tab_text));
+        $('#btnExport').attr('download', file_name);
+    }
+}
 
 </script>
-
-<?php wp_footer();?>
 
 <!-- Analytics -->
 

@@ -44,7 +44,7 @@ function url_check() {
 
 </script>
 
-<?php if ( is_user_logged_in() ) : ?>
+<?php if ( current_user_can('edit_pages') ) : ?>
 
 <h2 class="ui horizontal divider header" style="margin: 3em 0em 2em;">
   <i class="list layout icon"></i>
@@ -264,9 +264,9 @@ $('#totalConcluido').text(somaTotal('finalizado'));
 
     <h3 class="ui center aligned icon header">
       <a href="<?php echo wp_login_url(get_permalink()); ?>"><i class="yellow sign in icon"></i></a>
-      Você não está logado.
+      Você não tem permissão para acessar essa página.
     </h3>
-    <p>Faça <a href="<?php echo wp_login_url(get_permalink()); ?>"><strong>login</strong></a> para continuar.</p>
+    <p>Faça <a href="<?php echo wp_login_url(get_permalink()); ?>"><strong>login</strong></a> com um usuário específico para continuar.</p>
 
   </div>
 

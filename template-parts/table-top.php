@@ -5,7 +5,7 @@
   <th class="left aligned">Título</th>
   <th>Área</th>
   <th>Data solicitação</th>
-  <th>Data início evento</th>
+  <th>Data início</th>
   <th>Previsão publicação</th>
   <th>Previsão peças</th>
   <th>Responsáveis</th>

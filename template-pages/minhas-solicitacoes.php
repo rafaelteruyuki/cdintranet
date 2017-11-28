@@ -11,25 +11,48 @@ Template Name: Minhas Solicitações
   <?php the_title(); ?>
 </h2>
 
+<!-- <div class="ui two column grid container stackable" style="width:95% !important;">
+
+  <div class="middle aligned column" style="padding-left:0;">
+
+    <form class="ui form" method="get" action="<?php // bloginfo('url') ?>" role="search">
+      <div class="ui icon large input">
+        <input type="hidden" name="post_type" value="tarefa">
+        <input type="search" name="s" placeholder="Pesquisar tarefas...">
+        <i class="search icon"></i>
+      </div>
+    </form>
+
+  </div>
+
+  <div class="middle aligned right aligned column" style="padding-right:0;">
+
+    <div class="ui large buttons" style="margin: 0 10px">
+      <a data-tooltip="Filtros" class="ui icon cd-filtro button tarefas">
+        <i class="filter icon"></i>
+      </a>
+      <a data-tooltip="Limpar" href="<?php // bloginfo('url'); ?>/minhas-solicitacoes" class="ui icon button">
+        <i class="undo icon"></i>
+      </a>
+    </div>
+
+  </div>
+
+</div> -->
 
 <?php
 
 $current_user = wp_get_current_user();
 
-$args = array(
-		'post_type'		=> 'tarefa',
-		'show_posts'	=> -1,
-		'posts_per_page' => -1,
-		'order'			=> 'DESC',
-		'orderby'		=> 'modified',
-		'author'		=> $current_user->ID,
-	);
+include ( locate_template('template-parts/cd-feed.php') );
+
+$args['search_filter_id'] = 12379;
+
+$wp_query = new WP_Query($args);
 
 ?>
 
-<div class="ui container center aligned cd-margem" style="width:95%;">
-
-	<?php $wp_query = new WP_Query($args); ?>
+<div class="ui container center aligned cd-margem" style="width:95%;" id="filtro-tarefas">
 
   <?php if ( $wp_query->have_posts() && is_user_logged_in() ) : ?>
 

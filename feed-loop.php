@@ -8,7 +8,7 @@ $args = array(
   'order'                  => 'DESC',
   'orderby'                => 'modified',
   'author'                 => $feed_rc,
-  'meta_query'             => array( $feed_cd ),
+  'meta_query'             => array( $minhas_tarefas_feed ),
 );
 
 $query = new WP_Query( $args );

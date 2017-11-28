@@ -5,200 +5,86 @@ global $current_user;
 //FEED GD2 E GD4
 
 if ( current_user_can( 'designer_gd2_gd4' ) ) {
-
-  $feed_cd =
-
-      array(
-
-          'relation'		=> 'AND',
-
-          // AREA
-          array(
-            'key' => 'area_divulgacao_tarefa',
-            'value' => array(
-              'educacao',
-              'gestao-negocios',
-              'meio-ambiente',
-              'saude-bem-estar',
-              'sst',
-              'tecnologia-informacao',
-            ),
-            'compare' 	=> 'IN',
-          ),
-
-          array(
-
-                'relation'		=> 'OR',
-
-                // MODALIDADE
-                array(
-                  'key'		=> 'modalidade_curso',
-                  'value'		=> array(
-                    'curso-livre',
-                    'extensao',
-                    //'curso-tecnico',
-                    //'pos',
-                    //'vestibular',
-                    //'gratuidade',
-                    //'aprendizagem',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-
-                //FINALIDADE
-                array(
-                  'key'		=> 'finalidade',
-                  'value'		=> array(
-                    //'dcurso',
-                    'devento',
-                    'outrafinalidade',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-          ),
-    );
-
+  $segmentacao = array(
+    'key'		=> 'segmentacao',
+    'value'		=> 'gd2_gd4',
+    'compare' => 'LIKE'
+  );
 }
 
 //FEED GD1 E GD3
 
 if ( current_user_can( 'designer_gd1_gd3' ) ) {
-
-  $feed_cd =
-
-      array(
-
-          'relation'		=> 'AND',
-
-          // AREA
-          array(
-            'key' => 'area_divulgacao_tarefa',
-            'value' => array(
-              'arquitetura-urbanismo',
-              'comunicacao-artes',
-              'desenvolvimento-social',
-              'design',
-              'eventos-lazer',
-              'gastronomia',
-              'hotelaria-turismo',
-              'limpeza-conservacao-zeladoria',
-              'moda',
-            ),
-            'compare' 	=> 'IN',
-          ),
-
-          array(
-
-                'relation'		=> 'OR',
-
-                // MODALIDADE
-                array(
-                  'key'		=> 'modalidade_curso',
-                  'value'		=> array(
-                    'curso-livre',
-                    'extensao',
-                    //'curso-tecnico',
-                    //'pos',
-                    //'vestibular',
-                    //'gratuidade',
-                    //'aprendizagem',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-
-                //FINALIDADE
-                array(
-                  'key'		=> 'finalidade',
-                  'value'		=> array(
-                    //'dcurso',
-                    'devento',
-                    'outrafinalidade',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-          ),
-    );
-
+  $segmentacao = array(
+    'key'		=> 'segmentacao',
+    'value'		=> 'gd1_gd3',
+    'compare' => 'LIKE'
+  );
 }
 
 //FEED INSTITUCIONAL
 
 if ( current_user_can( 'designer_institucional' ) ) {
-
-  $feed_cd =
-
-      array(
-
-          'relation'		=> 'OR',
-
-          // MODALIDADE
-          array(
-            'key'		=> 'modalidade_curso',
-            'value'		=> array(
-              // 'curso-livre',
-              // 'extensao',
-              'curso-tecnico',
-              'pos',
-              'vestibular',
-              'gratuidade',
-              'aprendizagem',
-            ),
-            'compare'	=> 'IN',
-          ),
-
-          array(
-
-                'relation'		=> 'AND',
-
-                // AREA
-                array(
-                  'key' => 'area_divulgacao_tarefa',
-                  'value' => array(
-                    'idiomas',
-                    'gerencias',
-                    'campanhas',
-                    'editora',
-                    'hoteis',
-                  ),
-                  'compare' 	=> 'IN',
-                ),
-
-                //FINALIDADE
-                array(
-                  'key'		=> 'finalidade',
-                  'value'		=> array(
-                    'dcurso',
-                    'devento',
-                    'outrafinalidade',
-                  ),
-                  'compare'	=> 'IN',
-                ),
-          ),
-    );
-
+  $segmentacao = array(
+    'key'		=> 'segmentacao',
+    'value'		=> 'institucional',
+    'compare' => 'LIKE'
+  );
 }
 
 //FEED PORTAL
 
 if ( current_user_can( 'portal' ) ) {
-
-  $feed_cd =
-
-      // PUBLICACAO
-      array(
-        'key'		=> 'publicacao_pecas',
-        'value'		=> '"publicacao"',
-        'compare' => 'LIKE'
-      );
-
+  $segmentacao = array(
+    'key'		=> 'segmentacao',
+    'value'		=> 'evento',
+    'compare' => 'LIKE'
+  );
 }
 
-// FEED REPRESENTANTES
+// PARTICIPANTE
 
-if ( current_user_can( 'senac' ) ) {
+$participante = array(
+  'key' => 'participante',
+  'value' => $current_user->ID,
+  'compare' => '=',
+);
 
-  $feed_rc = $current_user->ID;
+// CD_AUTHOR
 
-};
+$cd_author = array(
+  'key'		=> 'cd_author',
+  'value'		=> $current_user->ID,
+  'compare' => '='
+);
+
+// --------------------------- FEED ---------------------------- //
+
+// MINHAS TAREFAS
+
+$minhas_tarefas_feed = array(
+'relation'		=> 'OR',
+  $segmentacao,
+  $participante,
+  // $cd_author,
+);
+
+// MINHAS SOLICITACOES
+
+$minhas_solicitacoes_feed = array(
+'relation'		=> 'OR',
+  // $segmentacao,
+  $participante,
+  $cd_author,
+);
+
+// COMENTARIOS
+
+$comment_feed = array(
+'relation'		=> 'OR',
+  $segmentacao,
+  $participante,
+  $cd_author,
+);
 
 ?>

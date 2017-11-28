@@ -9,27 +9,28 @@ add_image_size('redes-sociais', '400', '210', true);
 // Registrar menu no tema
 register_nav_menu( 'main-menu', 'Menu principal do tema que vai no header' );
 
-// Carrega os styles
-wp_enqueue_style( 'style', get_stylesheet_uri()); //style.css
-//wp_enqueue_style( 'semantic', get_template_directory_uri() . '/css/semantic.min.css',false,'1.1','all');
-//CONFLITO COM O CSS DO ACF NO BACK-END
-wp_enqueue_style( 'form-solicitacao', get_template_directory_uri() . '/css/form-solicitacao.css',false,'1.1','all');
-wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.1','all');
-wp_enqueue_style( 'popup', get_template_directory_uri() . '/components/popup.css',false,'1.1','all');
-
-// Inside the functions.php file
-//PostType::make('cpt-slug', 'PluralName', 'SingularName')->set(['public' => true]);
-
-// Carrega scripts
+// Carrega CSS e Scripts
 add_action('wp_enqueue_scripts', 'carrega_scripts');
 
 function carrega_scripts() {
-	wp_enqueue_script('custom-js', get_template_directory_uri()."/js/scripts.js", array('jquery'), false, true);
-	//scripts do Semantic
-	//wp_enqueue_script( 'semantic-js', get_template_directory_uri() . '/js/semantic.min.js', array('jquery'), '', true );
-	//wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '', true );
-	//wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '', true );
-	//wp_enqueue_script( 'main', get_template_directory_uri() . '/js/main.js', array('jquery'), '', true );
+
+	// CSS
+	wp_enqueue_style( 'style', get_stylesheet_uri()); //style.css
+	if ( !is_admin() ) {
+		wp_enqueue_style( 'semantic', get_template_directory_uri() . '/css/semantic.min.css', array(), '1.2', 'all');
+	}
+	wp_enqueue_style( 'form-solicitacao', get_template_directory_uri() . '/css/form-solicitacao.css',false,'1.1','all');
+	wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.3','all');
+	wp_enqueue_style( 'popup', get_template_directory_uri() . '/components/popup.css',false,'1.1','all');
+
+	// Javascript
+	wp_deregister_script( 'jquery' ); // Remove o Jquery ogirinal do Wordpress
+	wp_enqueue_script( 'jquery', get_template_directory_uri() . '/js/jquery-3.1.0.min.js', array(), '3.1.0', true);
+	wp_enqueue_script( 'semantic-js', get_template_directory_uri() . '/js/semantic.min.js', array('jquery'), '1.0', true );
+	wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '1.0', true );
+	wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '1.0', true );
+	wp_enqueue_script( 'main', get_template_directory_uri()."/js/main.js", array('jquery'), '1.0', true);
+	wp_enqueue_script( 'custom-js', get_template_directory_uri()."/js/scripts.js", array('jquery'), '1.0', true);
 
 	wp_localize_script('custom-js', 'ajax_object',
 		array(
@@ -631,43 +632,6 @@ function wpse27856_set_content_type(){
 }
 add_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
 
-
-/* --------------------------
-
-COMENTÁRIOS CALLBACK
-
----------------------------- */
-
-function mytheme_comment($comment, $args, $depth) {
-   $GLOBALS['comment'] = $comment; ?>
-
-
-<div id="comment-<?php comment_ID() ?>" class="comment">
-  <a class="avatar">
-		<span class="ui mini circular image">
-    <?php echo get_avatar( $comment, 100 ); ?>
-		</span>
-  </a>
-  <div class="content">
-    <a class="author"><?php comment_author(''); ?></a>
-    <div class="metadata">
-      <div class="date"><?php printf(__('%1$s at %2$s'), get_comment_date(),  get_comment_time()) ?></div>
-    </div>
-    <div class="text">
-        <?php if ($comment->comment_approved == '0') : ?>
-         <em><?php _e('Your comment is awaiting moderation.') ?></em>
-         <br />
-      <?php endif; ?>
-      <?php comment_text() ?>
-    </div>
-    <!--<div class="actions">
-      <a class="reply"><?php // comment_reply_link(array_merge( $args, array('depth' => $depth, 'max_depth' => $args['max_depth']))) ?></a>
-    </div>-->
-  </div>
-</div>
-<?php
-}
-
 /* --------------------------
 
 ADMIN - CUSTOM WORDPRESS FOOTER MESSAGE
@@ -970,11 +934,28 @@ AO CRIAR/ATUALIZAR TAREFA
 
     $my_post = array();
     $my_post['ID'] = $post_id;
+		$author_id = get_post_field( 'post_author', $post_id );
 
 		// Muda o status para Não iniciado
 		$status = get_field('status');
+
 				if ( $status === null ) {
 					update_field('status', 'naoiniciado', $post_id );
+
+					// Define a segmentação da tarefa (ao criá-la apenas)
+					include ( locate_template('template-parts/cd-feed-new.php') );
+
+					// Define o cd_author
+					update_field( 'cd_author', $author_id, $post_id);
+
+					// Registra o acesso
+					$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
+					$row = array(
+						'usuario'	=> $current_user->user_login,
+						'acesso'	=> $acesso,
+					);
+					$i = add_row('visitas', $row, $post_id);
+
 				}
 
     // Update the post into the database - Se não não atualiza o cache do Search & Filter
@@ -991,33 +972,33 @@ AO CRIAR/ATUALIZAR TAREFA
   }
 
   // run after ACF saves the $_POST['fields'] data
-  add_action('acf/save_post', 'my_acf_save_post', 20);
+  add_action('acf/save_post', 'my_acf_save_post', 19);
 
-	/* --------------------------
-
-	ATUALIZA O POST APOS O COMENTARIO (PARA O POST SUBIR NO FEED)
-
-	---------------------------- */
-
-	add_filter( 'comment_post', 'comment_notification' );
-
-	function comment_notification( $comment_id ) {
-
-		$comment = get_comment( $comment_id );
-		$post_id = get_post( $comment->comment_post_ID );
-
-		if ( get_post_type( $post_id ) == 'tarefa' ) {
-
-		  // Update the post into the database
-		  wp_update_post( $post_id );
-
-			// Atualizar feed == checked
-			global $wpdb;
-			$wpdb->query($wpdb->prepare("UPDATE wp_usermeta SET meta_value=1 WHERE meta_key='atualizar_feed'", ''));
-
-		}
-
-	}
+	// /* --------------------------
+	//
+	// ATUALIZA O POST APOS O COMENTARIO (PARA O POST SUBIR NO FEED)
+	//
+	// ---------------------------- */
+	//
+	// add_filter( 'comment_post', 'comment_notification' );
+	//
+	// function comment_notification( $comment_id ) {
+	//
+	// 	$comment = get_comment( $comment_id );
+	// 	$post_id = get_post( $comment->comment_post_ID );
+	//
+	// 	if ( get_post_type( $post_id ) == 'tarefa' ) {
+	//
+	// 	  // Update the post into the database
+	// 	  wp_update_post( $post_id );
+	//
+	// 		// Atualizar feed == checked
+	// 		global $wpdb;
+	// 		$wpdb->query($wpdb->prepare("UPDATE wp_usermeta SET meta_value=1 WHERE meta_key='atualizar_feed'", ''));
+	//
+	// 	}
+	//
+	// }
 
 	/* --------------------------
 
@@ -1025,75 +1006,87 @@ AO CRIAR/ATUALIZAR TAREFA
 
 	---------------------------- */
 
-	function verifica_atualizacao() {
+	// function verifica_atualizacao() {
+	//
+	// 	global $current_user;
+	// 	$atualizar_feed = get_field('atualizar_feed', 'user_'. $current_user->ID );
+	// 	echo $atualizar_feed;
+  //   wp_die();
+	//
+	// }
+	// add_action('wp_ajax_verifica_atualizacao', 'verifica_atualizacao');
+	// add_action('wp_ajax_nopriv_verifica_atualizacao', 'verifica_atualizacao');
+	//
+	// function carrega_loop (){
+	//
+	//   global $current_user;
+	// 	$response;
+	//   // $atualizar_feed = get_field('atualizar_feed', 'user_'. $current_user->ID );
+	//
+	// 		include ( locate_template('template-parts/cd-feed.php') );
+	//
+	// 		$args = array(
+	// 			'post_type'              => 'tarefa',
+	// 			'posts_per_page'         => 31,
+	// 			'order'                  => 'DESC',
+	// 			'orderby'                => 'modified',
+	// 			'author'                 => $feed_rc,
+	// 			'meta_query'             => array( $feed_cd ),
+	// 		);
+	//
+	// 		$query = new WP_Query( $args );
+	//
+	// 		if ( $query->have_posts() ) {
+	// 			while ( $query->have_posts() ) { $query->the_post();
+	//
+	// 				include ( locate_template('template-parts/var-tarefas.php') );
+	//
+	// 				if ( get_post_meta(get_post()->ID, '_edit_last') ) {
+	// 					$author = ', por ' . get_the_modified_author();
+	// 				};
+	//
+	// 				$response .= '<a href="'. get_the_permalink() .'" class="item '. get_lido_nao_lido('feed-lido', 'feed-nao-lido').'" style="border-top: 1px solid #dedede !important;">';
+	// 				$response .= '<strong style="line-height: 2;">'.get_field('unidade').'&nbsp;&nbsp;|&nbsp;&nbsp;'.get_the_title().'</strong><br>';
+	// 				$response .= '<span class="cd-disabled">';
+	// 				$response .= '<i class="green refresh icon"></i> Há '. human_time_diff(get_the_modified_time('U'), current_time('timestamp')) . $author;
+	// 				$response .= '<br><i class="purple comments icon"></i>'. get_comments_number() . ' interações' . '<br>';
+	// 				$response .= '<i class="power icon"></i>' . $status['label'] . '</span></a>';
+	//
+	// 			}
+	//
+	// 			if( current_user_can( 'edit_pages' )){
+	// 				$response .= '<a href="http://cd.intranet.sp.senac.br/minhas-tarefas/" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
+	// 			}else{
+	// 				$response .= '<a href="http://cd.intranet.sp.senac.br/minhas-solicitacoes/" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
+	// 			}
+	//
+	// 		}else{
+	// 			$response = '<div class="item"><i class="grey refresh icon"></i>Não há notificações</div>';
+	// 		}
+	// 		wp_reset_postdata();
+	//
+	//
+	// 	update_field( 'field_595feb818431d', false,'user_' . $current_user->ID); // Atualizar feed == unchecked
+	//
+	// 	echo $response;
+	//
+	// 	wp_die();
+	// }
+	//
+	// add_action('wp_ajax_carrega_loop', 'carrega_loop');
+	// add_action('wp_ajax_nopriv_carrega_loop', 'carrega_loop');
 
-		global $current_user;
-		$atualizar_feed = get_field('atualizar_feed', 'user_'. $current_user->ID );
-		echo $atualizar_feed;
-    wp_die();
+function carrega_loop () {
 
-	}
-	add_action('wp_ajax_verifica_atualizacao', 'verifica_atualizacao');
-	add_action('wp_ajax_nopriv_verifica_atualizacao', 'verifica_atualizacao');
+	$response = get_template_part('comment','feed');
 
-	function carrega_loop (){
+	echo $response;
 
-	  global $current_user;
-		$response;
-	  // $atualizar_feed = get_field('atualizar_feed', 'user_'. $current_user->ID );
+	wp_die();
 
-			include ( locate_template('template-parts/cd-feed.php') );
-
-			$args = array(
-				'post_type'              => 'tarefa',
-				'posts_per_page'         => '31',
-				'order'                  => 'DESC',
-				'orderby'                => 'modified',
-				'author'                 => $feed_rc,
-				'meta_query'             => $feed_cd,
-			);
-
-			$query = new WP_Query( $args );
-
-			if ( $query->have_posts() ) {
-				while ( $query->have_posts() ) { $query->the_post();
-
-					include ( locate_template('template-parts/var-tarefas.php') );
-
-					if ( get_post_meta(get_post()->ID, '_edit_last') ) {
-						$author = ', por ' . get_the_modified_author();
-					};
-
-					$response .= '<a href="'. get_the_permalink() .'" class="item '. get_lido_nao_lido('feed-lido', 'feed-nao-lido').'" style="border-top: 1px solid #dedede !important;">';
-					$response .= '<strong style="line-height: 2;">'.get_field('unidade').'&nbsp;&nbsp;|&nbsp;&nbsp;'.get_the_title().'</strong><br>';
-					$response .= '<span class="cd-disabled">';
-					$response .= '<i class="green refresh icon"></i> Há '. human_time_diff(get_the_modified_time('U'), current_time('timestamp')) . $author;
-					$response .= '<br><i class="purple comments icon"></i>'. get_comments_number() . ' interações' . '<br>';
-					$response .= '<i class="power icon"></i>' . $status['label'] . '</span></a>';
-
-				}
-
-				if( current_user_can( 'edit_pages' )){
-					$response .= '<a href="http://cd.intranet.sp.senac.br/minhas-tarefas/" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
-				}else{
-					$response .= '<a href="http://cd.intranet.sp.senac.br/minhas-solicitacoes/" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
-				}
-
-			}else{
-				$response = '<div class="item"><i class="grey refresh icon"></i>Não há notificações</div>';
-			}
-			wp_reset_postdata();
-
-
-		update_field( 'field_595feb818431d', false,'user_' . $current_user->ID); // Atualizar feed == unchecked
-
-		echo $response;
-
-		wp_die();
-	}
-
-	add_action('wp_ajax_carrega_loop', 'carrega_loop');
-	add_action('wp_ajax_nopriv_carrega_loop', 'carrega_loop');
+}
+add_action('wp_ajax_carrega_loop', 'carrega_loop');
+add_action('wp_ajax_nopriv_carrega_loop', 'carrega_loop');
 
 /* --------------------------
 
@@ -1131,18 +1124,22 @@ REDIRECT USUARIOS PARA A HOME APOS LOGIN
 		// CD-FEED
 		include ( locate_template('template-parts/cd-feed.php') );
 
-		//if search form ID = XX, the do something with this query
+		// Minhas tarefas
 		if ( $sfid == 2817 ) {
 
-			// $args['post_type'] = 'tarefa';
-	    // $args['posts_per_page'] = 50;
-	    // $args['order'] = 'DESC';
-	    $args['author'] = $feed_rc;
-	    $args['meta_query'] = array( $feed_cd );
+	    $args['meta_query'] = array( $minhas_tarefas_feed );
+
+		}
+
+		// Minhas solicitações
+		if ( $sfid == 12379 ) {
+
+			$args['meta_query'] = array( $minhas_solicitacoes_feed );
 
 		}
 
 		return $args;
+
 	}
 	add_filter( 'sf_edit_query_args', 'filter_function_name', 20, 2 );
 
@@ -1242,16 +1239,19 @@ function get_lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
 	global $current_user;
 
 	$modificado = get_the_modified_time('YmdHis');
+	$comment_modificado = get_comment_time('YmdHis');
+	$comment = get_comment( $comment_id );
+	$post_id = get_post( $comment->comment_post_ID );
 
 	$usuario_registrado = array();
 	$acesso_registrado = array();
 
-	if( have_rows('visitas') ):
+	if( have_rows('visitas', $post_id) ):
 
-	    while ( have_rows('visitas') ) : the_row();
+	    while ( have_rows('visitas', $post_id) ) : the_row();
 
-	        $usuario_registrado[] = get_sub_field('usuario'); // Array usuários registrados
-	        $acesso_registrado[] = get_sub_field('acesso'); // Array acessos registrados
+	        $usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
+	        $acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
 
 	    endwhile;
 
@@ -1264,7 +1264,7 @@ function get_lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
     // se existir a key do usuário, executa a função
     if ($key !== false) {
 
-      if ($modificado > $acesso_registrado[$key]) {
+      if ($comment_modificado > $acesso_registrado[$key]) {
         return $nao_lido;
       } else {
         return $lido;
@@ -1344,6 +1344,73 @@ function lido_nao_lido_single() {
 
 /* --------------------------
 
+HIGHLIGHT TAREFAS COM COMENTARIOS (MINHAS TAREFAS e MINHAS SOLICITACOES)
+
+---------------------------- */
+
+function comment_nao_lido($nao_lido = 'background:#ebf7ff;', $comment_privado) {
+
+global $current_user;
+$post_id = get_the_ID();
+
+	if ( !is_archive() && is_user_logged_in() ) {
+
+		// Tira os comentários privados da comparação para usuários Senac
+		if ( current_user_can( 'senac' ) ) {
+		  $privado = array(
+		  'key' => 'privado_interacao',
+		  'value' => '1',
+		  'compare' => '!=',
+		  );
+		}
+
+		// Checa se há comentários
+		$args = array(
+			'number' => '1',
+			'post_id' => $post_id,
+			'meta_query' => array( $privado )
+		);
+		$comments = get_comments($args);
+
+		if ($comments) {
+
+			// Checa se há visita e quem visitou
+			if( have_rows('visitas', $post_id) ) {
+
+				while ( have_rows('visitas', $post_id) ) {
+					the_row();
+					$usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
+					$acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
+				}
+
+				$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
+
+				// Usuário logado visitou
+				if ($key !== false) {
+
+					// Faz a comparação com o último comentário
+					foreach($comments as $comment) {
+
+						$last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
+
+						if ($last_comment_time > $acesso_registrado[$key]) {
+							return $nao_lido;
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+/* --------------------------
+
 MANTER USUARIOS LOGADOS
 
 ---------------------------- */
@@ -1366,6 +1433,693 @@ function ajax_check_user_logged_in() {
 }
 add_action('wp_ajax_is_user_logged_in', 'ajax_check_user_logged_in');
 add_action('wp_ajax_nopriv_is_user_logged_in', 'ajax_check_user_logged_in');
+
+/* --------------------------
+
+NEW TASK
+
+---------------------------- */
+
+function new_task( $new_task = '<span class="ui blue mini label">Nova</span>' ) {
+
+	global $current_user;
+	$post_id = get_the_ID();
+
+	if ( !is_archive() && current_user_can('edit_pages') ) { // Não exibe na página Todas as Tarefas nem para usuários Senac
+
+	  if ( have_rows('visitas', $post_id) ) {
+	      while ( have_rows('visitas', $post_id) ) { the_row();
+	          $usuario_registrado[] = get_sub_field('usuario', $post_id);
+	          $acesso_registrado[] = get_sub_field('acesso', $post_id);
+	      }
+
+	    // Procura o usuário no array de usuários registrados
+	    if ( !in_array($current_user->user_login, $usuario_registrado) ) {
+	      echo $new_task;
+	    }
+	  } else {
+			echo $new_task;
+	  }
+	}
+
+}
+
+// /* --------------------------
+//
+// NOTIFICACAO NEW TASK
+//
+// ---------------------------- */
+//
+// function notificacao_new_task() {
+//
+// 	// No header.php
+//
+// 	$response = false;
+//
+// 	if ( current_user_can('edit_pages') && have_rows('notificacao_new_task', 946) ) :
+//
+// 		global $current_user;
+// 		$row_number = 1;
+// 		$new_user = true;
+//
+// 		while ( have_rows('notificacao_new_task', 946) ) : the_row();
+//
+// 		  $usuario_registrado = get_sub_field('user_new_task', 946);
+// 		  $acesso_registrado = get_sub_field('acesso_new_task', 946);
+//
+// 		  // Usuário já acessou
+// 		  if ( $current_user->ID == $usuario_registrado['ID'] ) {
+// 		    $new_user = false;
+// 		    $key = $row_number;
+// 		    $key_acesso_registrado = $acesso_registrado;
+// 		  }
+//
+// 		  $row_number++;
+//
+// 		endwhile;
+//
+// 		// Pega o post mais recente de cada segmentação
+// 		include ( locate_template('template-parts/cd-feed.php') );
+// 		$args = array(
+// 			'numberposts' => 1,
+// 			'post_type' => 'tarefa',
+// 			'meta_query' => $minhas_tarefas_feed,
+// 		);
+// 		$recent_posts = wp_get_recent_posts($args);
+// 		foreach ( $recent_posts as $recent ) {
+// 			$post_recente = get_post_time('YmdHis', '' , $recent["ID"]);
+// 		}
+// 		wp_reset_query();
+//
+// 		$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
+//
+// 		// Row do ACF
+// 		$row = array(
+// 			'user_new_task'	=> $current_user->ID,
+// 			'acesso_new_task'	=> $acesso,
+// 		);
+//
+// 		if ( $new_user == false ) {
+// 			if ( is_page(946) ) {
+// 				update_sub_field( array('notificacao_new_task', $key, 'acesso_new_task'), $acesso );
+// 			}
+// 			if ($post_recente > $key_acesso_registrado) {
+// 				$response = true;
+// 			}
+// 		} else {
+// 			if ( is_page(946) ) {
+// 				$i = add_row('notificacao_new_task', $row, 946);
+// 			}
+// 		}
+//
+// 	endif;
+//
+// 	return $response;
+//
+// }
+//
+// function notificacao_new_task_ajax() {
+//
+// 	echo notificacao_new_task();
+//
+// 	wp_die();
+//
+// }
+//
+// add_action('wp_ajax_notificacao_new_task_ajax', 'notificacao_new_task_ajax');
+// add_action('wp_ajax_nopriv_notificacao_new_task_ajax', 'notificacao_new_task_ajax');
+
+/* --------------------------
+
+NEW TASK PUSH
+
+---------------------------- */
+
+function new_task_push() {
+
+	include ( locate_template('template-parts/cd-feed.php') );
+
+	$query = new WP_Query(
+		array(
+			'post_type' => 'tarefa',
+			'meta_query' => $minhas_tarefas_feed,
+		)
+	);
+
+	$response = $query->found_posts;
+
+	echo $response;
+
+	wp_die();
+
+}
+
+add_action('wp_ajax_new_task_push', 'new_task_push');
+add_action('wp_ajax_nopriv_new_task_push', 'new_task_push');
+
+/* --------------------------
+
+USUARIO LOGADO AJAX
+
+---------------------------- */
+
+function usuario_logado() {
+
+	if ( current_user_can('edit_pages') ) {
+		$response = 'edit_pages';
+	} elseif (current_user_can('senac')) {
+		$response = 'senac';
+	}
+
+	echo $response;
+
+	wp_die();
+
+}
+
+add_action('wp_ajax_usuario_logado', 'usuario_logado');
+add_action('wp_ajax_nopriv_usuario_logado', 'usuario_logado');
+
+/* --------------------------
+
+BASIC UPLOADER
+
+---------------------------- */
+
+// force basic uploader for a certain field
+function my_acf_force_basic_uploader( $field ) {
+
+    // don't do this on the backend
+    if(is_admin()) return $field;
+
+    // set the uploader setting before rendering the field
+    acf_update_setting('uploader', 'basic');
+
+    // return the field data
+    return $field;
+
+}
+
+// target the field using its name
+add_filter('acf/prepare_field/name=arquivo_interacao', 'my_acf_force_basic_uploader');
+
+/* --------------------------
+
+NOTIFICAÇÃO EMAIL - NOVA SOLICITACAO
+
+---------------------------- */
+
+add_action('acf/save_post', 'my_save_post', 20);
+
+function my_save_post( $post_id ) {
+
+	// bail early if not a contact_form post
+	if( get_post_type($post_id) !== 'tarefa' ) {
+		return;
+	}
+
+	// bail early if editing in admin
+	if( is_admin() || !is_page(168) ) {
+		return;
+	}
+
+	$post = get_post( $post_id );
+
+	global $current_user; get_currentuserinfo();
+	$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
+	$email = $current_user->user_email;
+	$finalidade = get_field('finalidade', $post_id);
+	$unidade = get_field('unidade', $post_id);
+
+	$destinos = array();
+
+	//SEGMENTAÇÃO
+
+	$segmentacao = get_field('segmentacao', $post_id);
+
+	if ($segmentacao) {
+
+		//DESIGNERS GD2 E GD4
+		if( in_array('gd2_gd4', $segmentacao) || $segmentacao == 'gd2_gd4' ) {
+
+			$designers = get_users('role=designer_gd2_gd4');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							$array_designers[] = $designer->user_email;
+
+						}
+
+			}
+
+			}
+			//DESIGNERS GD1 E GD3
+			if( in_array('gd1_gd3', $segmentacao) || $segmentacao == 'gd1_gd3' ) {
+
+			$designers = get_users('role=designer_gd1_gd3');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							$array_designers[] = $designer->user_email;
+
+						}
+
+			}
+
+			}
+			//DESIGNERS INSTITUCIONAL
+			if( in_array('institucional', $segmentacao) || $segmentacao == 'institucional' ) {
+
+			$designers = get_users('role=designer_institucional');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							$array_designers[] = $designer->user_email;
+
+						}
+
+			}
+
+			}
+			//PORTAL
+			if( in_array('evento', $segmentacao) || $segmentacao == 'evento' ) {
+
+			$designers = get_users('role=portal');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							$array_designers[] = $designer->user_email;
+
+						}
+
+			}
+
+			}
+
+		}
+
+	$destinos = array_merge($destinos, $array_designers);
+
+
+	$to = array();
+
+	foreach ($destinos as $d) {
+
+			array_push($to, $d);
+
+	}
+
+	$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
+	$subject = $unidade . ' | ' . $post->post_title;
+	$body =
+	'<h2>[Nova solicitação]</h2><br>' .
+	'<strong>' . '> Para visualizar, acesse: </strong>' . get_post_permalink($post_id) .
+	'<br><br><br>' .
+	'<hr>' .
+	'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
+
+	// send email
+	wp_mail($to, $subject, $body, $headers );
+
+	// }
+
+}
+
+
+// /* --------------------------
+//
+// NOTIFICAÇÃO EMAIL - STATUS UPDATE PARA O AUTOR E PARTICIPANTE
+//
+// ---------------------------- */
+
+add_filter('acf/update_value/name=status', 'check_status_change', 10, 3);
+
+function check_status_change($value, $post_id, $field) {
+
+	global $current_user; get_currentuserinfo();
+	$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
+	$email = $current_user->user_email;
+
+	$post = get_post( $post_id );
+	$user = get_user_by( 'id', $post->post_author );
+
+	$post_title = get_the_title( $post_id );
+	$post_url = get_permalink( $post_id );
+	$unidade = get_field('unidade', $post_id);
+	//$status = get_field('status', $post_id);
+
+  $old_value = get_post_meta($post_id, 'status', true);
+
+  $participantes = get_field('participante', $post_id);
+
+	$destinos = array();
+
+	//AUTOR
+
+	$author_email = $user->user_email;
+
+	if ( get_field('receber_notificacoes_por_email', 'user_' . $user->ID) ) {
+
+		$destinos = array($author_email);
+
+	}
+
+	//PARTICIPANTES
+
+	$participantes = get_field('participante', $post_id);
+
+	if( $participantes ) {
+
+		foreach( $participantes as $participante ) {
+
+			if ( get_field('receber_notificacoes_por_email', 'user_' . $participante['ID']) ) {
+
+					$array_participantes[] = $participante['user_email'];
+
+			}
+
+		}
+
+		$destinos = array_merge($destinos, $array_participantes);
+
+	}
+
+	//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
+
+	$to = array();
+
+	foreach ($destinos as $d) {
+
+		if ($email != $d) {
+
+			array_push($to, $d);
+
+		}
+
+	}
+
+  if ( $old_value != $value ) {
+
+		$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
+		$subject = $unidade . ' | ' . $post_title;
+		$message =
+		'<h2>[Status atualizado]</h2><br>' .
+		//'<strong>Status atual: </strong><br> ' . $status_label . '<br><br><br>' .
+		'<strong>' . '> Referente à solicitação: </strong>' . $unidade . ' | ' . $post_title . '<br>' .
+		'<strong>' . '> Para visualizar, acesse: </strong>' . $post_url .
+		'<br><br><br>' .
+		'<hr>' .
+		'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
+
+		wp_mail( $to , $subject, $message, $headers );
+
+  }
+
+  return $value;
+
+}
+
+/* --------------------------
+
+NOTIFICAÇÃO EMAIL POST NOVO/UPDATE - GERAL (TAREFAS)
+
+---------------------------- */
+
+// add_action( 'save_post', 'my_project_updated_send_email' );
+//
+// function my_project_updated_send_email( $post_id ) {
+//
+// 	// Não executa se a edição for feita no admin
+// 	if ( is_admin() ) {
+// 		return;
+// 	}
+//
+// 	// Não executa se o post_type não é tarefa
+// 	if( get_post_type($post_id) !== 'tarefa' ) {
+// 		return;
+// 	}
+//
+// 	global $current_user; get_currentuserinfo();
+// 	$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
+// 	$email = $current_user->user_email;
+//
+// 	$post = get_post( $post_id );
+// 	$author = get_user_by( 'id', $post->post_author );
+// 	$to = $author->user_email;
+//
+// 	$post_title = get_the_title( $post_id );
+// 	$post_url = get_permalink( $post_id );
+// 	$unidade = get_field('unidade', $post_id);
+// 	$notificacaoEmail = get_field('receber_notificacoes_por_email', 'user_' . $author->ID);
+//
+// 	// Não envia se o e-mail do usuário logado = e-mail do autor do post
+// 	if( $email == $to ) {
+// 		return;
+// 	}
+//
+// 		if ( !wp_is_post_revision( $post_id ) && $notificacaoEmail ) {
+//
+// 				$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
+// 				$subject = $unidade . ' | ' . $post_title;
+//
+// 				$message = '<h2>Nova interação / atualização</h2><br>' .
+// 				'<strong>Título: </strong>' . $post_title . '<br>' .
+// 				'<strong>Visualizar: </strong>' . $post_url . '<br><br><br>' .
+// 				'<hr>' .
+// 				'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
+//
+// 				wp_mail( $to , $subject, $message, $headers );
+// 		}
+// }
+
+/* --------------------------
+
+NOTIFICAÇÃO EMAIL - COMENTÁRIOS
+
+---------------------------- */
+
+add_filter( 'comment_post', 'comment_notification_email' );
+
+function comment_notification_email( $comment_id ) {
+
+		$comment = get_comment( $comment_id );
+		$post = get_post( $comment->comment_post_ID );
+		$user = get_user_by( 'id', $post->post_author );
+		$post_url = get_permalink( $post->ID );
+
+		global $current_user; get_currentuserinfo();
+
+		$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
+		$email = $current_user->user_email;
+
+		$unidade = get_field('unidade', $post);
+
+		$interacao_privada = get_field('privado_interacao', $comment);
+
+		$destinos = array();
+
+		//AUTOR
+
+		$author_email = $user->user_email;
+
+		if ( get_field('receber_notificacoes_por_email', 'user_' . $user->ID) ) {
+
+			if ( in_array('senac', $user->roles) && $interacao_privada ) {
+
+			} else {
+
+				$destinos = array($author_email);
+
+			}
+
+		}
+
+		//SEGMENTAÇÃO
+
+		$segmentacao = get_field('segmentacao', $post);
+
+		if ($segmentacao) {
+
+			//DESIGNERS GD2 E GD4
+			if( in_array('gd2_gd4', $segmentacao) || $segmentacao == 'gd2_gd4' ) {
+
+				$designers = get_users('role=designer_gd2_gd4');
+
+				foreach ( $designers as $designer ) {
+
+	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+	        			$array_designers[] = $designer->user_email;
+
+	        		}
+
+				}
+
+	  		}
+	  		//DESIGNERS GD1 E GD3
+	  		if( in_array('gd1_gd3', $segmentacao) || $segmentacao == 'gd1_gd3' ) {
+
+				$designers = get_users('role=designer_gd1_gd3');
+
+				foreach ( $designers as $designer ) {
+
+	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+	        			$array_designers[] = $designer->user_email;
+
+	        		}
+
+				}
+
+	  		}
+	  		//DESIGNERS INSTITUCIONAL
+	  		if( in_array('institucional', $segmentacao) || $segmentacao == 'institucional' ) {
+
+				$designers = get_users('role=designer_institucional');
+
+				foreach ( $designers as $designer ) {
+
+	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+	        			$array_designers[] = $designer->user_email;
+
+	        		}
+
+				}
+
+	  		}
+	  		//PORTAL
+	  		if( in_array('evento', $segmentacao) || $segmentacao == 'evento' ) {
+
+				$designers = get_users('role=portal');
+
+				foreach ( $designers as $designer ) {
+
+	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+	        			$array_designers[] = $designer->user_email;
+
+	        		}
+
+				}
+
+	  		}
+
+  		}
+
+		$destinos = array_merge($destinos, $array_designers);
+
+		//PARTICIPANTES
+
+		$participantes = get_field('participante', $post);
+
+		if( $participantes ) {
+
+			foreach( $participantes as $participante ) {
+
+				if ( get_field('receber_notificacoes_por_email', 'user_' . $participante['ID']) ) {
+
+					$user_meta = get_userdata($participante['ID']);
+					$user_role = $user_meta->roles;
+
+					if ( in_array('senac', $user_role) && $interacao_privada ) {
+
+					} else {
+
+						$array_participantes[] = $participante['user_email'];
+
+					}
+
+				}
+
+			}
+
+			$destinos = array_merge($destinos, $array_participantes);
+
+		}
+
+		//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
+
+		$to = array();
+
+		foreach ($destinos as $d) {
+
+			if ($email != $d) {
+
+				array_push($to, $d);
+
+			}
+
+		}
+
+
+		$subject = $unidade . ' | ' . $post->post_title;
+		$message =
+		'<h2>[Nova interação]</h2><br>' .
+		'<strong>' . $name . '</strong>' . ' disse:<br>' . '<em>' . $comment->comment_content . '</em>' . '<br><br><br>' .
+		'<strong>' . '> Referente à solicitação: </strong>' . $unidade . ' | ' . $post->post_title . '<br>' .
+		'<strong>' . '> Para responder, acesse: </strong>' . $post_url .
+		'<br><br><br>' .
+		'<hr>' .
+		'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
+
+		$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
+
+		wp_mail( $to, $subject, $message, $headers );
+
+
+
+}
+
+/* --------------------------
+
+NUMERO DE INTERACOES (PRIVADAS)
+
+---------------------------- */
+
+function num_comentarios($text = true) {
+
+	$post_id = get_the_ID();
+
+	if ( current_user_can('senac') ) {
+	  $privado = array(
+	  'key' => 'privado_interacao',
+	  'value' => '1',
+	  'compare' => '!=',
+	  );
+	}
+
+	$args = array(
+	  'post_id' => $post_id, // use post_id, not post_ID
+	  'count' => true, //return only the count
+	  'meta_query' => array( $privado )
+	);
+
+	$comments = get_comments($args);
+
+	if ($text) {
+
+	  if ( $comments == 0 ) {
+	    $comments = __('0 INTERAÇÕES');
+	  } elseif ( $comments > 1 ) {
+	    $comments = $comments . __(' INTERAÇÕES');
+	  } else {
+	    $comments = __('1 INTERAÇÃO');
+	  }
+
+	}
+
+	echo $comments;
+
+}
 
 /* --------------------------
 
