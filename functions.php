@@ -214,7 +214,7 @@ function registra_post_type_curso() {
 		'archives'              => __( 'Arquivos', 'text_domain' ),
 		'parent_item_colon'     => __( 'Curso pai:', 'text_domain' ),
 		'all_items'             => __( 'Todos os cursos', 'text_domain' ),
-		'add_new_item'          => __( 'Adicionar novo Curso', 'text_domain' ),
+		'add_new_item'          => __( 'Adicionar novo', 'text_domain' ),
 		'add_new'               => __( 'Adicionar novo', 'text_domain' ),
 		'new_item'              => __( 'Novo Curso', 'text_domain' ),
 		'edit_item'             => __( 'Editar Curso', 'text_domain' ),
@@ -272,8 +272,8 @@ function tarefa_post_type() {
 		'archives'              => __( 'Item Archives', 'text_domain' ),
 		'parent_item_colon'     => __( 'Parent Item:', 'text_domain' ),
 		'all_items'             => __( 'Todas as tarefas', 'text_domain' ),
-		'add_new_item'          => __( 'Adicionar Nova Tarefa', 'text_domain' ),
-		'add_new'               => __( 'Adicionar Nova', 'text_domain' ),
+		'add_new_item'          => __( 'Adicionar nova', 'text_domain' ),
+		'add_new'               => __( 'Adicionar nova', 'text_domain' ),
 		'new_item'              => __( 'Nova Tarefa', 'text_domain' ),
 		'edit_item'             => __( 'Editar Tarefa', 'text_domain' ),
 		'update_item'           => __( 'Atualizar Tarefa', 'text_domain' ),
@@ -314,6 +314,65 @@ function tarefa_post_type() {
 
 }
 add_action( 'init', 'tarefa_post_type', 0 );
+
+/* --------------------------
+
+CUSTOM POST TYPE - EVENTO EM REDE
+
+---------------------------- */
+
+function eventos_rede_post_type() {
+
+	$labels = array(
+		'name'                  => _x( 'Eventos em Rede', 'Post Type General Name', 'text_domain' ),
+		'singular_name'         => _x( 'Evento em Rede', 'Post Type Singular Name', 'text_domain' ),
+		'menu_name'             => __( 'Eventos em Rede', 'text_domain' ),
+		'name_admin_bar'        => __( 'Evento em Rede', 'text_domain' ),
+		'archives'              => __( 'Item Archives', 'text_domain' ),
+		'parent_item_colon'     => __( 'Parent Item:', 'text_domain' ),
+		'all_items'             => __( 'Todos os eventos', 'text_domain' ),
+		'add_new_item'          => __( 'Adicionar novo', 'text_domain' ),
+		'add_new'               => __( 'Adicionar novo', 'text_domain' ),
+		'new_item'              => __( 'Novo Evento em Rede', 'text_domain' ),
+		'edit_item'             => __( 'Editar Evento em Rede', 'text_domain' ),
+		'update_item'           => __( 'Atualizar Evento em Rede', 'text_domain' ),
+		'view_item'             => __( 'Visualizar Evento em Rede', 'text_domain' ),
+		'search_items'          => __( 'Procurar Evento em Rede', 'text_domain' ),
+		'not_found'             => __( 'Não encontrado', 'text_domain' ),
+		'not_found_in_trash'    => __( 'Não encontrado no lixo', 'text_domain' ),
+		'featured_image'        => __( 'Imagem', 'text_domain' ),
+		'set_featured_image'    => __( 'Configurar Imagem', 'text_domain' ),
+		'remove_featured_image' => __( 'Remover Imagem', 'text_domain' ),
+		'use_featured_image'    => __( 'Utilizar como imagem', 'text_domain' ),
+		'insert_into_item'      => __( 'Inserir na tarefa', 'text_domain' ),
+		'uploaded_to_this_item' => __( 'Adicionado a esta tarefa', 'text_domain' ),
+		'items_list'            => __( 'Lista de eventos', 'text_domain' ),
+		'items_list_navigation' => __( 'Navegação da lista de eventos', 'text_domain' ),
+		'filter_items_list'     => __( 'Filtrar lista de eventos', 'text_domain' ),
+	);
+	$args = array(
+		'label'                 => __( 'Evento em Rede', 'text_domain' ),
+		'description'           => __( 'Evento em Rede', 'text_domain' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'author', 'thumbnail', 'comments', 'revisions'),
+		'hierarchical'          => false,
+		'public'                => true,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 5,
+		'menu_icon'             => 'dashicons-pressthis',
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => true,
+		'can_export'            => true,
+		'has_archive'           => true,
+		'exclude_from_search'   => false,
+		'publicly_queryable'    => true,
+		'capability_type'       => 'post',
+	);
+	register_post_type( 'eventos_rede', $args );
+
+}
+add_action( 'init', 'eventos_rede_post_type', 0 );
 
 
 /* --------------------------
