@@ -120,6 +120,10 @@ $comment_feed = array(
 'relation'		=> 'OR',
   $segmentacao,
   $participante,
+  $responsavel1,
+  $responsavel2,
+  $responsavel_portal1,
+  $responsavel_portal2,
   $cd_author,
 );
 
