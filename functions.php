@@ -374,6 +374,76 @@ function eventos_rede_post_type() {
 }
 add_action( 'init', 'eventos_rede_post_type', 0 );
 
+/* --------------------------
+
+CUSTOM POST TYPE - ATIVIDADES
+
+---------------------------- */
+
+function atividades_post_type() {
+
+	$labels = array(
+		'name'                  => _x( 'Atividades', 'Post Type General Name', 'text_domain' ),
+		'singular_name'         => _x( 'Atividade', 'Post Type Singular Name', 'text_domain' ),
+		'menu_name'             => __( 'Atividades', 'text_domain' ),
+		'name_admin_bar'        => __( 'Atividade', 'text_domain' ),
+		'archives'              => __( 'Item Archives', 'text_domain' ),
+		'parent_item_colon'     => __( 'Parent Item:', 'text_domain' ),
+		'all_items'             => __( 'Todas as atividades', 'text_domain' ),
+		'add_new_item'          => __( 'Adicionar novo', 'text_domain' ),
+		'add_new'               => __( 'Adicionar novo', 'text_domain' ),
+		'new_item'              => __( 'Nova Atividade', 'text_domain' ),
+		'edit_item'             => __( 'Editar Atividade', 'text_domain' ),
+		'update_item'           => __( 'Atualizar Atividade', 'text_domain' ),
+		'view_item'             => __( 'Visualizar Atividade', 'text_domain' ),
+		'search_items'          => __( 'Procurar Atividade', 'text_domain' ),
+		'not_found'             => __( 'Não encontrado', 'text_domain' ),
+		'not_found_in_trash'    => __( 'Não encontrado no lixo', 'text_domain' ),
+		'featured_image'        => __( 'Imagem', 'text_domain' ),
+		'set_featured_image'    => __( 'Configurar Imagem', 'text_domain' ),
+		'remove_featured_image' => __( 'Remover Imagem', 'text_domain' ),
+		'use_featured_image'    => __( 'Utilizar como imagem', 'text_domain' ),
+		'insert_into_item'      => __( 'Inserir na atividade', 'text_domain' ),
+		'uploaded_to_this_item' => __( 'Adicionado a esta atividade', 'text_domain' ),
+		'items_list'            => __( 'Lista de eventos', 'text_domain' ),
+		'items_list_navigation' => __( 'Navegação da lista de eventos', 'text_domain' ),
+		'filter_items_list'     => __( 'Filtrar lista de eventos', 'text_domain' ),
+	);
+	$args = array(
+		'label'                 => __( 'Atividade', 'text_domain' ),
+		'description'           => __( 'Atividade', 'text_domain' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'author', 'thumbnail', 'comments', 'revisions'),
+		'hierarchical'          => false,
+		'public'                => true,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 5,
+		'menu_icon'             => 'dashicons-pressthis',
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => true,
+		'can_export'            => true,
+		'has_archive'           => true,
+		'exclude_from_search'   => false,
+		'publicly_queryable'    => true,
+		'capability_type'       => 'post',
+	);
+	register_post_type( 'atividades', $args );
+
+}
+add_action( 'init', 'atividades_post_type', 0 );
+
+// function my_acf_load_field( $field ) {
+//
+//      // $address = get_field('center_address', 342);
+//
+//      $field['default_value'] = 13798;
+//      return $field;
+//
+// }
+//
+// add_filter('acf/load_field/name=descricao_da_atividade', 'my_acf_load_field');
+
 
 /* --------------------------
 

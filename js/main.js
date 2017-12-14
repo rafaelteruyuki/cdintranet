@@ -85,7 +85,7 @@ $('.form-solicitacao button').addClass('ui secondary button');
 //  on: 'hover'
 //});
 
-$('.acf-field-58f4c987e479e .acf-input').append( $('#acf-_post_title') ); //Inserir título WP em lugar específico do Form front-end
+$('.acf-field-58f4c987e479e .acf-input').append( $('#acf-form-tarefa #acf-_post_title') ); //Inserir título WP em lugar específico do Form front-end
 //$('.acf-field-58f4c987e479e .acf-input').append( $('#titlewrap') ); //Inserir título
 //$('.button-large, .acf-button, .button').removeClass('button-large acf-button button').addClass('ui primary button'); //muda a classe do botão Adicionar Arquivo no Form front-end
 //$('.hide-if-value p').html($('.hide-if-value p').html().replace('Nenhum arquivo selecionado ','')); //remove "Nenhum arquivo selecionado" no Form front-end
@@ -93,6 +93,11 @@ $('.acf-field-58f4c987e479e .acf-input').append( $('#acf-_post_title') ); //Inse
 
 $('.cd-delete.modal')
   .modal('attach events', '.cd-delete-btn', 'show')
+  .modal('attach events', '.cd-cancel-btn', 'hide')
+;
+
+$('.cd-atividade.modal')
+  .modal('attach events', '.cd-atividade-btn', 'show')
   .modal('attach events', '.cd-cancel-btn', 'hide')
 ;
 

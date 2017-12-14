@@ -32,6 +32,7 @@ $test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 9
  if ( is_user_logged_in() ) :
 
    $args = array(
+          'id'              => 'acf-form-tarefa',
          'post_id'		    	=> 'new_post', // Create a new post
          'post_title'			=> true,
          'field_groups'    => array (127),
