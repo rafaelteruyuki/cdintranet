@@ -58,6 +58,38 @@ $cd_author = array(
   'compare' => '='
 );
 
+// RESPONSAVEL 1
+
+$responsavel1 = array(
+  'key' => 'responsavel_1',
+  'value' => $current_user->ID,
+  'compare' => '=',
+);
+
+// RESPONSAVEL 2
+
+$responsavel2 = array(
+  'key' => 'responsavel_2',
+  'value' => $current_user->ID,
+  'compare' => '=',
+);
+
+// RESPONSAVEL PORTAL 1
+
+$responsavel_portal1 = array(
+  'key' => 'responsavel_portal',
+  'value' => $current_user->ID,
+  'compare' => '=',
+);
+
+// RESPONSAVEL PORTAL 2
+
+$responsavel_portal2 = array(
+  'key' => 'responsavel_portal2',
+  'value' => $current_user->ID,
+  'compare' => '=',
+);
+
 // --------------------------- FEED ---------------------------- //
 
 // MINHAS TAREFAS
@@ -66,6 +98,10 @@ $minhas_tarefas_feed = array(
 'relation'		=> 'OR',
   $segmentacao,
   $participante,
+  $responsavel1,
+  $responsavel2,
+  $responsavel_portal1,
+  $responsavel_portal2,
   // $cd_author,
 );
 
@@ -84,6 +120,10 @@ $comment_feed = array(
 'relation'		=> 'OR',
   $segmentacao,
   $participante,
+  $responsavel1,
+  $responsavel2,
+  $responsavel_portal1,
+  $responsavel_portal2,
   $cd_author,
 );
 
