@@ -100,7 +100,9 @@ function fnExcelReport() {
 
 </script>
 
-<div class="ui tiny modal cd-natal" style="width: 580px;margin: 0 0 0 -290px">
+<!-- MODAL NATAL -->
+
+<div class="ui tiny modal cd-natal" style="width: 580px; margin: 0 0 0 -290px">
   <i class="close icon"></i>
   <div class="image content">
     <img src="<?php bloginfo('template_url'); ?>/images/natal2.gif">
@@ -128,11 +130,14 @@ if (mostrar !== 'no') {
     .modal('attach events', '.cd-natal-obrigado', 'hide')
     .modal('show')
   ;
+  $('.cd-natal').css({ margin: "-290px 0px 0px -290px" }); // Correção margem
 }
 
-alert(mostrar);
+// alert(mostrar);
 
 </script>
+
+<!-- // MODAL NATAL -->
 
 <!-- Analytics -->
 
