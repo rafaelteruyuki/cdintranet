@@ -4,25 +4,23 @@
     <div class="ui four column grid container stackable cd-margem">
 
       <div class="column">
+        <h4 class="ui dividing header inverted">Campanhas Institucionais, Gerências Funcionais, Editora e Hotéis</h4>
+          Anelise Kalinka de Andrade
+          <br>
+          Thiago Augusto da Costa
         <h4 class="ui dividing header inverted">GD1 e GD3</h4>
           <!-- Rafael Teruyuki Yamaguchi -->
-          Ana Carolina da Silva Sarneiro
-          <br>
+          <!-- Ana Carolina da Silva Sarneiro -->
+          <!-- <br> -->
           Walter Pereira da Fonseca Junior
         <h4 class="ui dividing header inverted">GD2 e GD4</h4>
           Genildo da Silva Marcelo
           <br>
           Rafael Franchin
-        <h4 class="ui dividing header inverted">Campanhas Institucionais, Gerências Funcionais, Editora e Hotéis</h4>
-          Anelise Kalinka de Andrade
-          <br>
-          Thiago Augusto da Costa
       </div>
 
       <div class="column">
         <h3 class="ui dividing header inverted">Portal</h3>
-          Luciene Correia
-          <br>
           Carla Pires Gomes
           <br>
           Fernanda Andrade Café
