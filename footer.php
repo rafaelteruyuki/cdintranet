@@ -114,11 +114,11 @@ function fnExcelReport() {
 
 <script type="text/javascript">
 
-// Cookies.set('mostrar', 'yes', { expires: 7 });
+// Cookies.set('mostrar', 'yes', { expires: 40 });
 // Cookies.remove('mostrar');
 
 function dontShow() {
-  Cookies.set('mostrar', 'no', { expires: 7 });
+  Cookies.set('mostrar', 'no', { expires: 40 });
 }
 
 var mostrar = Cookies.get('mostrar');
