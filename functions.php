@@ -2123,6 +2123,20 @@ function num_comentarios($text = true) {
 
 /* --------------------------
 
+PAGE REDIRECT AFTER POST TRASHED
+
+---------------------------- */
+
+add_action('trashed_post','my_trashed_post_handler',10,1);
+
+function my_trashed_post_handler($post_id) {
+	$url = get_option('siteurl') . '/solicitacao-excluida';
+  wp_redirect($url);
+  exit;
+}
+
+/* --------------------------
+
 MUDA O DIRETORIO DE UPLOAD
 
 ---------------------------- */
