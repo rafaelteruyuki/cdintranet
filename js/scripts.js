@@ -124,6 +124,7 @@
             }else{
                  $('#cards-container').append('<h3>Não possui nenhum curso cadastrado.</h3>');
             }
+            $('.cd-paginacao').hide(); // Esconde a paginação
         });
 
         return false;
