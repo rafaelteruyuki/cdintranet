@@ -31,8 +31,8 @@
 
 <!-- LISTA DE COMENTARIOS -->
 
-<?php // Se o usuário for Senac, não mostra os comentários privados
-if ( current_user_can('senac') ) {
+<?php // Se o usuário for Senac ou não estiver logado, não mostra os comentários privados
+if ( current_user_can('senac') || !is_user_logged_in() ) {
   $privado = array(
   'key' => 'privado_interacao',
   'value' => '1',

@@ -3,8 +3,8 @@
 // CD-FEED
 include ( locate_template('template-parts/cd-feed.php') );
 
-// REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC
-if ( current_user_can( 'senac' ) ) {
+// REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC E DE USUARIOS NAO LOGADOS
+if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
   $privado = array(
   'key' => 'privado_interacao',
   'value' => '1',

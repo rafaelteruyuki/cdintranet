@@ -2089,7 +2089,7 @@ function num_comentarios($text = true) {
 
 	$post_id = get_the_ID();
 
-	if ( current_user_can('senac') ) {
+	if ( current_user_can('senac') || !is_user_logged_in() ) {
 	  $privado = array(
 	  'key' => 'privado_interacao',
 	  'value' => '1',
