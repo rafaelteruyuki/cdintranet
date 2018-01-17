@@ -1,31 +1,50 @@
-<?php acf_form_head();
-
+<?php
 /*
 Template Name: Calculadora de Prazos
 */
+?>
 
-get_header(); ?>
+<html <?php language_attributes(); ?>>
+<head>
+<meta charset="<?php bloginfo( 'charset' ); ?>" />
+<title><?php bloginfo('name'); ?> | <?php is_home() ? bloginfo('description') : wp_title(''); ?></title>
+<?php wp_head(); ?>
+</head>
+
+<body>
+
+<style media="screen">
+  body {
+    padding: 50px 50px;
+  }
+  html {
+    margin-top: 0 !important;
+  }
+</style>
 
 <!-- TESTE 2 -->
 
-<div class="ui container cd-margem">
-  <h2>Calcular prazo</h2>
+<div class="ui container">
+  <h2>Calculadora de prazos</h2>
+  <p><em>Contabiliza os dias úteis, considerando os feriados de São Paulo.</em></p>
+  <div class="ui hidden divider"></div>
   <form class="ui form" id="form-prazo">
     <div class="required field">
       <label>Data inicial</label>
-      <input type="text" name="data-inicial" placeholder="Data inicial" id="data-inicial">
+      <input type="text" name="data-inicial" placeholder="Data inicial" id="data-inicial" autocomplete="off">
       <input type="hidden" name="data-inicial-url" id="data-inicial-url">
     </div>
     <div class="required field">
-      <label>Prazo (dias úteis)</label>
-      <input type="number" name="prazo" placeholder="Prazo" id="prazo">
+      <label>Prazo</label>
+      <input type="number" name="prazo" placeholder="Prazo" id="prazo" autocomplete="off">
     </div>
     <a class="ui green button calcular" onclick="calcular()">Calcular</a>
-    <a class="ui button">Limpar</a>
   </form>
   <div class="ui hidden divider"></div>
   <h3 id="data-final"></h3>
 </div>
+
+<?php wp_footer(); ?>
 
 <script>
 
@@ -39,7 +58,7 @@ $('#data-inicial').datepicker({
     firstDay: 0 // Start with Sunday
 })
 
-$("#form-error").hide();
+$("#wpadminbar").remove();
 
 function calcular() {
 
@@ -104,31 +123,5 @@ function calcular() {
 
 </script>
 
-<!-- /TESTE 2 -->
-
-<?php
-
-
-   $args = array(
-         'post_id'		    	=> 'new_post', // Create a new post
-         'post_title'			=> true,
-         'field_groups'    => array (127),
-         'return' 			    => 'http://cd.intranet.sp.senac.br/index.php/minhas-solicitacoes/',
-         'new_post'			  => array(
-                             'post_type'		=> 'tarefa',
-                             'post_status'	=> 'publish'
-         ),
-         'label_placement' => 'top',
-         'submit_value'    => 'Enviar',
-         'updated_message' => 'Salvo!',
-         'html_updated_message'	=> '<div id="message" class="updated"><p>%s</p></div>',
-         'html_submit_button'	=> '<input type="submit" class="ui primary large fluid button" value="%s" />',
-         'uploader' => 'basic',
-     );
-
-?>
-
-<?php acf_form( $args ); ?>
-
-
-<?php get_footer(); ?>
+</body>
+</html>
