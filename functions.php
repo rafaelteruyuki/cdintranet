@@ -1670,7 +1670,8 @@ function my_save_post( $post_id ) {
 
 						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-							$array_designers[] = $designer->user_email;
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
 
 						}
 
@@ -1686,7 +1687,8 @@ function my_save_post( $post_id ) {
 
 						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-							$array_designers[] = $designer->user_email;
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
 
 						}
 
@@ -1702,7 +1704,8 @@ function my_save_post( $post_id ) {
 
 						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-							$array_designers[] = $designer->user_email;
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
 
 						}
 
@@ -1718,7 +1721,8 @@ function my_save_post( $post_id ) {
 
 						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-							$array_designers[] = $designer->user_email;
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
 
 						}
 
@@ -1728,14 +1732,19 @@ function my_save_post( $post_id ) {
 
 		}
 
-	$destinos = array_merge($destinos, $array_designers);
+	// $destinos = array_merge($destinos, $array_designers);
 
+	//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
 
 	$to = array();
 
 	foreach ($destinos as $d) {
 
+		if ($email != $d) {
+
 			array_push($to, $d);
+
+		}
 
 	}
 
@@ -1754,7 +1763,6 @@ function my_save_post( $post_id ) {
 	// }
 
 }
-
 
 // /* --------------------------
 //
@@ -1790,7 +1798,7 @@ function check_status_change($value, $post_id, $field) {
 
 	if ( get_field('receber_notificacoes_por_email', 'user_' . $user->ID) ) {
 
-		$destinos = array($author_email);
+		array_push($destinos, $author_email);
 
 	}
 
@@ -1804,13 +1812,12 @@ function check_status_change($value, $post_id, $field) {
 
 			if ( get_field('receber_notificacoes_por_email', 'user_' . $participante['ID']) ) {
 
-					$array_participantes[] = $participante['user_email'];
+					// $array_participantes[] = $participante['user_email'];
+					array_push($destinos, $participante['user_email']);
 
 			}
 
 		}
-
-		$destinos = array_merge($destinos, $array_participantes);
 
 	}
 
@@ -1912,37 +1919,43 @@ add_filter( 'comment_post', 'comment_notification_email' );
 
 function comment_notification_email( $comment_id ) {
 
-		$comment = get_comment( $comment_id );
-		$post = get_post( $comment->comment_post_ID );
-		$user = get_user_by( 'id', $post->post_author );
-		$post_url = get_permalink( $post->ID );
+	// Current user
+	global $current_user; get_currentuserinfo();
+	$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
+	$email = $current_user->user_email;
+	// Comment
+	$comment = get_comment( $comment_id );
+	$interacao_privada = get_field('privado_interacao', $comment);
+	// Post
+	$post = get_post( $comment->comment_post_ID );
+	$post_url = get_permalink( $post->ID );
+	$unidade = get_field('unidade', $post);
+	// Author
+	$user = get_user_by( 'id', $post->post_author );
+	$author_email = $user->user_email;
+	$author_notificacao = get_field('receber_notificacoes_por_email', 'user_' . $user->ID);
 
-		global $current_user; get_currentuserinfo();
+	$destinos = array();
 
-		$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
-		$email = $current_user->user_email;
+	// NOTIFICACAO PARA O AUTOR
 
-		$unidade = get_field('unidade', $post);
+	if ($author_notificacao) {
 
-		$interacao_privada = get_field('privado_interacao', $comment);
+		if (in_array('senac', $user->roles)) {
 
-		$destinos = array();
+			if (!$interacao_privada) {
 
-		//AUTOR
-
-		$author_email = $user->user_email;
-
-		if ( get_field('receber_notificacoes_por_email', 'user_' . $user->ID) ) {
-
-			if ( in_array('senac', $user->roles) && $interacao_privada ) {
-
-			} else {
-
-				$destinos = array($author_email);
+				array_push($destinos, $author_email);
 
 			}
 
+		} else {
+
+			array_push($destinos, $author_email);
+
 		}
+
+	}
 
 		//SEGMENTAÇÃO
 
@@ -1959,7 +1972,8 @@ function comment_notification_email( $comment_id ) {
 
 	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-	        			$array_designers[] = $designer->user_email;
+	        			// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
 
 	        		}
 
@@ -1975,7 +1989,8 @@ function comment_notification_email( $comment_id ) {
 
 	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-	        			$array_designers[] = $designer->user_email;
+	        			// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
 
 	        		}
 
@@ -1991,7 +2006,8 @@ function comment_notification_email( $comment_id ) {
 
 	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-	        			$array_designers[] = $designer->user_email;
+	        			// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
 
 	        		}
 
@@ -2007,7 +2023,8 @@ function comment_notification_email( $comment_id ) {
 
 	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-	        			$array_designers[] = $designer->user_email;
+	        			// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
 
 	        		}
 
@@ -2016,8 +2033,6 @@ function comment_notification_email( $comment_id ) {
 	  		}
 
   		}
-
-		$destinos = array_merge($destinos, $array_designers);
 
 		//PARTICIPANTES
 
@@ -2032,19 +2047,25 @@ function comment_notification_email( $comment_id ) {
 					$user_meta = get_userdata($participante['ID']);
 					$user_role = $user_meta->roles;
 
-					if ( in_array('senac', $user_role) && $interacao_privada ) {
+					if (in_array('senac', $user_role)) {
+
+						if (!$interacao_privada) {
+
+							// $array_participantes[] = $participante['user_email'];
+							array_push($destinos, $participante['user_email']);
+
+						}
 
 					} else {
 
-						$array_participantes[] = $participante['user_email'];
+						// $array_participantes[] = $participante['user_email'];
+						array_push($destinos, $participante['user_email']);
 
 					}
 
 				}
 
 			}
-
-			$destinos = array_merge($destinos, $array_participantes);
 
 		}
 
