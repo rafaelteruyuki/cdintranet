@@ -73,12 +73,13 @@ if ( in_array($area['value'], $areas_gd1_gd3) ) {
 
   if ( in_array($modalidade['value'], $modalidade_gd1_gd3) || in_array($finalidade['value'], $finalidade_gd1_gd3) ) {
 
-    update_field( 'segmentacao', 'gd1_gd3', $post_id);
+    $ferias_walter = array('gd1_gd3', 'gd2_gd4');
+    update_field( 'segmentacao', $ferias_walter, $post_id);
 
     // EVENTO
     if ( $publicacao_pecas && in_array('publicacao', $publicacao_pecas) ) {
 
-      $value = array ('gd1_gd3', 'evento');
+      $value = array ('gd1_gd3', 'gd2_gd4', 'evento');
       update_field( 'segmentacao', $value, $post_id);
 
     }
