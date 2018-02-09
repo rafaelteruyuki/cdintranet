@@ -46,7 +46,7 @@ if ( current_user_can( 'portal' ) ) {
 
 $participante = array(
   'key' => 'participante',
-  'value' => $current_user->ID,
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
   'compare' => 'LIKE',
 );
 
@@ -54,7 +54,7 @@ $participante = array(
 
 $cd_author = array(
   'key'		=> 'cd_author',
-  'value'		=> $current_user->ID,
+  'value'		=> '"' . $current_user->ID . '"',
   'compare' => 'LIKE'
 );
 
@@ -62,7 +62,7 @@ $cd_author = array(
 
 $responsavel1 = array(
   'key' => 'responsavel_1',
-  'value' => $current_user->ID,
+  'value' => '"' . $current_user->ID . '"',
   'compare' => 'LIKE',
 );
 
@@ -70,7 +70,7 @@ $responsavel1 = array(
 
 $responsavel2 = array(
   'key' => 'responsavel_2',
-  'value' => $current_user->ID,
+  'value' => '"' . $current_user->ID . '"',
   'compare' => 'LIKE',
 );
 
@@ -78,7 +78,7 @@ $responsavel2 = array(
 
 $responsavel_portal1 = array(
   'key' => 'responsavel_portal',
-  'value' => $current_user->ID,
+  'value' => '"' . $current_user->ID . '"',
   'compare' => 'LIKE',
 );
 
@@ -86,7 +86,7 @@ $responsavel_portal1 = array(
 
 $responsavel_portal2 = array(
   'key' => 'responsavel_portal2',
-  'value' => $current_user->ID,
+  'value' => '"' . $current_user->ID . '"',
   'compare' => 'LIKE',
 );
 
