@@ -47,7 +47,7 @@ if ( current_user_can( 'portal' ) ) {
 $participante = array(
   'key' => 'participante',
   'value' => $current_user->ID,
-  'compare' => '=',
+  'compare' => 'LIKE',
 );
 
 // CD_AUTHOR
@@ -55,7 +55,7 @@ $participante = array(
 $cd_author = array(
   'key'		=> 'cd_author',
   'value'		=> $current_user->ID,
-  'compare' => '='
+  'compare' => 'LIKE'
 );
 
 // RESPONSAVEL 1
@@ -63,7 +63,7 @@ $cd_author = array(
 $responsavel1 = array(
   'key' => 'responsavel_1',
   'value' => $current_user->ID,
-  'compare' => '=',
+  'compare' => 'LIKE',
 );
 
 // RESPONSAVEL 2
@@ -71,7 +71,7 @@ $responsavel1 = array(
 $responsavel2 = array(
   'key' => 'responsavel_2',
   'value' => $current_user->ID,
-  'compare' => '=',
+  'compare' => 'LIKE',
 );
 
 // RESPONSAVEL PORTAL 1
@@ -79,7 +79,7 @@ $responsavel2 = array(
 $responsavel_portal1 = array(
   'key' => 'responsavel_portal',
   'value' => $current_user->ID,
-  'compare' => '=',
+  'compare' => 'LIKE',
 );
 
 // RESPONSAVEL PORTAL 2
@@ -87,7 +87,7 @@ $responsavel_portal1 = array(
 $responsavel_portal2 = array(
   'key' => 'responsavel_portal2',
   'value' => $current_user->ID,
-  'compare' => '=',
+  'compare' => 'LIKE',
 );
 
 // --------------------------- FEED ---------------------------- //
