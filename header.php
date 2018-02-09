@@ -97,6 +97,7 @@
             <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
             <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
             <a href="<?php bloginfo( 'url' ); ?>/notificacoes-por-e-mail/" class="item"><i class="mail square icon"></i>Notificações por e-mail</a>
+            <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
             <?php endif; ?>
             <?php if ( current_user_can( 'portal' ) ) : ?>
             <a href="<?php bloginfo( 'url' ); ?>/exportar-tarefas/" class="item"><i class="download icon"></i>Exportar tarefas</a>
@@ -130,8 +131,16 @@
 <div class="cd-push"></div>
 
 <script type="text/javascript">
+
 var cd_title = '<?php if(is_home()) { echo bloginfo("name"); echo " | "; echo bloginfo("description"); } else { echo wp_title(" | ", false, right); echo bloginfo("name"); } ?>';
 var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; //Define o endereço AJAX
+
+// calculadora de prazos
+$('#calculadora-prazos').click(function() {
+  var url = '<?php bloginfo( 'url' ); ?>' + '/calculadora-de-prazos/';
+  window.open(url, "", "width=550,height=500");
+});
+
 </script>
 <script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=4'></script>
 <script type="text/javascript">

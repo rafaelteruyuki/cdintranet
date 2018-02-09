@@ -19,6 +19,7 @@ function carrega_scripts() {
 	if ( !is_admin() ) {
 		wp_enqueue_style( 'semantic', get_template_directory_uri() . '/css/semantic.min.css', array(), '1.2', 'all');
 	}
+	wp_enqueue_style( 'jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css',false,'1.1','all');
 	wp_enqueue_style( 'form-solicitacao', get_template_directory_uri() . '/css/form-solicitacao.css',false,'1.1','all');
 	wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.3','all');
 	wp_enqueue_style( 'popup', get_template_directory_uri() . '/components/popup.css',false,'1.1','all');
@@ -26,6 +27,7 @@ function carrega_scripts() {
 	// Javascript
 	wp_deregister_script( 'jquery' ); // Remove o Jquery ogirinal do Wordpress
 	wp_enqueue_script( 'jquery', get_template_directory_uri() . '/js/jquery-3.1.0.min.js', array(), '3.1.0', true);
+	// wp_enqueue_script( 'jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array(), '1.2.1', false);
 	wp_enqueue_script( 'semantic-js', get_template_directory_uri() . '/js/semantic.min.js', array('jquery'), '1.0', true );
 	wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '1.0', true );
 	wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '1.0', true );
@@ -1668,7 +1670,8 @@ function my_save_post( $post_id ) {
 
 						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-							$array_designers[] = $designer->user_email;
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
 
 						}
 
@@ -1684,7 +1687,8 @@ function my_save_post( $post_id ) {
 
 						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-							$array_designers[] = $designer->user_email;
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
 
 						}
 
@@ -1700,7 +1704,8 @@ function my_save_post( $post_id ) {
 
 						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-							$array_designers[] = $designer->user_email;
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
 
 						}
 
@@ -1716,7 +1721,8 @@ function my_save_post( $post_id ) {
 
 						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-							$array_designers[] = $designer->user_email;
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
 
 						}
 
@@ -1726,14 +1732,19 @@ function my_save_post( $post_id ) {
 
 		}
 
-	$destinos = array_merge($destinos, $array_designers);
+	// $destinos = array_merge($destinos, $array_designers);
 
+	//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
 
 	$to = array();
 
 	foreach ($destinos as $d) {
 
+		if ($email != $d) {
+
 			array_push($to, $d);
+
+		}
 
 	}
 
@@ -1752,7 +1763,6 @@ function my_save_post( $post_id ) {
 	// }
 
 }
-
 
 // /* --------------------------
 //
@@ -1788,7 +1798,7 @@ function check_status_change($value, $post_id, $field) {
 
 	if ( get_field('receber_notificacoes_por_email', 'user_' . $user->ID) ) {
 
-		$destinos = array($author_email);
+		array_push($destinos, $author_email);
 
 	}
 
@@ -1802,13 +1812,12 @@ function check_status_change($value, $post_id, $field) {
 
 			if ( get_field('receber_notificacoes_por_email', 'user_' . $participante['ID']) ) {
 
-					$array_participantes[] = $participante['user_email'];
+					// $array_participantes[] = $participante['user_email'];
+					array_push($destinos, $participante['user_email']);
 
 			}
 
 		}
-
-		$destinos = array_merge($destinos, $array_participantes);
 
 	}
 
@@ -1910,37 +1919,43 @@ add_filter( 'comment_post', 'comment_notification_email' );
 
 function comment_notification_email( $comment_id ) {
 
-		$comment = get_comment( $comment_id );
-		$post = get_post( $comment->comment_post_ID );
-		$user = get_user_by( 'id', $post->post_author );
-		$post_url = get_permalink( $post->ID );
+	// Current user
+	global $current_user; get_currentuserinfo();
+	$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
+	$email = $current_user->user_email;
+	// Comment
+	$comment = get_comment( $comment_id );
+	$interacao_privada = get_field('privado_interacao', $comment);
+	// Post
+	$post = get_post( $comment->comment_post_ID );
+	$post_url = get_permalink( $post->ID );
+	$unidade = get_field('unidade', $post);
+	// Author
+	$user = get_user_by( 'id', $post->post_author );
+	$author_email = $user->user_email;
+	$author_notificacao = get_field('receber_notificacoes_por_email', 'user_' . $user->ID);
 
-		global $current_user; get_currentuserinfo();
+	$destinos = array();
 
-		$name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
-		$email = $current_user->user_email;
+	// NOTIFICACAO PARA O AUTOR
 
-		$unidade = get_field('unidade', $post);
+	if ($author_notificacao) {
 
-		$interacao_privada = get_field('privado_interacao', $comment);
+		if (in_array('senac', $user->roles)) {
 
-		$destinos = array();
+			if (!$interacao_privada) {
 
-		//AUTOR
-
-		$author_email = $user->user_email;
-
-		if ( get_field('receber_notificacoes_por_email', 'user_' . $user->ID) ) {
-
-			if ( in_array('senac', $user->roles) && $interacao_privada ) {
-
-			} else {
-
-				$destinos = array($author_email);
+				array_push($destinos, $author_email);
 
 			}
 
+		} else {
+
+			array_push($destinos, $author_email);
+
 		}
+
+	}
 
 		//SEGMENTAÇÃO
 
@@ -1957,7 +1972,8 @@ function comment_notification_email( $comment_id ) {
 
 	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-	        			$array_designers[] = $designer->user_email;
+	        			// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
 
 	        		}
 
@@ -1973,7 +1989,8 @@ function comment_notification_email( $comment_id ) {
 
 	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-	        			$array_designers[] = $designer->user_email;
+	        			// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
 
 	        		}
 
@@ -1989,7 +2006,8 @@ function comment_notification_email( $comment_id ) {
 
 	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-	        			$array_designers[] = $designer->user_email;
+	        			// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
 
 	        		}
 
@@ -2005,7 +2023,8 @@ function comment_notification_email( $comment_id ) {
 
 	        		if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
 
-	        			$array_designers[] = $designer->user_email;
+	        			// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
 
 	        		}
 
@@ -2014,8 +2033,6 @@ function comment_notification_email( $comment_id ) {
 	  		}
 
   		}
-
-		$destinos = array_merge($destinos, $array_designers);
 
 		//PARTICIPANTES
 
@@ -2030,19 +2047,25 @@ function comment_notification_email( $comment_id ) {
 					$user_meta = get_userdata($participante['ID']);
 					$user_role = $user_meta->roles;
 
-					if ( in_array('senac', $user_role) && $interacao_privada ) {
+					if (in_array('senac', $user_role)) {
+
+						if (!$interacao_privada) {
+
+							// $array_participantes[] = $participante['user_email'];
+							array_push($destinos, $participante['user_email']);
+
+						}
 
 					} else {
 
-						$array_participantes[] = $participante['user_email'];
+						// $array_participantes[] = $participante['user_email'];
+						array_push($destinos, $participante['user_email']);
 
 					}
 
 				}
 
 			}
-
-			$destinos = array_merge($destinos, $array_participantes);
 
 		}
 
