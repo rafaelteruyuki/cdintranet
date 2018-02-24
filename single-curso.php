@@ -124,6 +124,49 @@
         <i class="right arrow icon"></i>
         Solicitar adaptação da peça.
       </a>
+
+
+      <div class="ui hidden divider"></div>
+      <div id="email-marketing">
+
+        <h3>Criar e-mail marketing</h3>
+
+      	<form action="<?php bloginfo('url')?>/email-marketing" method="get" target="_blank" class="ui form">
+
+      	<?php
+
+      	$field_key = "field_58d1a32b9f77e";
+      	$field = get_field_object($field_key);
+
+      	if( $field ) {
+
+      		echo '<select name="unidade">';
+      		echo '<option>Unidade</option>';
+
+      		foreach( $field['choices'] as $k => $v ) {
+      			if (isset($_GET['unidade']) && $v == $_GET['unidade']) {
+      				echo '<option value="' . $k . '" selected>' . $v . '</option>';
+      			} else {
+      				echo '<option value="' . $k . '">' . $v . '</option>';
+      			}
+      		}
+
+      		echo '</select>';
+      	}
+
+      	?>
+        <input type="hidden" name="modalidade" value="<?= $lblModalidade ?>">
+        <input type="hidden" name="titulo" value="<?php the_title(); ?>">
+        <div class="ui hidden divider"></div>
+        <input type="submit" name="" value="Criar e-mail" class="ui secondary button">
+
+      	</form>
+
+      </div>
+
+
+
+
     </div>
   </div>
 </div>
