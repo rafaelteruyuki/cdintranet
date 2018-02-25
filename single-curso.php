@@ -133,30 +133,95 @@
 
       	<form action="<?php bloginfo('url')?>/email-marketing" method="get" target="_blank" class="ui form">
 
-      	<?php
+        <div class="field">
+          <label>Unidade</label>
+        	<?php
+        	$field_key = "field_58d1a32b9f77e";
+        	$field = get_field_object($field_key);
 
-      	$field_key = "field_58d1a32b9f77e";
-      	$field = get_field_object($field_key);
+        	if( $field ) {
 
-      	if( $field ) {
+        		echo '<select name="unidade">';
+        		echo '<option>Unidade</option>';
 
-      		echo '<select name="unidade">';
-      		echo '<option>Unidade</option>';
+        		foreach( $field['choices'] as $k => $v ) {
+        			if (isset($_GET['unidade']) && $v == $_GET['unidade']) {
+        				echo '<option value="' . $k . '" selected>' . $v . '</option>';
+        			} else {
+        				echo '<option value="' . $k . '">' . $v . '</option>';
+        			}
+        		}
 
-      		foreach( $field['choices'] as $k => $v ) {
-      			if (isset($_GET['unidade']) && $v == $_GET['unidade']) {
-      				echo '<option value="' . $k . '" selected>' . $v . '</option>';
-      			} else {
-      				echo '<option value="' . $k . '">' . $v . '</option>';
-      			}
-      		}
+        		echo '</select>';
+        	}
 
-      		echo '</select>';
-      	}
+        	?>
+        </div>
 
-      	?>
         <input type="hidden" name="modalidade" value="<?= $lblModalidade ?>">
         <input type="hidden" name="titulo" value="<?php the_title(); ?>">
+        <input type="hidden" name="texto" value="<?php the_field('texto-curso'); ?>">
+
+        <div class="field">
+          <label>Link do portal</label>
+          <input type="text" name="link-portal">
+        </div>
+
+        <div class="field">
+          <label>Link da imagem</label>
+          <input type="text" name="link-imagem">
+        </div>
+
+        <div class="fields">
+          <div class="four wide field">
+            <label>Corpo (Fundo)</label>
+            <input type="text" name="corpo-fundo" value="#000001">
+          </div>
+          <div class="four wide field">
+            <label>Corpo (Texto)</label>
+            <input type="text" name="corpo-texto" value="#000001">
+          </div>
+          <div class="four wide field">
+            <label>Borda</label>
+            <input type="text" name="borda" value="#000001">
+          </div>
+        </div>
+
+        <div class="fields">
+          <div class="four wide field">
+            <label>Assinatura (Fundo)</label>
+            <input type="text" name="assinatura-fundo" value="#000001">
+          </div>
+          <div class="four wide field">
+            <label>Assinatura (Texto)</label>
+            <select name="assinatura-texto">
+              <option value="preto">Preto</option>
+              <option value="branco">Branco</option>
+            </select>
+          </div>
+          <div class="four wide field">
+            <label>Logo</label>
+            <select name="logo">
+              <option value="preto">Preto</option>
+              <option value="branco">Branco</option>
+              <option value="colorido">Colorido</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fields">
+          <div class="four wide field">
+            <label>Inscreva-se (Fundo)</label>
+            <input type="text" name="inscreva-se-fundo" value="#000001">
+          </div>
+          <div class="four wide field">
+            <label>Inscreva-se (Texto)</label>
+            <input type="text" name="inscreva-se-texto" value="#000001">
+          </div>
+        </div>
+
+        <!-- <h4 class="ui dividing header">Assinatura</h4> -->
+
         <div class="ui hidden divider"></div>
         <input type="submit" name="" value="Criar e-mail" class="ui secondary button">
 

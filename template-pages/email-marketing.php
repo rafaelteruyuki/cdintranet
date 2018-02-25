@@ -12,9 +12,21 @@ global $current_user;
 
 <?php
 
-$unidade = array(
-    "sigla" => "BAR",
-    "nome" => "Barretos",
+$unidade = $_GET["unidade"];
+
+if ($unidade == 'BAR') {
+
+}
+
+$unidades = array(
+  array(
+      "sigla" => "ARA",
+      "nome" => "Araraquara",
+  ),
+  array(
+      "sigla" => "BAR",
+      "nome" => "Barretos",
+  ),
 );
 
 ?>
@@ -35,15 +47,15 @@ $unidade = array(
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Senac <?= $_GET["unidade"] ?> - <?php $modalidade ?> - <?php the_title(); ?></title>
+<title>Senac <?= $_GET["unidade"] ?> - <?= $_GET["modalidade"] ?> - <?= $_GET["titulo"] ?></title>
 </head>
 
 <body>
 <div align="center">
-	<table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid #009CC4; border-collapse:collapse;">
+	<table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid <?= $_GET["borda"] ?>; border-collapse:collapse;">
 		<tr>
 			<td>
-				<img src="<?php $link_imagem ?>" alt="<? $modalidade ?> - <?php the_title(); ?>" width="600" style="display:block; border:0;" />
+				<img src="<?= $_GET["link-imagem"] ?>" alt="<?= $_GET["modalidade"] ?> - <?= $_GET["titulo"] ?>" width="600" style="display:block; border:0;" />
 			</td>
 		</tr>
 		<tr>
@@ -61,7 +73,9 @@ $unidade = array(
 					</tr>
 					<tr>
 						<td width="50">&nbsp;</td>
-						<td width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #000001;">Texto descritivo.<br />
+						<td width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: <?= $_GET["corpo-texto"] ?>;">
+            <?= $_GET["texto"] ?>
+            <br />
 					  <br />
 					  - T&iacute;tulo pe&ccedil;a: <?= $_GET["titulo"] ?><br />
 					  - Alt imagem<br />
