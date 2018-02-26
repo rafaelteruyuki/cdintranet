@@ -3,30 +3,22 @@
 <!-- Single Curso -->
 
 <?php
-    /* Carregando os campos */
 
-    //modalidade
-    $modalidade = get_field_object('modalidade');
-    $value = $modalidade['value'];
-    $lblModalidade = $modalidade['choices'][ $value ];
+  //modalidade
+  $modalidade = get_field_object('modalidade');
+  $value = $modalidade['value'];
+  $lblModalidade = $modalidade['choices'][ $value ];
 
-    //area
-    $area= get_field_object('area');
-    $lblArea = $area['choices'][$area['value']];
+  //area
+  $area= get_field_object('area');
+  $lblArea = $area['choices'][$area['value']];
 
-    //subarea
-    $subarea= get_field_object('subarea-' . $area['value'] );
-    $lblSubarea = $subarea['choices'][$subarea['value']];
+  //subarea
+  $subarea= get_field_object('subarea-' . $area['value'] );
+  $lblSubarea = $subarea['choices'][$subarea['value']];
 
-//    //imagem url
-//    if (has_post_thumbnail()) {
-//        $urlImg = get_the_post_thumbnail_url();
-//    }else{
-//        $urlImg = "";
-//    }
-
-    //info-curso
-    $infoCurso = get_field('info-curso') ? get_field('info-curso') : "";
+  //info-curso
+  $infoCurso = get_field('info-curso') ? get_field('info-curso') : "";
 
 ?>
 
@@ -61,11 +53,9 @@
 
       </div>
 
-
-
     <div class="ten wide column">
 
-      <div class="ui disabled sub header"><?php echo $lblModalidade; ?></div>
+      <div class="ui disabled sub header"><?= $lblModalidade; ?></div>
       <div style="margin-bottom:15px;"><h1><?php the_title(); ?></h1></div>
       <div>
         <h3>
@@ -76,7 +66,6 @@
       <?php edit_post_link('Editar', '', '', '', 'ui button'); ?>
 
       <div class="ui divider"></div>
-
 
         <div class="texto-curso">
           <div style="margin-bottom:5px;"><strong>Texto aprovado</strong></div>
@@ -125,14 +114,23 @@
         Solicitar adaptação da peça.
       </a>
 
-
       <div class="ui hidden divider"></div>
-      <div id="email-marketing">
+
+      <!-- FORM EMAIL MARKETING -->
+
+      <style media="screen">
+      .ui.form select {
+        height: 2.62em;
+      }
+      </style>
+
+      <div id="form-email-marketing">
 
         <h3>Criar e-mail marketing</h3>
 
       	<form action="<?php bloginfo('url')?>/email-marketing" method="get" target="_blank" class="ui form">
 
+        <!-- UNIDADE -->
         <div class="field">
           <label>Unidade</label>
         	<?php
@@ -142,7 +140,6 @@
         	if( $field ) {
 
         		echo '<select name="unidade">';
-        		echo '<option>Unidade</option>';
 
         		foreach( $field['choices'] as $k => $v ) {
         			if (isset($_GET['unidade']) && $v == $_GET['unidade']) {
@@ -158,20 +155,20 @@
         	?>
         </div>
 
+        <!-- CURSO -->
         <input type="hidden" name="modalidade" value="<?= $lblModalidade ?>">
         <input type="hidden" name="titulo" value="<?php the_title(); ?>">
         <input type="hidden" name="texto" value="<?php the_field('texto-curso'); ?>">
-
         <div class="field">
           <label>Link do portal</label>
           <input type="text" name="link-portal">
         </div>
-
         <div class="field">
           <label>Link da imagem</label>
-          <input type="text" name="link-imagem">
+          <input type="text" name="link-imagem" value="http://www1.sp.senac.br/hotsites/msg/">
         </div>
 
+        <!-- CORPO -->
         <div class="fields">
           <div class="four wide field">
             <label>Corpo (Fundo)</label>
@@ -187,6 +184,7 @@
           </div>
         </div>
 
+        <!-- ASSINATURA -->
         <div class="fields">
           <div class="four wide field">
             <label>Assinatura (Fundo)</label>
@@ -195,20 +193,25 @@
           <div class="four wide field">
             <label>Assinatura (Texto)</label>
             <select name="assinatura-texto">
-              <option value="preto">Preto</option>
-              <option value="branco">Branco</option>
+              <option value="#000001">Preto</option>
+              <!-- http://www1.sp.senac.br/hotsites/msg/gcr/tel_preto.png -->
+              <!-- http://www1.sp.senac.br/hotsites/msg/gcr/pin_preto.png -->
+              <option value="#FFFFFF">Branco</option>
+              <!-- http://www1.sp.senac.br/hotsites/msg/gcr/tel_branco.png -->
+              <!-- http://www1.sp.senac.br/hotsites/msg/gcr/pin_branco.png -->
             </select>
           </div>
           <div class="four wide field">
             <label>Logo</label>
             <select name="logo">
-              <option value="preto">Preto</option>
-              <option value="branco">Branco</option>
-              <option value="colorido">Colorido</option>
+              <option value="http://www1.sp.senac.br/hotsites/msg/gcr/senac70_preto.png">Preto</option>
+              <option value="http://www1.sp.senac.br/hotsites/msg/gcr/senac70_branco.png">Branco</option>
+              <option value="http://www1.sp.senac.br/hotsites/msg/gcr/senac70_cor.png">Colorido</option>
             </select>
           </div>
         </div>
 
+        <!-- INSCREVA-SE -->
         <div class="fields">
           <div class="four wide field">
             <label>Inscreva-se (Fundo)</label>
@@ -228,9 +231,6 @@
       	</form>
 
       </div>
-
-
-
 
     </div>
   </div>

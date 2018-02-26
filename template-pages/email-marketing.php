@@ -8,184 +8,213 @@ get_header();
 
 global $current_user;
 
-?>
-
-<?php
-
-$unidade = $_GET["unidade"];
-
-if ($unidade == 'BAR') {
-
-}
-
 $unidades = array(
-  array(
-      "sigla" => "ARA",
-      "nome" => "Araraquara",
+  'ACA' => array(
+    'nome'        => 'Araçatuba',
+    'nome_url'    => 'aracatuba',
+    'endereco'    => 'Av. João Arruda Brasil, 500',
+    'bairro'      => 'São Joaquim',
+    'CEP'         => '16050-400',
+    'telefone'    => '(18) 3117-1000',
+    'url'         => 'http://www.sp.senac.br/jsp/default.jsp?newsID=a529.htm&testeira=352&unit=A%C7A&sub=1',
+    'google_maps' => 'https://www.google.com.br/maps/place/Senac+Ara%C3%A7atuba/@-21.201429,-50.4467907,17z/data=!3m1!4b1!4m5!3m4!1s0x949643f3d8a31887:0xec4d448031b7e3fd!8m2!3d-21.201429!4d-50.444602',
   ),
-  array(
-      "sigla" => "BAR",
-      "nome" => "Barretos",
+  'ACL' => array(
+    'nome'        => 'Aclimação',
+    'nome_url'    => 'aclimacao',
+    'endereco'    => 'Rua Pires da Mota, 838',
+    'bairro'      => 'Aclimação',
+    'CEP'         => '01529-000',
+    'telefone'    => '(11) 3795-1299',
+    'url'         => 'http://www.sp.senac.br/jsp/default.jsp?newsID=a18070.htm&testeira=1737&unit=ACL&sub=1',
+    'google_maps' => 'https://www.google.com.br/maps/place/Senac+Aclima%C3%A7%C3%A3o/@-23.5686172,-46.6383325,17z/data=!3m1!4b1!4m5!3m4!1s0x94ce599f467de6b9:0x221608c031490e7d!8m2!3d-23.5686172!4d-46.6361438',
   ),
 );
+
+// UNIDADE
+$unidade = $_GET['unidade'];
+// CURSO
+$modalidade = $_GET['modalidade'];
+$titulo = $_GET['titulo'];
+$texto = $_GET['texto'];
+$link_imagem = $_GET['link-imagem'];
+$link_portal = $_GET['link-portal'];
+// CORPO
+$corpo_fundo = $_GET['corpo-fundo'];
+$corpo_texto = $_GET['corpo-texto'];
+$borda = $_GET['borda'];
+// INSCREVA-SE
+$inscreva_se_fundo = $_GET['inscreva-se-fundo'];
+$inscreva_se_texto = $_GET['inscreva-se-texto'];
+// ASSINATURA
+$assinatura_fundo = $_GET['assinatura-fundo'];
+$assinatura_texto = $_GET['assinatura-texto'];
+$logo = $_GET['logo'];
+$pin_preto = 'http://www1.sp.senac.br/hotsites/msg/gcr/pin_preto.png';
+$pin_branco = 'http://www1.sp.senac.br/hotsites/msg/gcr/pin_branco.png';
+$tel_preto = 'http://www1.sp.senac.br/hotsites/msg/gcr/tel_preto.png';
+$tel_branco = 'http://www1.sp.senac.br/hotsites/msg/gcr/tel_branco.png';
 
 ?>
 
 <h2 class="ui horizontal divider header cd-margem">E-mail criado com sucesso</h2>
 
+<!-- // CONTAINER -->
+
 <div class="ui center aligned container cd-margem">
+  <a id="emkt-download" class="ui large primary button">Download</a>
+  <div class="ui hidden divider"></div>
 
-<a id="emkt-download" class="ui large primary button">Download</a>
+  <!-- EMAIL MARKETING -->
 
-<div class="ui hidden divider"></div>
+  <div id="email-marketing">
 
-<!-- PAGE TEMPLATE DO EMAIL -->
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>Senac <?= $unidades[$unidade]['nome']; ?> - <?= $modalidade ?> - <?= $titulo ?></title>
+  </head>
 
-<div id="email-marketing">
+  <body>
+  <div align="center">
+  	<table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid <?= $borda ?>; border-collapse:collapse;">
+  		<tr>
+  			<td>
+  				<img src="<?= $link_imagem ?>" alt="<?= $modalidade ?> - <?= $titulo ?>" width="600" style="display:block; border:0;" />
+  			</td>
+  		</tr>
+  		<tr>
+  			<td>
+  				<table id="descricao" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse;" bgcolor="<?= $corpo_fundo ?>">
+  					<tr>
+  						<td width="50">&nbsp;</td>
+  						<td width="500" align="left">&nbsp;</td>
+  						<td width="50">&nbsp;</td>
+  					</tr>
+  					<tr>
+  						<td width="50">&nbsp;</td>
+  						<td width="500" align="left">&nbsp;</td>
+  						<td width="50">&nbsp;</td>
+  					</tr>
+  					<tr>
+  						<td width="50">&nbsp;</td>
+  						<td width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: <?= $corpo_texto ?>;">
+                <?= $texto ?>
+              </td>
+  						<td width="50">&nbsp;</td>
+  					</tr>
+  					<tr>
+  						<td width="50">&nbsp;</td>
+  						<td width="500" align="left">&nbsp;</td>
+  						<td width="50">&nbsp;</td>
+  					</tr>
+  					<tr>
+  						<td width="50">&nbsp;</td>
+  						<td width="500" align="center" bgcolor="<?= $inscreva_se_fundo ?>">
+  								<a href="<?= $link_portal ?>&utm_source=Email_Marketing&utm_medium=email&utm_campaign=<?= $unidade; ?>_Livres" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; color:<?= $inscreva_se_texto ?>; font-weight:bold; display:block;"><br />Inscreva-se.<br /><br /></a>
+  						</td>
+  						<td width="50">&nbsp;</td>
+  					</tr>
+  					<tr>
+  						<td width="50">&nbsp;</td>
+  						<td width="500">&nbsp;</td>
+  						<td width="50">&nbsp;</td>
+  					</tr>
+  					<tr>
+  						<td width="50">&nbsp;</td>
+  						<td width="500"><img title="Senac S&atilde;o Paulo" src="http://www1.sp.senac.br/hotsites/msg/gcr/2017_Desconto_30_500px_01.gif" alt="Descontos 30% - Em todos os cursos presenciais - livres, t&eacute;cnicos e idiomas. - Veja o percentual que seu curso oferece."  border="0" /></td>
+  						<td width="50">&nbsp;</td>
+  					</tr>
+  					<tr>
+  						<td width="50">&nbsp;</td>
+  						<td width="500">&nbsp;</td>
+  						<td width="50">&nbsp;</td>
+  					</tr>
+  				</table>
+  			</td>
+  		</tr>
+  		<tr>
+  			<td>
+          <table id="assinatura" width="600" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="<?= $assinatura_fundo ?>">
+            <tr>
+              <td >&nbsp;</td>
+              <td >&nbsp;</td>
+              <td valign="middle">&nbsp;</td>
+              <td valign="middle">&nbsp;</td>
+              <td valign="middle">&nbsp;</td>
+            </tr>
+            <tr>
+              <td width="20" >&nbsp;</td>
+              <td align="right" valign="bottom" style="font-size:16px"><font color="<?= $assinatura_texto ?>"  face="Arial, Verdana"> <strong>APRENDIZADO E CONHECIMENTO PARA SEMPRE.</strong><br />
+                <br />
+                Acesse <a href="<?= $unidades[$unidade]['url']; ?>&utm_source=Email_Marketing&utm_medium=email&utm_campaign=<?= $unidade; ?>_Livres" target="_blank" style="color:<?= $assinatura_texto ?>"><strong>www.sp.senac.br/<?= $unidades[$unidade]['nome_url']; ?></strong></a> e conhe&ccedil;a a programa&ccedil;&atilde;o completa da unidade.<br />
+                <br />
+              <img src="<?php if ($assinatura_texto == '#000001') { echo $tel_preto; } else { echo $tel_branco; }?>"  width="20" style="border:0;"  />&nbsp;<?= $unidades[$unidade]['telefone']; ?><br />
+                &nbsp;<a href="<?= $unidades[$unidade]['google_maps']; ?>" target="_blank" style="color:<?= $assinatura_texto ?>"><img src="<?php if ($assinatura_texto == '#000001') { echo $pin_preto; } else { echo $pin_branco; } ?>" height="20" style="border:0;" />&nbsp;<?= $unidades[$unidade]['endereco']; ?></a></font></td>
+              <td width="20" valign="middle">&nbsp;</td>
+              <td width="121" valign="middle"><img title="Senac S&atilde;o Paulo" src="<?= $logo ?>" alt="Senac S&atilde;o Paulo"  border="0" width="121" height="135" /></td>
+              <td width="20" valign="middle">&nbsp;</td>
+            </tr>
+            <tr>
+              <td >&nbsp;</td>
+              <td >&nbsp;</td>
+              <td valign="middle">&nbsp;</td>
+              <td valign="middle">&nbsp;</td>
+              <td valign="middle">&nbsp;</td>
+            </tr>
+          </table>
+  			</td>
+  		</tr>
+  	</table>
+  	<table id="redes-sociais" width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="right" valign="middle" style="font-family: Verdana, Geneva, sans-serif; font-size:12px; color: #666666;">&nbsp;</td>
+        <td align="right" valign="middle">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="510" align="right" valign="middle" style="font-family: Verdana, Geneva, sans-serif; font-size:12px; color: #666666;">Senac nas redes:&nbsp;</td>
+        <td width="90" align="right" valign="middle">
+          <a href="http://www.twitter.com/senacsaopaulo" target="_blank"> <img src="http://www1.sp.senac.br/hotsites/gcr/cd/twitter_1.gif" alt="Twitter do Senac S&atilde;o Paulo" title="Twitter do Senac S&atilde;o Paulo" width="22" height="22" border="0" /></a>&nbsp; <a href="http://www.facebook.com/pages/Senac-Sao-Paulo/341729352806" target="_blank"> <img src="http://www1.sp.senac.br/hotsites/gcr/cd/facebook_1.gif" alt="Facebook do Senac S&atilde;o Paulo" title="Facebook do Senac S&atilde;o Paulo" width="22" height="22" border="0" /></a>&nbsp; <a href="http://www.youtube.com/senacsaopaulo" target="_blank"> <img src="http://www1.sp.senac.br/hotsites/gcr/cd/youtube_1.gif" alt="YouTube do Senac S&atilde;o Paulo" title="YouTube do Senac S&atilde;o Paulo" width="22" height="22" border="0" /></a>&nbsp;
+        </td>
+      </tr>
+    </table>
+    <table id="footer" width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="font-family: Verdana, Geneva, sans-serif; font-size:12px; color: #666666;">
+  	      Este e-mail est&aacute; sendo enviado porque voc&ecirc; teve algum contato conosco.  <br />
+  	      <br />
+  	      <strong>Atendimento corporativo</strong>, solu&ccedil;&otilde;es para empresas: 0800 707 1027 ou <a href="http://www.sp.senac.br/jsp/default.jsp?newsID=a20605.htm&amp;testeira=696&amp;sub=0&amp;utm_source=Portal&amp;utm_medium=email&amp;utm_campaign=CRM" target="_blank" style="color:#666666">www.sp.senac.br/corporativo</a>. <br />
+  	      <br />
+  	      <strong>Educa&ccedil;&atilde;o a Dist&acirc;ncia Senac:</strong> conhe&ccedil;a a programa&ccedil;&atilde;o no site <a href="http://www.ead.senac.br?utm_source=Portal&amp;utm_medium=email&amp;utm_campaign=CRM" target="_blank" style="color:#666666">www.ead.senac.br</a>. <br />
+  	      <br />
+  	      A pol&iacute;tica de descontos pode ser alterada a qualquer momento, sem aviso pr&eacute;vio. Para mais informa&ccedil;&otilde;es sobre nossa pol&iacute;tica de descontos, entre em contato com uma unidade.  <br />
+  	      <br />
+  	      <strong>Obs.:</strong> O Senac reserva-se o direito de alterar as datas ou cancelar o curso, caso o n&uacute;mero de participantes n&atilde;o atinja o m&iacute;nimo previsto.
+  	      <br />
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+    </div>
+  </body>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Senac <?= $_GET["unidade"] ?> - <?= $_GET["modalidade"] ?> - <?= $_GET["titulo"] ?></title>
-</head>
+  </html>
 
-<body>
-<div align="center">
-	<table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid <?= $_GET["borda"] ?>; border-collapse:collapse;">
-		<tr>
-			<td>
-				<img src="<?= $_GET["link-imagem"] ?>" alt="<?= $_GET["modalidade"] ?> - <?= $_GET["titulo"] ?>" width="600" style="display:block; border:0;" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<table id="descricao" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-					<tr>
-						<td width="50">&nbsp;</td>
-						<td width="500" align="left">&nbsp;</td>
-						<td width="50">&nbsp;</td>
-					</tr>
-					<tr>
-						<td width="50">&nbsp;</td>
-						<td width="500" align="left">&nbsp;</td>
-						<td width="50">&nbsp;</td>
-					</tr>
-					<tr>
-						<td width="50">&nbsp;</td>
-						<td width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: <?= $_GET["corpo-texto"] ?>;">
-            <?= $_GET["texto"] ?>
-            <br />
-					  <br />
-					  - T&iacute;tulo pe&ccedil;a: <?= $_GET["titulo"] ?><br />
-					  - Alt imagem<br />
-					  - Link portal + XXX_Livres<br />
-					  - Assinatura</td>
-						<td width="50">&nbsp;</td>
-					</tr>
-					<tr>
-						<td width="50">&nbsp;</td>
-						<td width="500" align="left">&nbsp;</td>
-						<td width="50">&nbsp;</td>
-					</tr>
-					<tr>
-						<td width="50">&nbsp;</td>
-						<td width="500" align="center" bgcolor="#009CC4">
-								<a href="&utm_source=Email_Marketing&utm_medium=email&utm_campaign=XXX_Livres" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px;color:#FFFFFF; font-weight:bold; display:block;"><br />Inscreva-se.<br /><br /></a>
-						</td>
-						<td width="50">&nbsp;</td>
-					</tr>
-					<tr>
-						<td width="50">&nbsp;</td>
-						<td width="500">&nbsp;</td>
-						<td width="50">&nbsp;</td>
-					</tr>
-					<tr>
-						<td width="50">&nbsp;</td>
-						<td width="500"><img title="Senac S&atilde;o Paulo" src="http://www1.sp.senac.br/hotsites/msg/gcr/2017_Desconto_30_500px_01.gif" alt="Descontos 30% - Em todos os cursos presenciais - livres, t&eacute;cnicos e idiomas. - Veja o percentual que seu curso oferece."  border="0" /></td>
-						<td width="50">&nbsp;</td>
-					</tr>
-					<tr>
-						<td width="50">&nbsp;</td>
-						<td width="500">&nbsp;</td>
-						<td width="50">&nbsp;</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-        <table id="assinatura" width="600" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#EFEFEF">
-          <tr>
-            <td >&nbsp;</td>
-            <td >&nbsp;</td>
-            <td valign="middle">&nbsp;</td>
-            <td valign="middle">&nbsp;</td>
-            <td valign="middle">&nbsp;</td>
-          </tr>
-          <tr>
-            <td width="20" >&nbsp;</td>
-            <td align="right" valign="bottom" style="font-size:16px"><font color="#000001"  face="Arial, Verdana"> <strong>APRENDIZADO E CONHECIMENTO PARA SEMPRE.</strong><br />
-              <br />
-              Acesse <a href="http://www.sp.senac.br/jsp/default.jsp?newsID=a529.htm&testeira=352&unit=A%C7A&sub=1&utm_source=Portal&utm_medium=email&utm_campaign=CRM" target="_blank" style="color:#000001"><strong>www.sp.senac.br/aracatuba</strong></a> e conhe&ccedil;a a programa&ccedil;&atilde;o completa da unidade.<br />
-              <br />
-            <img src="http://www1.sp.senac.br/hotsites/msg/gcr/tel_preto.png"  width="20" style="border:0;"  />&nbsp;(18) 3117-1000<br />
-              &nbsp;<a href="https://www.google.com.br/maps/place/Senac+Ara%C3%A7atuba/@-21.2011865,-50.4459439,17z/data=!3m1!4b1!4m2!3m1!1s0x949643f3d8a31887:0xec4d448031b7e3fd?shorturl=1" target="_blank" style="color:#000001"><img src="http://www1.sp.senac.br/hotsites/msg/gcr/pin_preto.png"  height="20" style="border:0;"  />&nbsp;Av. Jo&atilde;o Arruda Brasil, 500</a></font></td>
-            <td width="20" valign="middle">&nbsp;</td>
-            <td width="121" valign="middle"><img title="Senac S&atilde;o Paulo" src="http://www1.sp.senac.br/hotsites/msg/gcr/senac70_cor.png" alt="Senac S&atilde;o Paulo"  border="0" width="121" height="135" /></td>
-            <td width="20" valign="middle">&nbsp;</td>
-          </tr>
-          <tr>
-            <td >&nbsp;</td>
-            <td >&nbsp;</td>
-            <td valign="middle">&nbsp;</td>
-            <td valign="middle">&nbsp;</td>
-            <td valign="middle">&nbsp;</td>
-          </tr>
-        </table>
-			</td>
-		</tr>
-	</table>
-	<table id="redes-sociais" width="600" border="0" align="center" cellpadding="0" cellspacing="0">
-    <tr>
-      <td align="right" valign="middle" style="font-family: Verdana, Geneva, sans-serif; font-size:12px; color: #666666;">&nbsp;</td>
-      <td align="right" valign="middle">&nbsp;</td>
-    </tr>
-    <tr>
-      <td width="510" align="right" valign="middle" style="font-family: Verdana, Geneva, sans-serif; font-size:12px; color: #666666;">Senac nas redes:&nbsp;</td>
-      <td width="90" align="right" valign="middle">
-        <a href="http://www.twitter.com/senacsaopaulo" target="_blank"> <img src="http://www1.sp.senac.br/hotsites/gcr/cd/twitter_1.gif" alt="Twitter do Senac S&atilde;o Paulo" title="Twitter do Senac S&atilde;o Paulo" width="22" height="22" border="0" /></a>&nbsp; <a href="http://www.facebook.com/pages/Senac-Sao-Paulo/341729352806" target="_blank"> <img src="http://www1.sp.senac.br/hotsites/gcr/cd/facebook_1.gif" alt="Facebook do Senac S&atilde;o Paulo" title="Facebook do Senac S&atilde;o Paulo" width="22" height="22" border="0" /></a>&nbsp; <a href="http://www.youtube.com/senacsaopaulo" target="_blank"> <img src="http://www1.sp.senac.br/hotsites/gcr/cd/youtube_1.gif" alt="YouTube do Senac S&atilde;o Paulo" title="YouTube do Senac S&atilde;o Paulo" width="22" height="22" border="0" /></a>&nbsp;
-      </td>
-    </tr>
-  </table>
-  <table id="footer" width="600" border="0" align="center" cellpadding="0" cellspacing="0">
-    <tr>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td style="font-family: Verdana, Geneva, sans-serif; font-size:12px; color: #666666;">
-	      Este e-mail est&aacute; sendo enviado porque voc&ecirc; teve algum contato conosco.  <br />
-	      <br />
-	      <strong>Atendimento corporativo</strong>, solu&ccedil;&otilde;es para empresas: 0800 707 1027 ou <a href="http://www.sp.senac.br/jsp/default.jsp?newsID=a20605.htm&amp;testeira=696&amp;sub=0&amp;utm_source=Portal&amp;utm_medium=email&amp;utm_campaign=CRM" target="_blank" style="color:#666666">www.sp.senac.br/corporativo</a>. <br />
-	      <br />
-	      <strong>Educa&ccedil;&atilde;o a Dist&acirc;ncia Senac:</strong> conhe&ccedil;a a programa&ccedil;&atilde;o no site <a href="http://www.ead.senac.br?utm_source=Portal&amp;utm_medium=email&amp;utm_campaign=CRM" target="_blank" style="color:#666666">www.ead.senac.br</a>. <br />
-	      <br />
-	      A pol&iacute;tica de descontos pode ser alterada a qualquer momento, sem aviso pr&eacute;vio. Para mais informa&ccedil;&otilde;es sobre nossa pol&iacute;tica de descontos, entre em contato com uma unidade.  <br />
-	      <br />
-	      <strong>Obs.:</strong> O Senac reserva-se o direito de alterar as datas ou cancelar o curso, caso o n&uacute;mero de participantes n&atilde;o atinja o m&iacute;nimo previsto.
-	      <br />
-      </td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-    </tr>
-  </table>
   </div>
-</body>
 
-</html>
+  <!-- // EMAIL MARKETING -->
 
 </div>
+
+<!-- // CONTAINER -->
+
+<!-- SCRIPT DOWNLOAD HTML -->
 
 <script type="text/javascript">
 
@@ -204,54 +233,7 @@ var fileName =  'tags.html'; // You can use the .txt extension if you want
 $('#emkt-download').click(function(){
   downloadInnerHtml(fileName, 'email-marketing','text/html');
 });
+
 </script>
-
-<?php if ( is_user_logged_in() ) : ?>
-
-  <a href="<?php the_permalink(); ?>?notificacao_email=sim" class="ui large button">Sim</a>
-  <a href="<?php the_permalink(); ?>?notificacao_email=nao" class="ui large button">Não</a>
-  <div class="ui hidden divider"></div>
-  <div class="ui hidden divider"></div>
-
-  <?php if (!$_GET["notificacao_email"]) {
-
-    $notificacao = get_field('receber_notificacoes_por_email', 'user_' . $current_user->ID);
-
-    if ( $notificacao ) {
-      echo '<i class="green check icon"></i> Status atual: <strong>ativado</strong>.';
-    } else {
-      echo '<i class="red close icon"></i> Status atual: <strong>desativado</strong>.';
-    }
-
-  } ?>
-
-  <?php
-
-  if ($_GET["notificacao_email"] == 'sim') {
-    update_field( 'field_5953b0fa6c4f9', true,'user_' . $current_user->ID);
-    echo '<i class="green check icon"></i> Notificações por e-mail ativadas.';
-    // echo '<div class="ui green message">Notificações por e-mail ativadas.</div>';
-  };
-  if ($_GET["notificacao_email"] == 'nao') {
-    update_field( 'field_5953b0fa6c4f9', false,'user_' . $current_user->ID);
-    echo '<i class="red close icon"></i> Notificações por e-mail desativadas.';
-    // echo '<div class="ui red message">Notificações por e-mail desativadas.</div>';
-  };
-
-  ?>
-
-<?php else : ?>
-
-  <h3 class="ui center aligned icon header">
-    <a href="<?php echo wp_login_url(get_permalink()); ?>"><i class="yellow sign in icon"></i></a>
-    Você não está logado.
-  </h3>
-  <p>Faça <a href="<?php echo wp_login_url(get_permalink()); ?>"><strong>login</strong></a> para continuar.</p>
-
-<?php endif; ?>
-
-<div class="ui hidden divider"></div>
-
-</div>
 
 <?php get_footer(); ?>
