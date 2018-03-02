@@ -171,24 +171,24 @@
         <!-- CORPO -->
         <div class="fields">
           <div class="four wide field">
-            <label>Corpo (Fundo)</label>
-            <input type="text" name="corpo-fundo" value="#000001">
+            <label>Corpo (Fundo) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+            <input type="text" name="corpo-fundo" value="#000001" class="eyedropper-color">
           </div>
           <div class="four wide field">
-            <label>Corpo (Texto)</label>
-            <input type="text" name="corpo-texto" value="#000001">
+            <label>Corpo (Texto) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+            <input type="text" name="corpo-texto" value="#000001" class="eyedropper-color">
           </div>
           <div class="four wide field">
-            <label>Borda</label>
-            <input type="text" name="borda" value="#000001">
+            <label>Borda <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+            <input type="text" name="borda" value="#000001" class="eyedropper-color">
           </div>
         </div>
 
         <!-- ASSINATURA -->
         <div class="fields">
           <div class="four wide field">
-            <label>Assinatura (Fundo)</label>
-            <input type="text" name="assinatura-fundo" value="#000001">
+            <label>Assinatura (Fundo) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+            <input type="text" name="assinatura-fundo" value="#000001" class="eyedropper-color">
           </div>
           <div class="four wide field">
             <label>Assinatura (Texto)</label>
@@ -202,7 +202,7 @@
             </select>
           </div>
           <div class="four wide field">
-            <label>Logo</label>
+            <label>Logo</i></label>
             <select name="logo">
               <option value="http://www1.sp.senac.br/hotsites/msg/gcr/senac70_preto.png">Preto</option>
               <option value="http://www1.sp.senac.br/hotsites/msg/gcr/senac70_branco.png">Branco</option>
@@ -214,12 +214,12 @@
         <!-- INSCREVA-SE -->
         <div class="fields">
           <div class="four wide field">
-            <label>Inscreva-se (Fundo)</label>
-            <input type="text" name="inscreva-se-fundo" value="#000001">
+            <label>Inscreva-se (Fundo) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+            <input type="text" name="inscreva-se-fundo" value="#000001" class="eyedropper-color">
           </div>
           <div class="four wide field">
-            <label>Inscreva-se (Texto)</label>
-            <input type="text" name="inscreva-se-texto" value="#000001">
+            <label>Inscreva-se (Texto) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+            <input type="text" name="inscreva-se-texto" value="#000001" class="eyedropper-color">
           </div>
         </div>
 
@@ -235,6 +235,84 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+
+// $(function() {
+//
+//   $('img').mousemove(function(e) {
+//
+//       if(!this.canvas) {
+//           this.canvas = $('<canvas />')[0];
+//           this.canvas.width = this.width;
+//           this.canvas.height = this.height;
+//           this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
+//       }
+//
+//       var pixelData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
+//
+//       function rgb2hex(rgb){
+//        rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+//        return "#" +
+//         ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+//         ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+//         ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+//       }
+//
+//       var hex = rgb2hex( 'rgba(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ', ' + pixelData[3] + ')' );
+//       $(':focus').val(hex);
+//
+//   });
+//
+// });
+
+$(".ui.black.empty.circular.label").click(function(){
+  $(this).parent().nextAll('input').val('#000001');
+})
+
+$(".ui.grey.empty.circular.label").click(function(){
+  $(this).parent().nextAll('input').val('#FFFFFF');
+})
+
+$(".ui.eyedropper.icon").css('cursor', 'pointer');
+
+$( ".ui.eyedropper.icon" ).click(function() {
+
+  $('img').mousemove(function(e) {
+
+      if(!this.canvas) {
+          this.canvas = $('<canvas />')[0];
+          this.canvas.width = this.width;
+          this.canvas.height = this.height;
+          this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
+      }
+
+      var pixelData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
+
+      function rgb2hex(rgb){
+       rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+       return "#" +
+        ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+        ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+        ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+      }
+
+      var hex = rgb2hex( 'rgba(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ', ' + pixelData[3] + ')' );
+      $('.eyedropper-color:focus').val(hex);
+
+  });
+
+  $(this).parent().nextAll('input').focus();
+
+});
+
+// $(document).ready(function(){
+//   $('.ui.eyedropper.icon').click(function(){
+//     $('body').css('cursor', 'crosshair');
+//   });
+// });
+
+</script>
 
 <span class="ui horizontal divider header cd-margem">
   <a href="javascript:history.back()">
