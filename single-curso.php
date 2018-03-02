@@ -244,7 +244,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Senac <?= $unidades[$unidade]['nome']; ?> - <?= $modalidade ?> - <?= $titulo ?></title>
+<title >Senac <?= $unidades[$unidade]['nome']; ?> - <?= $lblModalidade ?> - <?php the_title(); ?></title>
 </head>
 
 <body>
@@ -252,12 +252,12 @@
   <table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid <?= $borda ?>; border-collapse:collapse;">
     <tr>
       <td>
-        <img id="img-topo" src="<?= $link_imagem ?>" alt="<?= $modalidade ?> - <?= $titulo ?>" width="600" style="display:block; border:0;" />
+        <img id="link-imagem" alt="<?= $lblModalidade ?> - <?php the_title(); ?>" width="600" style="display:block; border:0;" />
       </td>
     </tr>
     <tr>
       <td>
-        <table id="descricao" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse;" bgcolor="<?= $corpo_fundo ?>">
+        <table id="descricao" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
           <tr>
             <td width="50">&nbsp;</td>
             <td width="500" align="left">&nbsp;</td>
@@ -270,8 +270,8 @@
           </tr>
           <tr>
             <td width="50">&nbsp;</td>
-            <td width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: <?= $corpo_texto ?>;">
-              <?= $texto ?>
+            <td width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: <?= $corpo_texto ?>;" id="corpo-texto">
+              <?php if(get_field('texto-curso')) the_field('texto-curso'); ?>
             </td>
             <td width="50">&nbsp;</td>
           </tr>
@@ -381,46 +381,137 @@
 
 <!-- // EMAIL MARKETING -->
 
+<script type="text/javascript">
+
+var unidades = {
+  'ACA': {
+    'nome'        : 'Araçatuba',
+    'nome_url'    : 'aracatuba',
+    'endereco'    : 'Av. João Arruda Brasil, 500',
+    'bairro'      : 'São Joaquim',
+    'CEP'         : '16050-400',
+    'telefone'    : '(18) 3117-1000',
+    'url'         : 'http://www.sp.senac.br/jsp/default.jsp?newsID=a529.htm&testeira=352&unit=A%C7A&sub=1',
+    'google_maps' : 'https://www.google.com.br/maps/place/Senac+Ara%C3%A7atuba/@-21.201429,-50.4467907,17z/data=!3m1!4b1!4m5!3m4!1s0x949643f3d8a31887:0xec4d448031b7e3fd!8m2!3d-21.201429!4d-50.444602',
+  },
+  'ACL': {
+    'nome'        : 'Aclimação',
+    'nome_url'    : 'aclimacao',
+    'endereco'    : 'Rua Pires da Mota, 838',
+    'bairro'      : 'Aclimação',
+    'CEP'         : '01529-000',
+    'telefone'    : '(11) 3795-1299',
+    'url'         : 'http://www.sp.senac.br/jsp/default.jsp?newsID=a18070.htm&testeira=1737&unit=ACL&sub=1',
+    'google_maps' : 'https://www.google.com.br/maps/place/Senac+Aclima%C3%A7%C3%A3o/@-23.5686172,-46.6383325,17z/data=!3m1!4b1!4m5!3m4!1s0x94ce599f467de6b9:0x221608c031490e7d!8m2!3d-23.5686172!4d-46.6361438',
+  },
+}
+
+</script>
+
+<div class="ui form">
+
+<!-- UNIDADE -->
 <div class="field">
-  <label>Imagem topo</label>
-  <input type="text" name="img-topo" id="input-img-topo">
+  <label>Unidade</label>
+  <?php
+  $field_key = "field_58d1a32b9f77e";
+  $field = get_field_object($field_key);
+
+  if( $field ) {
+
+    echo '<select name="unidade" id="select-unidade">';
+    foreach( $field['choices'] as $k => $v ) {
+        echo '<option value="' . $k . '">' . $v . '</option>';
+    }
+    echo '</select>';
+  }
+  ?>
 </div>
+
+<!-- CURSO -->
+
+<div class="field">
+  <label>Link do portal</label>
+  <input type="text" id="input-link-portal">
+</div>
+<div class="field">
+  <label>Link da imagem</label>
+  <input type="text" value="http://www1.sp.senac.br/hotsites/msg/" id="input-link-imagem">
+</div>
+
+<!-- CORPO -->
+<div class="fields">
+  <div class="four wide field">
+    <label>Corpo (Fundo) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+    <input type="text" name="corpo-fundo" value="#000001" class="eyedropper-color">
+  </div>
+  <div class="four wide field">
+    <label>Corpo (Texto) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+    <input type="text" name="corpo-texto" value="#000001" class="eyedropper-color">
+  </div>
+  <div class="four wide field">
+    <label>Borda <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+    <input type="text" name="borda" value="#000001" class="eyedropper-color">
+  </div>
+</div>
+
+<!-- ASSINATURA -->
+<div class="fields">
+  <div class="four wide field">
+    <label>Assinatura (Fundo) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+    <input type="text" name="assinatura-fundo" value="#000001" class="eyedropper-color">
+  </div>
+  <div class="four wide field">
+    <label>Assinatura (Texto)</label>
+    <select name="assinatura-texto">
+      <option value="#000001">Preto</option>
+      <!-- http://www1.sp.senac.br/hotsites/msg/gcr/tel_preto.png -->
+      <!-- http://www1.sp.senac.br/hotsites/msg/gcr/pin_preto.png -->
+      <option value="#FFFFFF">Branco</option>
+      <!-- http://www1.sp.senac.br/hotsites/msg/gcr/tel_branco.png -->
+      <!-- http://www1.sp.senac.br/hotsites/msg/gcr/pin_branco.png -->
+    </select>
+  </div>
+  <div class="four wide field">
+    <label>Logo</i></label>
+    <select name="logo">
+      <option value="http://www1.sp.senac.br/hotsites/msg/gcr/senac70_preto.png">Preto</option>
+      <option value="http://www1.sp.senac.br/hotsites/msg/gcr/senac70_branco.png">Branco</option>
+      <option value="http://www1.sp.senac.br/hotsites/msg/gcr/senac70_cor.png">Colorido</option>
+    </select>
+  </div>
+</div>
+
+<!-- INSCREVA-SE -->
+<div class="fields">
+  <div class="four wide field">
+    <label>Inscreva-se (Fundo) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+    <input type="text" name="inscreva-se-fundo" value="#000001" class="eyedropper-color">
+  </div>
+  <div class="four wide field">
+    <label>Inscreva-se (Texto) <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+    <input type="text" name="inscreva-se-texto" value="#000001" class="eyedropper-color">
+  </div>
+</div>
+
+<!-- <h4 class="ui dividing header">Assinatura</h4> -->
+
+<div class="ui hidden divider"></div>
+<input type="submit" name="" value="Criar e-mail" class="ui secondary button">
+
+</form>
 
 <script type="text/javascript">
 
 $(function() {
-    $('#input-img-topo').keyup(function() {
-        $('#img-topo').attr('src', $(this).val());
-    });
+  $('#input-link-imagem').keyup(function() {
+    $('#link-imagem').attr('src', $(this).val());
+  });
+  $('#select-unidade').change(function() {
+    $('title').prepend(unidades['ACL']['nome']);
+  });
 });
 
-// $(function() {
-//
-//   $('img').mousemove(function(e) {
-//
-//       if(!this.canvas) {
-//           this.canvas = $('<canvas />')[0];
-//           this.canvas.width = this.width;
-//           this.canvas.height = this.height;
-//           this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
-//       }
-//
-//       var pixelData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
-//
-//       function rgb2hex(rgb){
-//        rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
-//        return "#" +
-//         ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-//         ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-//         ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
-//       }
-//
-//       var hex = rgb2hex( 'rgba(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ', ' + pixelData[3] + ')' );
-//       $(':focus').val(hex);
-//
-//   });
-//
-// });
 
 $(".ui.black.empty.circular.label").click(function(){
   $(this).parent().nextAll('input').val('#000001');
