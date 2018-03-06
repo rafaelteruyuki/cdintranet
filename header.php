@@ -14,6 +14,21 @@
 
 <body <?php body_class(); ?>>
 
+  <!--[if lt IE 9]>
+  <div style="margin:0 auto; padding:20px; background-color: #00CCFF; text-align:center; font-family: Arial, Verdana; line-height:1.5; color:#2D2D2D; font-size:18px;">
+    <p><img src="http://www.sp.senac.br/msg/gd4/ie-branco.png" width="110" height="108" alt=""/></p>
+    <p style="font-size:24px;"><strong>ATENÇÃO!</strong></p>
+    <p>
+      Você está utilizando uma versão desatualizada do Internet Explorer. <br />
+      <strong>O site não será exibido corretamente.</strong> Por favor, atualize seu navegador.<br />
+      <br />
+    </p>
+    <a href="http://windows.microsoft.com/ie" target="_blank" style="padding:20px; background-color:#2D2D2D; text-decoration:none; color:#FFFFFF;"><strong>Baixar a versão mais recente</strong></a>
+    <br />
+    <br />
+  </div>
+  <![endif]-->
+
 <!-- SIDEBAR FILTROS -->
 
 <div class="ui wide sidebar vertical menu tarefas">
