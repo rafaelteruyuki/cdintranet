@@ -83,7 +83,7 @@ global $current_user;
     						if ($last_comment_time > $acesso_registrado[$key]) :
 
                   // NAO INSERE POSTS DUPLICADOS
-                  if ( !in_array($comment->comment_post_ID, $comment_post_IDs ) ) {
+                  if ( !in_array($comment->comment_post_ID, $comment_post_IDs, true ) ) {
                   $comment_post_IDs[] = $comment->comment_post_ID;
 
                   $interacao++;

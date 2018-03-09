@@ -80,6 +80,8 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
           }
 
+        } else {
+          $num_nao_lidas++; // Se há comentário, mas não visitou a tarefa ainda
         }
 
       }
