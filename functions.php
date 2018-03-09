@@ -2108,9 +2108,11 @@ NUMERO DE INTERACOES (PRIVADAS)
 
 ---------------------------- */
 
-function num_comentarios($text = true) {
+function num_comentarios($text = true, $post_id) {
 
-	$post_id = get_the_ID();
+	if (!$post_id) {
+		$post_id = get_the_ID();
+	}
 
 	if ( current_user_can('senac') || !is_user_logged_in() ) {
 	  $privado = array(

@@ -138,8 +138,8 @@ global $current_user;
                       <strong><?php the_field('unidade', $comment->comment_post_ID); echo '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID); ?></strong>
               			</span>
                     <br>
-                    <span class="cd-disabled" style="line-height:2;">
-                      <i class="purple comment icon"></i><?php echo 'Há ' . human_time_diff( get_comment_date('U'), current_time('timestamp') ); ?>
+                    <span class="cd-disabled" style="line-height:2;text-transform: lowercase;">
+                      <i class="purple comment icon"></i><?php num_comentarios(true, $comment->comment_post_ID);?>
               			</span>
                     <br>
                     <span style="line-height:3;">
