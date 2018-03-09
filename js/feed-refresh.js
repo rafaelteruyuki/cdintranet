@@ -84,7 +84,8 @@ function contador_feed() {
   $(document).ajaxStop(function() {
 
   var naoLido = 0;
-  naoLido = $('#refresh .feed-nao-lido').length;
+  // naoLido = $('#refresh .feed-nao-lido').length;
+  naoLido = num_nao_lidas; // Valor de num_nao_lidas vem da contagem do comment-feed.php
 
   if (naoLido <= 30 && naoLido  >= 1){
     $('.contador').html(naoLido);

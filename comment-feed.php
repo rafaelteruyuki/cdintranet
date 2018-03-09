@@ -33,10 +33,6 @@ foreach ( $lastposts as $post ) : setup_postdata( $post );
 endforeach;
 wp_reset_postdata();
 
-
-
- // VERIFICA SE HA MENSAGENS NAO LIDAS DEPOIS DAS 31 PRIMEIRAS
-
 if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
   $nao_lidas_args = array(
@@ -49,14 +45,15 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
   $comments_query = new WP_Comment_Query;
   $comments = $comments_query->query( $nao_lidas_args );
 
+  $num_nao_lidas = 0;
   $msgs_nao_lidas = false;
-  $i = 0;
+  // $i = 0;
 
   if ( !empty( $comments ) ) :
 
     foreach ( $comments as $comment ) :
 
-      $i++;
+      // $i++;
 
       // Checa se há visita e quem visitou
       if( have_rows('visitas', $comment->comment_post_ID) ) {
@@ -75,9 +72,11 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
           $last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
 
           if ($last_comment_time > $acesso_registrado[$key]) {
-            if ($i > 31 && !$msgs_nao_lidas) {
-              $msgs_nao_lidas = true;
-            }
+            $num_nao_lidas++;
+            $msgs_nao_lidas = true;
+            // if ($i > 31 && !$msgs_nao_lidas) {
+            //   $msgs_nao_lidas = true;
+            // }
 
           }
 
@@ -90,11 +89,12 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
       endforeach;
 
-    if ($msgs_nao_lidas) {
+      // Todas as solicitações com interações não lidas
+      if ($msgs_nao_lidas) {
       echo '<a href="';
       bloginfo('url');
-      echo '/mensagens-nao-lidas/" class="item" style="text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Há interações antigas não lidas</strong></a>';
-    }
+      echo '/interacoes/" class="item" style="text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Veja todas as solicitações com interações não lidas</strong></a>';
+      }
 
     endif;
   endif;
@@ -143,17 +143,19 @@ if (!empty($posts_array)) : // Se não tiver posts na query anterior, não inici
     <?php endforeach; ?>
 
     <?php if ( current_user_can( 'edit_pages' ) ) : ?>
-      <a href="<?php bloginfo('url') ?>/mensagens-nao-lidas" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>
+      <a href="<?php bloginfo('url') ?>/interacoes" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>
     <?php else : ?>
-      <a href="<?php bloginfo('url') ?>/mensagens-nao-lidas" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>
+      <a href="<?php bloginfo('url') ?>/interacoes" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>
     <?php endif; ?>
-
-  <?php endif; ?>
 
   <?php else : ?>
 
-  <div class="item">
-    <i class="grey refresh icon"></i>Não há interações
-  </div>
+  <a class="item">
+    <i class="grey comment icon"></i>Não há interações
+  </a>
+
+  <?php endif; ?>
 
 <?php endif; wp_reset_postdata(); ?>
+
+<script type="text/javascript">var num_nao_lidas = <?php echo $num_nao_lidas ?>;</script>
