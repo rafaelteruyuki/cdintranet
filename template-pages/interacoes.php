@@ -76,7 +76,7 @@ global $current_user;
         				$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
 
         				// Usuário logado visitou
-        				if ($key !== false) {
+        				if ($key !== false) :
 
     						$last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
 
@@ -157,7 +157,82 @@ global $current_user;
 
     						<?php endif;
 
-                }
+                else :
+
+                  // NAO INSERE POSTS DUPLICADOS
+                  if ( !in_array($comment->comment_post_ID, $comment_post_IDs, true ) ) {
+                  $comment_post_IDs[] = $comment->comment_post_ID;
+
+                  $interacao++;
+
+                  // VARIAVEIS TAREFAS
+                  $responsavel1 = get_field('responsavel_1', $comment->comment_post_ID);
+                  $responsavel2 = get_field('responsavel_2', $comment->comment_post_ID);
+                  $responsavel3 = get_field('responsavel_portal', $comment->comment_post_ID);
+                  $responsavel4 = get_field('responsavel_portal_2', $comment->comment_post_ID);
+                  $status = get_field('status', $comment->comment_post_ID);
+                  switch ($status['value']) {
+                      case "naoiniciado":
+                          $percent = 0;
+                          $corStatus = '';
+                          break;
+                      case "cancelado":
+                          $percent = 0;
+                          $corStatus = 'grey';
+                          break;
+                      case "incompleto":
+                          $percent = 15;
+                          $corStatus = 'red';
+                          break;
+                      case "aguardandoinformacao":
+                          $percent = 35;
+                          $corStatus = 'orange';
+                          break;
+                      case "emproducao":
+                          $percent = 50;
+                          $corStatus = 'yellow';
+                          break;
+                      case "fluxors":
+                          $percent = 50;
+                          $corStatus = 'yellow';
+                          break;
+                      case "fluxoportal":
+                          $percent = 50;
+                          $corStatus = 'yellow';
+                          break;
+                      case "publicado":
+                          $percent = 70;
+                          $corStatus = 'olive';
+                          break;
+                      case "finalizado":
+                          $percent = 100;
+                          $corStatus = 'green';
+                          break;
+                  }
+                ?>
+    							<div class="ui clearing segment" style="background: #ebf7ff;">
+                    <span style="line-height:1.5;">
+                      <strong><?php the_field('unidade', $comment->comment_post_ID); echo '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID); ?></strong>
+              			</span>
+                    <br>
+                    <span class="cd-disabled" style="line-height:2;text-transform: lowercase;">
+                      <i class="purple comment icon"></i><?php num_comentarios(true, $comment->comment_post_ID);?>
+              			</span>
+                    <br>
+                    <span style="line-height:3;">
+                      <?php if ($responsavel1) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel1['display_name'] ?>"><?php echo $responsavel1['user_avatar']; ?></span><?php endif; ?>
+                  		<?php if ($responsavel2) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel2['display_name'] ?>"><?php echo $responsavel2['user_avatar']; ?></span><?php endif; ?>
+                      <?php if ($responsavel3) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel3['display_name'] ?>"><?php echo $responsavel3['user_avatar']; ?></span><?php endif; ?>
+                      <?php if ($responsavel4) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel4['display_name'] ?>"><?php echo $responsavel4['user_avatar']; ?></span><?php endif; ?>
+                    </span>
+                    <br>
+                    <div style="color: #FFF; float: left; margin-top: 10px;"><div class="ui <?= $corStatus ?> label"><?php echo $status['label'] ?></div></div>
+                    <a href="<?php the_permalink($comment->comment_post_ID); ?>" target="_blank" class="ui blue right labeled icon button" style="float:right;"><i class="right arrow icon"></i>Veja mais</a>
+                  </div>
+
+                <?php }
+
+                endif;
 
                 $usuario_registrado = array(); // Limpa o array
                 $acesso_registrado = array(); // Limpa o array
