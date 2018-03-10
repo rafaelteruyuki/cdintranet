@@ -33,209 +33,138 @@ global $current_user;
     'post_type'              => array( 'tarefa' ),
     'posts_per_page'         => -1,
     'order'                  => 'DESC',
+    'fields'                 => 'ids',
     'meta_query'             => array( $comment_feed ),
   );
 
-  // QUERY DOS POSTS DE ACORDO COM CADA FEED
-  $post_query = new WP_Query( $post_args );
-  $posts_array= array();
-  global $post;
-  $lastposts = get_posts( $post_args );
+  $posts = get_posts( $post_args );
 
-  foreach ( $lastposts as $post ) : setup_postdata( $post );
-    $posts_array[] = get_the_ID();
-  endforeach;
-  wp_reset_postdata();
+  // SE TIVER POSTS
+  if ( $posts ) :
 
-  if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
+    foreach ( $posts as $post ) :
+      $posts_array[] = $post;
+    endforeach;
 
-    $nao_lidas_args = array(
-        'order'          => 'DESC',
-        'orderby'        => 'comment_date',
-        'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
-        'meta_query'     => array( $privado ),
-    );
+      // COMENTARIOS
+      $comments_args = array(
+          'order'          => 'DESC',
+          'orderby'        => 'comment_date',
+          'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+          'meta_query'     => array( $privado ),
+      );
 
-    $comments_query = new WP_Comment_Query;
-    $comments = $comments_query->query( $nao_lidas_args );
+      $comments_query = new WP_Comment_Query;
+      $comments = $comments_query->query( $comments_args );
 
-    $interacao = 0;
+      $interacao = 0;
 
-    if (!empty($comments)) :
+      // SE TIVER COMENTARIOS
+      if ( $comments ) :
 
-  					foreach($comments as $comment) {
+  			foreach ( $comments as $comment ) {
 
-              if( have_rows('visitas', $comment->comment_post_ID) ) {
+          // SE TIVER VISITAS
+          if ( have_rows('visitas', $comment->comment_post_ID) ) {
 
-        				while ( have_rows('visitas', $comment->comment_post_ID) ) {
-        					the_row();
-        					$usuario_registrado[] = get_sub_field('usuario', $comment->comment_post_ID); // Array usuários registrados
-        					$acesso_registrado[] = get_sub_field('acesso', $comment->comment_post_ID); // Array acessos registrados
-        				}
+    				while ( have_rows('visitas', $comment->comment_post_ID) ) {
+    					the_row();
+    					$usuario_registrado[] = get_sub_field('usuario', $comment->comment_post_ID); // Array usuários registrados
+    					$acesso_registrado[] = get_sub_field('acesso', $comment->comment_post_ID); // Array acessos registrados
+    				}
 
-        				$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
+        		$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
+            $comment_time = get_comment_date('YmdHis', $comment->comment_ID);
 
-        				// Usuário logado visitou
-        				if ($key !== false) :
+            // Se o usuário não visitou e há comentário, coloca seu acesso como 0 para ser menor que o comment_time e aparecer
+            if ($key === false) {
+              $acesso_registrado[$key] = 0;
+            }
 
-    						$last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
+    				// Usuário logado visitou
+    				if ( $comment_time > $acesso_registrado[$key] ) :
 
-    						if ($last_comment_time > $acesso_registrado[$key]) :
+              // NAO INSERE POSTS DUPLICADOS
+              if ( !in_array($comment->comment_post_ID, $comment_post_IDs, true ) ) :
+              $comment_post_IDs[] = $comment->comment_post_ID;
 
-                  // NAO INSERE POSTS DUPLICADOS
-                  if ( !in_array($comment->comment_post_ID, $comment_post_IDs, true ) ) {
-                  $comment_post_IDs[] = $comment->comment_post_ID;
+              $interacao++;
 
-                  $interacao++;
+              // VARIAVEIS TAREFAS
+              $responsavel1 = get_field('responsavel_1', $comment->comment_post_ID);
+              $responsavel2 = get_field('responsavel_2', $comment->comment_post_ID);
+              $responsavel3 = get_field('responsavel_portal', $comment->comment_post_ID);
+              $responsavel4 = get_field('responsavel_portal_2', $comment->comment_post_ID);
+              $status = get_field('status', $comment->comment_post_ID);
 
-                  // VARIAVEIS TAREFAS
-                  $responsavel1 = get_field('responsavel_1', $comment->comment_post_ID);
-                  $responsavel2 = get_field('responsavel_2', $comment->comment_post_ID);
-                  $responsavel3 = get_field('responsavel_portal', $comment->comment_post_ID);
-                  $responsavel4 = get_field('responsavel_portal_2', $comment->comment_post_ID);
-                  $status = get_field('status', $comment->comment_post_ID);
-                  switch ($status['value']) {
-                      case "naoiniciado":
-                          $percent = 0;
-                          $corStatus = '';
-                          break;
-                      case "cancelado":
-                          $percent = 0;
-                          $corStatus = 'grey';
-                          break;
-                      case "incompleto":
-                          $percent = 15;
-                          $corStatus = 'red';
-                          break;
-                      case "aguardandoinformacao":
-                          $percent = 35;
-                          $corStatus = 'orange';
-                          break;
-                      case "emproducao":
-                          $percent = 50;
-                          $corStatus = 'yellow';
-                          break;
-                      case "fluxors":
-                          $percent = 50;
-                          $corStatus = 'yellow';
-                          break;
-                      case "fluxoportal":
-                          $percent = 50;
-                          $corStatus = 'yellow';
-                          break;
-                      case "publicado":
-                          $percent = 70;
-                          $corStatus = 'olive';
-                          break;
-                      case "finalizado":
-                          $percent = 100;
-                          $corStatus = 'green';
-                          break;
-                  }
-                ?>
-    							<div class="ui clearing segment" style="background: #ebf7ff;">
-                    <span style="line-height:1.5;">
-                      <strong><?php the_field('unidade', $comment->comment_post_ID); echo '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID); ?></strong>
-              			</span>
-                    <br>
-                    <span class="cd-disabled" style="line-height:2;text-transform: lowercase;">
-                      <i class="purple comment icon"></i><?php num_comentarios(true, $comment->comment_post_ID);?>
-              			</span>
-                    <br>
-                    <span style="line-height:3;">
-                      <?php if ($responsavel1) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel1['display_name'] ?>"><?php echo $responsavel1['user_avatar']; ?></span><?php endif; ?>
-                  		<?php if ($responsavel2) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel2['display_name'] ?>"><?php echo $responsavel2['user_avatar']; ?></span><?php endif; ?>
-                      <?php if ($responsavel3) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel3['display_name'] ?>"><?php echo $responsavel3['user_avatar']; ?></span><?php endif; ?>
-                      <?php if ($responsavel4) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel4['display_name'] ?>"><?php echo $responsavel4['user_avatar']; ?></span><?php endif; ?>
-                    </span>
-                    <br>
-                    <div style="color: #FFF; float: left; margin-top: 10px;"><div class="ui <?= $corStatus ?> label"><?php echo $status['label'] ?></div></div>
-                    <a href="<?php the_permalink($comment->comment_post_ID); ?>" target="_blank" class="ui blue right labeled icon button" style="float:right;"><i class="right arrow icon"></i>Veja mais</a>
-                  </div>
+              switch ($status['value']) {
+                  case "naoiniciado":
+                      $percent = 0;
+                      $corStatus = '';
+                      break;
+                  case "cancelado":
+                      $percent = 0;
+                      $corStatus = 'grey';
+                      break;
+                  case "incompleto":
+                      $percent = 15;
+                      $corStatus = 'red';
+                      break;
+                  case "aguardandoinformacao":
+                      $percent = 35;
+                      $corStatus = 'orange';
+                      break;
+                  case "emproducao":
+                      $percent = 50;
+                      $corStatus = 'yellow';
+                      break;
+                  case "fluxors":
+                      $percent = 50;
+                      $corStatus = 'yellow';
+                      break;
+                  case "fluxoportal":
+                      $percent = 50;
+                      $corStatus = 'yellow';
+                      break;
+                  case "publicado":
+                      $percent = 70;
+                      $corStatus = 'olive';
+                      break;
+                  case "finalizado":
+                      $percent = 100;
+                      $corStatus = 'green';
+                      break;
+              }
+            ?>
 
-                <?php } ?>
+						<div class="ui clearing segment" style="background: #ebf7ff; display:none">
+              <span style="line-height:1.5;">
+                <strong><?php the_field('unidade', $comment->comment_post_ID); echo '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID); ?></strong>
+        			</span>
+              <br>
+              <span class="cd-disabled" style="line-height:2;text-transform: lowercase;">
+                <i class="purple comment icon"></i><?php num_comentarios(true, $comment->comment_post_ID);?>
+        			</span>
+              <br>
+              <span style="line-height:3;">
+                <?php if ($responsavel1) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel1['display_name'] ?>"><?php echo $responsavel1['user_avatar']; ?></span><?php endif; ?>
+            		<?php if ($responsavel2) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel2['display_name'] ?>"><?php echo $responsavel2['user_avatar']; ?></span><?php endif; ?>
+                <?php if ($responsavel3) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel3['display_name'] ?>"><?php echo $responsavel3['user_avatar']; ?></span><?php endif; ?>
+                <?php if ($responsavel4) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel4['display_name'] ?>"><?php echo $responsavel4['user_avatar']; ?></span><?php endif; ?>
+              </span>
+              <br>
+              <div style="color: #FFF; float: left; margin-top: 10px;"><div class="ui <?= $corStatus ?> label"><?php echo $status['label'] ?></div></div>
+              <a href="<?php the_permalink($comment->comment_post_ID); ?>" target="_blank" class="ui blue right labeled icon button" style="float:right;"><i class="right arrow icon"></i>Veja mais</a>
+            </div>
 
-    						<?php endif;
-
-                else :
-
-                  // NAO INSERE POSTS DUPLICADOS
-                  if ( !in_array($comment->comment_post_ID, $comment_post_IDs, true ) ) {
-                  $comment_post_IDs[] = $comment->comment_post_ID;
-
-                  $interacao++;
-
-                  // VARIAVEIS TAREFAS
-                  $responsavel1 = get_field('responsavel_1', $comment->comment_post_ID);
-                  $responsavel2 = get_field('responsavel_2', $comment->comment_post_ID);
-                  $responsavel3 = get_field('responsavel_portal', $comment->comment_post_ID);
-                  $responsavel4 = get_field('responsavel_portal_2', $comment->comment_post_ID);
-                  $status = get_field('status', $comment->comment_post_ID);
-                  switch ($status['value']) {
-                      case "naoiniciado":
-                          $percent = 0;
-                          $corStatus = '';
-                          break;
-                      case "cancelado":
-                          $percent = 0;
-                          $corStatus = 'grey';
-                          break;
-                      case "incompleto":
-                          $percent = 15;
-                          $corStatus = 'red';
-                          break;
-                      case "aguardandoinformacao":
-                          $percent = 35;
-                          $corStatus = 'orange';
-                          break;
-                      case "emproducao":
-                          $percent = 50;
-                          $corStatus = 'yellow';
-                          break;
-                      case "fluxors":
-                          $percent = 50;
-                          $corStatus = 'yellow';
-                          break;
-                      case "fluxoportal":
-                          $percent = 50;
-                          $corStatus = 'yellow';
-                          break;
-                      case "publicado":
-                          $percent = 70;
-                          $corStatus = 'olive';
-                          break;
-                      case "finalizado":
-                          $percent = 100;
-                          $corStatus = 'green';
-                          break;
-                  }
-                ?>
-    							<div class="ui clearing segment" style="background: #ebf7ff;">
-                    <span style="line-height:1.5;">
-                      <strong><?php the_field('unidade', $comment->comment_post_ID); echo '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID); ?></strong>
-              			</span>
-                    <br>
-                    <span class="cd-disabled" style="line-height:2;text-transform: lowercase;">
-                      <i class="purple comment icon"></i><?php num_comentarios(true, $comment->comment_post_ID);?>
-              			</span>
-                    <br>
-                    <span style="line-height:3;">
-                      <?php if ($responsavel1) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel1['display_name'] ?>"><?php echo $responsavel1['user_avatar']; ?></span><?php endif; ?>
-                  		<?php if ($responsavel2) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel2['display_name'] ?>"><?php echo $responsavel2['user_avatar']; ?></span><?php endif; ?>
-                      <?php if ($responsavel3) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel3['display_name'] ?>"><?php echo $responsavel3['user_avatar']; ?></span><?php endif; ?>
-                      <?php if ($responsavel4) : ?><span class="ui avatar image" data-tooltip="<?php echo $responsavel4['display_name'] ?>"><?php echo $responsavel4['user_avatar']; ?></span><?php endif; ?>
-                    </span>
-                    <br>
-                    <div style="color: #FFF; float: left; margin-top: 10px;"><div class="ui <?= $corStatus ?> label"><?php echo $status['label'] ?></div></div>
-                    <a href="<?php the_permalink($comment->comment_post_ID); ?>" target="_blank" class="ui blue right labeled icon button" style="float:right;"><i class="right arrow icon"></i>Veja mais</a>
-                  </div>
-
-                <?php }
+            <?php
 
                 endif;
 
-                $usuario_registrado = array(); // Limpa o array
-                $acesso_registrado = array(); // Limpa o array
+              endif;
+
+              $usuario_registrado = array(); // Limpa o array
+              $acesso_registrado = array(); // Limpa o array
 
   					}
 
@@ -245,15 +174,15 @@ global $current_user;
             echo '<div class="ui center aligned container cd-margem"><h3>Você visualizou todas as interações.</h3></div>';
           endif;
 
-          else : ?>
+        endif;
 
-          <div class="ui center aligned container cd-margem">
-            <h3>Não há interações.</h3>
-          </div>
+        else : ?>
 
-  		<?php endif;
+        <div class="ui center aligned container cd-margem">
+          <h3>Não há interações.</h3>
+        </div>
 
-    endif;
+  <?php endif;
 
   wp_reset_postdata();
 ?>
@@ -269,7 +198,9 @@ global $current_user;
 <?php endif; ?>
 
 <script type="text/javascript">
-
+  $( ".ui.clearing.segment" ).first().show( 400, function showNext() {
+    $( this ).next( ".ui.clearing.segment" ).show( 400, showNext );
+  });
   // if ( !$('.msg-nao-lida').length ) {
   //   $('#info').html('<h3>Não há interações não lidas.</h3>');
   // } else {

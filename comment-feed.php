@@ -152,11 +152,19 @@ if (!empty($posts_array)) : // Se não tiver posts na query anterior, não inici
 
   <?php else : ?>
 
+  <?php $num_nao_lidas = 0 ?>
   <a class="item">
     <i class="grey comment icon"></i>Não há interações
   </a>
 
   <?php endif; ?>
+
+  <?php else : ?>
+
+  <?php $num_nao_lidas = 0 ?>
+  <a class="item">
+    <i class="grey comment icon"></i>Não há interações
+  </a>
 
 <?php endif; wp_reset_postdata(); ?>
 
