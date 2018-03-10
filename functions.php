@@ -1350,7 +1350,7 @@ HIGHLIGHT TAREFAS COM COMENTARIOS (MINHAS TAREFAS e MINHAS SOLICITACOES)
 
 ---------------------------- */
 
-function comment_nao_lido($nao_lido = 'background:#ebf7ff;', $comment_privado) {
+function comment_nao_lido($nao_lido = 'background:#ebf7ff;') {
 
 global $current_user;
 $post_id = get_the_ID();
@@ -2108,9 +2108,9 @@ NUMERO DE INTERACOES (PRIVADAS)
 
 ---------------------------- */
 
-function num_comentarios($text = true, $post_id) {
+function num_comentarios($text = true, $post_id = 0) {
 
-	if (!$post_id) {
+	if ($post_id == 0) {
 		$post_id = get_the_ID();
 	}
 
