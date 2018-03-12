@@ -119,35 +119,19 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <div class="content">
             <div class="header">Participante(s)</div>
             <div class="description">
-
+              <div class="participantes">
               <?php if( $participantes ): ?>
               	<?php foreach( $participantes as $participante ): ?>
               		<?php echo $participante['display_name']; ?><br>
               	<?php endforeach; ?>
               <?php endif; ?>
+              </div>
 
               <!-- PARTICIPAR DESTA SOLICITAÇÃO -->
               <span id="novo-participante"></span>
 
-              <?php if (is_user_logged_in()) :
-
-                $author_id = get_the_author_meta('id');
-                $current_user = wp_get_current_user();
-                $participantes_ids = get_field('participante', '', false);
-
-                // CHECA SE O USUARIO LOGADO É O AUTOR
-                if ($author_id != $current_user->ID) $nao_autor = true;
-
-                // CHECA SE O USUÁRIO LOGADO ESTÁ COMO PARTICIPANTE / SE NAO HÁ PARTICIPANTES
-                if ($participantes_ids && !in_array($current_user->ID, $participantes_ids)) $nao_participante = true;
-                if (!$participantes_ids) $nao_participante = true;
-
-                if ($nao_autor && $nao_participante) : ?>
-                  <button class="ui blue mini button participar" data-id="<?php the_ID(); ?>" data-username="<?php echo $current_user->display_name; ?>" style="margin-top:10px;">Participar desta solicitação</button>
-                <?php else: ?>
-                  <span>Não há participantes</span>
-                <?php endif; ?>
-
+              <?php if (is_user_logged_in()) : ?>
+                <button class="ui blue mini button participar" data-id="<?php the_ID(); ?>" data-username="<?php echo $current_user->display_name; ?>" style="margin-top:10px;">Participar desta solicitação</button>
               <?php else: ?>
                 <a class="ui mini button" href="<?php echo wp_login_url(get_permalink()); ?>" style="margin-top:10px;">Faça login para participar</a>
               <?php endif; ?>
@@ -861,9 +845,15 @@ include ( locate_template('template-parts/var-tarefas.php') );
 ?>
 
 <script type="text/javascript">
-$('.participar').click(function(){
+
+$('.participar').click(function (){
+
   var post_id = $(this).data('id');
   var current_user_name = $(this).data('username');
+
+  // REMOVE O PRIMEIRO EVENTO (CLICK), PARA NAO INTERFERIR NO PROXIMO AJAX
+  $('.participar').unbind("click")
+
   $.ajax({
       method: 'POST',
       url: ajaxurl,
@@ -871,16 +861,54 @@ $('.participar').click(function(){
         action: 'participante',
         post_id : post_id,
       },
+
       beforeSend: function() {
         $('.participar').html('Carregando...');
       },
+
       success: function(response) {
-       $('.participar').html(response).removeClass('blue').addClass('green');
-       $('#novo-participante').html(current_user_name + '<br>');
-       $(".participar").unbind("click");
+
+        // PARTICIPAR
+        if (response == 'yes') {
+          $('.participar').html('<i class="ui check icon"></i>Participando').removeClass('blue').addClass('green');
+          $('#novo-participante').html(current_user_name + '<br>');
+        }
+
+        // JA É PARTICIPANTE, DESEJA SAIR?
+        if (response == 'participante') {
+          $('.participar').removeClass('blue').addClass('orange').html('Você já é participante. Deseja sair?').click(function(){
+
+            // REMOVE O SEGUNDO EVENTO (CLICK), PARA IMPEDIR DE CLICAR NOVAMENTE
+            $('.participar').unbind("click")
+
+            $.ajax({
+              method: 'POST',
+              url: ajaxurl,
+              data: {
+                action: 'participante',
+                post_id : post_id,
+                sair : true,
+              },
+              beforeSend: function() {
+                $('.participar').html('Saindo...');
+              },
+              success: function() {
+                $('.participar').html('Você saiu').removeClass('blue').addClass('grey').unbind("click");
+                $('.participantes:contains(' + current_user_name + ')').each(function(){
+                    $(this).html($(this).html().split(current_user_name + '<br>').join(""));
+                });
+              }
+            });
+          });
+        }
+
+        // JA É AUTOR
+        if (response == 'author') $('.participar').removeClass('blue').addClass('orange').html('Você é o autor desta solicitação');
+
       }
   });
 })
+
 </script>
 
 <?php get_footer(); ?>

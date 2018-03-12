@@ -1616,17 +1616,41 @@ function participante() {
 	$post_id = $_REQUEST['post_id'];
 	$post = get_post($post_id);
 	$author_id = $post->post_author;
+	$participantes_ids = get_field('field_59af2418778aa', $post_id, false);
 
-	$participantes = get_field('field_59af2418778aa', $post_id, false);
-	if (!is_array($participantes)) {
-      $participantes = array();
-  }
-	$participantes[] = $current_user_id; // add the users ID to the array
+	// CHECA SE O USUARIO LOGADO É O AUTOR
+	if ($author_id != $current_user_id) $nao_autor = true;
 
-	update_field('field_59af2418778aa', $participantes, $post_id);
+	// CHECA SE O USUÁRIO LOGADO ESTÁ COMO PARTICIPANTE / SE NAO HÁ PARTICIPANTES
+	if ($participantes_ids && !in_array($current_user_id, $participantes_ids)) $nao_participante = true;
+	if (!$participantes_ids) $nao_participante = true;
 
-	$msg_sucesso = '<i class="ui check icon"></i>Participando';
-	$response = $msg_sucesso;
+	if ($nao_autor && $nao_participante) :
+
+		if (!is_array($participantes_ids)) {
+	      $participantes_ids = array();
+	  }
+		$participantes_ids[] = $current_user_id; // add the users ID to the array
+		update_field('field_59af2418778aa', $participantes_ids, $post_id);
+		$response = 'yes';
+
+	elseif ($nao_autor  && !$nao_participante):
+		$response = 'participante';
+
+	elseif (!$nao_autor  && $nao_participante):
+		$response = 'author';
+
+	elseif (!$nao_autor  && !$nao_participante):
+		$response = 'participante';
+
+	endif;
+
+	// PARA SAIR
+	if ($_REQUEST['sair'] == true) :
+		$array_diff = array_diff($participantes_ids, array($current_user_id));
+		update_field('field_59af2418778aa', $array_diff, $post_id);
+		$response = 'sair';
+	endif;
 
 	echo $response;
 
