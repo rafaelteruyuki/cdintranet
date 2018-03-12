@@ -903,7 +903,7 @@ $('.participar').click(function (){
         }
 
         // JA É AUTOR
-        if (response == 'author') $('.participar').removeClass('blue').addClass('orange').html('Você é o autor desta solicitação');
+        if (response == 'author') $('.participar').removeClass('blue').addClass('orange').html('Você já é o autor desta solicitação');
 
       }
   });
