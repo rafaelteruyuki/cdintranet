@@ -4,7 +4,7 @@
 // Menu
 $('.ui.dropdown.item')
 	.dropdown({
-    on: 'hover'
+    on: 'click'
   })
 ;
 
