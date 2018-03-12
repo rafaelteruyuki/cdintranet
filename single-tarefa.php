@@ -111,7 +111,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
           </div>
         </div>
 
-        <?php $participantes = get_field('participante'); if( $participantes ): ?>
+        <?php $participantes = get_field('participante'); ?>
 
         <!-- PARTICIPANTES -->
         <div class="item">
@@ -119,14 +119,42 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <div class="content">
             <div class="header">Participante(s)</div>
             <div class="description">
+
+              <?php if( $participantes ): ?>
               	<?php foreach( $participantes as $participante ): ?>
               		<?php echo $participante['display_name']; ?><br>
               	<?php endforeach; ?>
+              <?php endif; ?>
+
+              <!-- PARTICIPAR DESTA SOLICITAÇÃO -->
+              <span id="novo-participante"></span>
+
+              <?php if (is_user_logged_in()) :
+
+                $author_id = get_the_author_meta('id');
+                $current_user = wp_get_current_user();
+                $participantes_ids = get_field('participante', '', false);
+
+                // CHECA SE O USUARIO LOGADO É O AUTOR
+                if ($author_id != $current_user->ID) $nao_autor = true;
+
+                // CHECA SE O USUÁRIO LOGADO ESTÁ COMO PARTICIPANTE / SE NAO HÁ PARTICIPANTES
+                if ($participantes_ids && !in_array($current_user->ID, $participantes_ids)) $nao_participante = true;
+                if (!$participantes_ids) $nao_participante = true;
+
+                if ($nao_autor && $nao_participante) : ?>
+                  <button class="ui blue mini button participar" data-id="<?php the_ID(); ?>" data-username="<?php echo $current_user->display_name; ?>" style="margin-top:10px;">Participar desta solicitação</button>
+                <?php else: ?>
+                  <span>Não há participantes</span>
+                <?php endif; ?>
+
+              <?php else: ?>
+                <a class="ui mini button" href="<?php echo wp_login_url(get_permalink()); ?>" style="margin-top:10px;">Faça login para participar</a>
+              <?php endif; ?>
+
             </div>
           </div>
         </div>
-
-        <?php endif; ?>
 
         <!-- DATA DA SOLICITACAO -->
         <div class="item">
@@ -831,5 +859,28 @@ include ( locate_template('template-parts/var-tarefas.php') );
 // }
 
 ?>
+
+<script type="text/javascript">
+$('.participar').click(function(){
+  var post_id = $(this).data('id');
+  var current_user_name = $(this).data('username');
+  $.ajax({
+      method: 'POST',
+      url: ajaxurl,
+      data: {
+        action: 'participante',
+        post_id : post_id,
+      },
+      beforeSend: function() {
+        $('.participar').html('Carregando...');
+      },
+      success: function(response) {
+       $('.participar').html(response).removeClass('blue').addClass('green');
+       $('#novo-participante').html(current_user_name + '<br>');
+       $(".participar").unbind("click");
+      }
+  });
+})
+</script>
 
 <?php get_footer(); ?>

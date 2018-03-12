@@ -1604,6 +1604,41 @@ add_action('wp_ajax_nopriv_usuario_logado', 'usuario_logado');
 
 /* --------------------------
 
+BOTÃO PARTICIPAR DESTA SOLICITAÇÃO AJAX
+
+---------------------------- */
+
+function participante() {
+
+	global $current_user;
+	$current_user_id = strval($current_user->ID); //converting to string just in case (importante)
+
+	$post_id = $_REQUEST['post_id'];
+	$post = get_post($post_id);
+	$author_id = $post->post_author;
+
+	$participantes = get_field('field_59af2418778aa', $post_id, false);
+	if (!is_array($participantes)) {
+      $participantes = array();
+  }
+	$participantes[] = $current_user_id; // add the users ID to the array
+
+	update_field('field_59af2418778aa', $participantes, $post_id);
+
+	$msg_sucesso = '<i class="ui check icon"></i>Participando';
+	$response = $msg_sucesso;
+
+	echo $response;
+
+	wp_die();
+
+}
+
+add_action('wp_ajax_participante', 'participante');
+add_action('wp_ajax_nopriv_participante', 'participante');
+
+/* --------------------------
+
 BASIC UPLOADER
 
 ---------------------------- */
