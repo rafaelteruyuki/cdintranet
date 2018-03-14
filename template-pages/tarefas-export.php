@@ -141,7 +141,7 @@ $query = new WP_Query( $args );
         <td><?php if( $opcoes ) : foreach( $opcoes as $opcao ): ?><?php $i++; if ($i >= 2) { echo ', ';}; echo $field['choices'][ $opcao ]; ?><?php endforeach; endif; ?></td>
         <td><?php if ( get_field('numero_de_atividades') ) { the_field('numero_de_atividades'); } ?></td>
         <td><?php the_title(); ?></td>
-        <td><?php if( get_field('area_divulgacao_tarefa') ) { echo get_field('area_divulgacao_tarefa')['label']; } ?></td>
+        <td><?php if( $area = get_field('area_divulgacao_tarefa') ) { echo $area['label']; } ?></td>
         <td><?php if( get_field('subarea_tarefa') ) { the_field('subarea_tarefa'); } ?></td>
         <td><?php $data = get_the_date('d/m/y'); echo $data; ?></td>
         <td><?php if ( get_field('data_de_inicio_do_evento') ) { the_field('data_de_inicio_do_evento'); } elseif ( get_field('data_de_inicio_do_curso') ) { the_field('data_de_inicio_do_curso'); } ?></td>
