@@ -99,6 +99,25 @@ $(function(){
   }
 })
 
+$('#acf-field_5aa96dfd0f915').on('change', function() {
+  var post_id = this.value;
+  $.post({
+      url: ajaxurl,
+      data: {
+        action: 'get_curso',
+        post_id: post_id,
+      },
+      success: function(response) {
+       var curso = $.parseJSON(response);
+       $('#acf-field_5787b24219ab5').val(curso[0]);
+       $('#acf-_post_title').val(curso[1]);
+       $('#acf-field_5928946de2e8a').val(curso[2]);
+       $('#acf-field_5787c91ec2937').val('Link para adaptação: ' + curso[3]);
+      }
+  });
+})
+
+
 </script>
 
 <?php get_footer(); ?>

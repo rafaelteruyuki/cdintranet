@@ -1663,6 +1663,33 @@ add_action('wp_ajax_nopriv_participante', 'participante');
 
 /* --------------------------
 
+GET CURSO
+
+---------------------------- */
+
+function get_curso() {
+
+	$post_id = $_REQUEST['post_id'];
+	$post = get_post($post_id);
+
+	$modalidade = get_field('modalidade', $post_id);
+	$titulo = $post->post_title;
+	$area = get_field('area', $post_id);
+	$link = get_the_permalink($post_id);
+
+	$response = json_encode(array($modalidade, $titulo, $area, $link));
+
+	echo $response;
+
+	wp_die();
+
+}
+
+add_action('wp_ajax_get_curso', 'get_curso');
+add_action('wp_ajax_nopriv_get_curso', 'get_curso');
+
+/* --------------------------
+
 BASIC UPLOADER
 
 ---------------------------- */
