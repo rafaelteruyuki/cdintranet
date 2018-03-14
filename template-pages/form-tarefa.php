@@ -6,7 +6,7 @@ Template Name: Formulário Solicitação
 
 get_header(); ?>
 
-<link rel="stylesheet" href="<?php bloginfo('url'); ?>/wp-content/themes/comunicacao-digital/css/form-tarefa.css">
+<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css">
 
 <?php
 $current_user = wp_get_current_user();
@@ -100,5 +100,31 @@ $test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 9
   margin-left: 0;
 }
 </style>
+
+<script type="text/javascript">
+
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
+
+$(function(){
+  $('#acf-_post_title').val(getUrlParameter('titulo_curso'));
+  $('#acf-field_5928946de2e8a').val(getUrlParameter('area'));
+  $('#acf-field_5787c91ec2937').val('Link para adaptação: ' + 'http://' + getUrlParameter('link_curso'));
+})
+
+</script>
 
 <?php get_footer(); ?>

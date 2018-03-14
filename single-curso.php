@@ -120,7 +120,7 @@
       <i class="warning circle icon"></i>Não há e-mail cadastrado.
       <?php endif; ?>
       <div class="ui hidden divider"></div>
-      <a href="http://cd.intranet.sp.senac.br/solicitacao/" class="ui right labeled icon button">
+      <a href="<?php bloginfo('url') ?>/solicitacao/?titulo_curso=<?php the_title() ?>&area=<?php echo $area['value']; ?>&link_curso=<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>" class="ui right labeled icon button">
         <i class="right arrow icon"></i>
         Solicitar adaptação da peça.
       </a>
