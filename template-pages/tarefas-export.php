@@ -178,8 +178,6 @@ $query = new WP_Query( $args );
 
 <?php endif; ?>
 
-<!-- Exportar Excel -->
-
 <script type="text/javascript" src="<?php bloginfo('template_url')?>/js/export-to-excel.js"></script>
 
 <?php get_footer(); ?>
