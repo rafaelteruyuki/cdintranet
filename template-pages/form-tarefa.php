@@ -51,6 +51,8 @@ $test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 9
         <?php acf_form( $args ); ?>
 
     </div>
+    <div class="six wide column">
+    </div>
   </div>
 </div>
 
@@ -70,34 +72,43 @@ $test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 9
 
 <?php endif;?>
 
+<img id=imagem-curso src="" alt="" style="display:none; width:70%; padding:12px;">
+
+<?php // SE O USUARIO VIER POR MEIO DO BOTAO NA PAGINA DO CURSO
+
+$post_id = $_GET['post_id'];
+
+if ($post_id) : ?>
+
+  <script type="text/javascript">
+
+  $(function(){
+    $('#acf-field_5787b4caf1816').trigger('click'); // Clica em D. de Curso
+    $('#acf-field_5aa96dfd0f915').change(); // Seleciona o curso
+  })
+
+  </script>
+
+<?php endif; ?>
+
 <script type="text/javascript">
 
 // GET INFO DO CURSO
 
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
-
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : sParameterName[1];
-        }
-    }
-};
-
-$(function(){
-  if (getUrlParameter('titulo_curso')) {
-    $('#acf-field_5787b4caf1816').trigger('click'); // Clica em D. de Curso
-    $('#acf-field_5787b24219ab5').val(getUrlParameter('modalidade'));
-    $('#acf-_post_title').val(getUrlParameter('titulo_curso'));
-    $('#acf-field_5928946de2e8a').val(getUrlParameter('area'));
-    $('#acf-field_5787c91ec2937').val('Link para adaptação: ' + 'http://' + getUrlParameter('link_curso'));
-  }
-})
+// var getUrlParameter = function getUrlParameter(sParam) {
+//     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+//         sURLVariables = sPageURL.split('&'),
+//         sParameterName,
+//         i;
+//
+//     for (i = 0; i < sURLVariables.length; i++) {
+//         sParameterName = sURLVariables[i].split('=');
+//
+//         if (sParameterName[0] === sParam) {
+//             return sParameterName[1] === undefined ? true : sParameterName[1];
+//         }
+//     }
+// };
 
 $('#acf-field_5aa96dfd0f915').on('change', function() {
   var post_id = this.value;
@@ -109,14 +120,23 @@ $('#acf-field_5aa96dfd0f915').on('change', function() {
       },
       success: function(response) {
        var curso = $.parseJSON(response);
-       $('#acf-field_5787b24219ab5').val(curso[0]);
+       var modalidade = curso[0];
+       if (modalidade == 'pos-graduacao') {
+         modalidade = 'pos';
+       } else if (modalidade == 'extensao-universitaria') {
+         modalidade = 'extensao';
+       }
+
+       $('#acf-field_5787b24219ab5').val(modalidade);
        $('#acf-_post_title').val(curso[1]);
        $('#acf-field_5928946de2e8a').val(curso[2]);
-       $('#acf-field_5787c91ec2937').val('Link para adaptação: ' + curso[3]);
+       // $('#acf-field_5928946de300e').val(curso[5]);
+       // $('#acf-field_5787c91ec2937').val('Link para adaptação: ' + curso[3]);
+       $($('#imagem-curso').attr('src', curso[4]).show()).insertAfter('.acf-field-5aa96dfd0f915');
+       console.log(curso);
       }
   });
 })
-
 
 </script>
 

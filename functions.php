@@ -1675,9 +1675,11 @@ function get_curso() {
 	$modalidade = get_field('modalidade', $post_id);
 	$titulo = $post->post_title;
 	$area = get_field('area', $post_id);
+	$subarea = get_field('subarea-' . $area, $post_id);
 	$link = get_the_permalink($post_id);
+	$imagem_curso = get_the_post_thumbnail_url($post_id);
 
-	$response = json_encode(array($modalidade, $titulo, $area, $link));
+	$response = json_encode(array($modalidade, $titulo, $area, $link, $imagem_curso, $subarea));
 
 	echo $response;
 
@@ -1687,6 +1689,25 @@ function get_curso() {
 
 add_action('wp_ajax_get_curso', 'get_curso');
 add_action('wp_ajax_nopriv_get_curso', 'get_curso');
+
+/* --------------------------
+
+GET CURSO BY GET POST ID
+
+---------------------------- */
+
+function my_acf_prepare_field( $field ) {
+
+	if ( isset($_GET['post_id']) ) {
+		$post_id = $_GET['post_id'];
+		$field['value'] = $post_id;
+	}
+
+	return $field;
+
+}
+
+add_filter('acf/prepare_field/key=field_5aa96dfd0f915', 'my_acf_prepare_field');
 
 /* --------------------------
 
