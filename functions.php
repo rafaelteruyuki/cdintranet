@@ -1663,7 +1663,7 @@ add_action('wp_ajax_nopriv_participante', 'participante');
 
 /* --------------------------
 
-GET CURSO
+FORM TAREFA - GET CURSO
 
 ---------------------------- */
 
@@ -1672,14 +1672,30 @@ function get_curso() {
 	$post_id = $_REQUEST['post_id'];
 	$post = get_post($post_id);
 
-	$modalidade = get_field('modalidade', $post_id);
-	$titulo = $post->post_title;
-	$area = get_field('area', $post_id);
-	$subarea = get_field('subarea-' . $area, $post_id);
-	$link = get_the_permalink($post_id);
-	$imagem_curso = get_the_post_thumbnail_url($post_id);
+	if ($post_id) {
 
-	$response = json_encode(array($modalidade, $titulo, $area, $link, $imagem_curso, $subarea));
+		$modalidade = get_field('modalidade', $post_id);
+		$titulo = $post->post_title;
+		$area = get_field('area', $post_id);
+		$subarea = get_field('subarea-' . $area, $post_id);
+		$link = get_the_permalink($post_id);
+		$imagem_curso = get_the_post_thumbnail_url($post_id);
+
+		$response = json_encode(
+			array(
+				'modalidade' => $modalidade,
+				'titulo' => $titulo,
+				'area' => $area,
+				'link' => $link,
+				'imagem' => $imagem_curso,
+				'subarea' => $subarea)
+			);
+
+	} else {
+
+		$response = false;
+
+	}
 
 	echo $response;
 
@@ -1692,13 +1708,14 @@ add_action('wp_ajax_nopriv_get_curso', 'get_curso');
 
 /* --------------------------
 
-GET CURSO BY GET POST ID
+FORM-TAREFA - COLOCA O POST ID (GET) COMO VALOR NO SELECT2
 
 ---------------------------- */
 
 function my_acf_prepare_field( $field ) {
 
-	if ( isset($_GET['post_id']) ) {
+	// Somente na página do form tarefa
+	if ( is_page(168) && isset($_GET['post_id']) ) {
 		$post_id = $_GET['post_id'];
 		$field['value'] = $post_id;
 	}
@@ -1707,7 +1724,7 @@ function my_acf_prepare_field( $field ) {
 
 }
 
-add_filter('acf/prepare_field/key=field_5aa96dfd0f915', 'my_acf_prepare_field');
+add_filter('acf/prepare_field/name=catalogo_de_pecas', 'my_acf_prepare_field');
 
 /* --------------------------
 

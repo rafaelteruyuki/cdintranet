@@ -281,6 +281,21 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
         <?php endif; ?>
 
+        <?php if ( get_field('catalogo_de_pecas') ) : ?>
+
+        <!-- LINK DO CATALOGO -->
+        <div class="item">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Catálogo de peças</div>
+            <div class="description">
+              <a href="<?php the_permalink(get_field('catalogo_de_pecas')) ?>" class="ui small primary button" target="_blank" style="margin-top:10px;">Curso</a>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
           <?php if ( get_field('publicado_portal') ): ?>
 
           <!-- PUBLICADO NO PORTAL -->
