@@ -5,7 +5,7 @@ var modalidade = $('#acf-field_5787b24219ab5');
 var titulo = $('#acf-_post_title');
 var area = $('#acf-field_5928946de2e8a');
 var subarea = $('[data-name="subarea_tarefa"] .acf-input select');
-var imagem = '<img id=imagem-curso src="" style="display:none; width:50%; padding:20px 0 0;">';
+var imagem = '<a id="link" href="" target="_blank" style="display:none;"><img id=imagem-curso src="" style="width:50%; padding:20px 0 0;"></a>';
 $(imagem).insertAfter(select_curso);
 
 // SE O USUARIO VIER DA PAGINA DO CURSO
@@ -43,7 +43,8 @@ $(select_curso).on('change', function() {
         titulo.val(curso['titulo']);
         area.val(curso['area']).trigger('change');
         subarea.val(curso['subarea']);
-        $('#imagem-curso').attr('src', curso['imagem']).show();
+        $('#imagem-curso').attr('src', curso['imagem'])
+        $('#link').attr('href', curso['link']).show();
 
       }
     }
@@ -58,7 +59,7 @@ $('input#acf-field_5aac1e20a7f4c-input').on('select2-clearing', function(e) {
   titulo.val('');
   area.val('').trigger('change');
   subarea.val('')
-  $('#imagem-curso').hide();
+  $('#link').hide();
 })
 
 // GET URL FUNCTION
