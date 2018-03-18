@@ -16,15 +16,10 @@
     <form class="ui form" method="get" action="<?php bloginfo('url') ?>" role="search">
       <div class="ui icon large input">
         <input type="hidden" name="post_type" value="tarefa">
-        <input type="search" name="s" placeholder="Pesquisar tarefas...">
+        <input type="search" name="s" placeholder="Pesquisar tarefas..." value="<?php echo get_search_query() ?>">
         <i class="search icon"></i>
       </div>
     </form>
-
-  </div>
-
-  <div class="top aligned column" style="padding-right:0;">
-
     <h2><?php printf(esc_html__('Resultados da pesquisa por: %s', ''), '<span><em>'.get_search_query().'</em></span>' ); ?></h2>
 
   </div>
