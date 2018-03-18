@@ -20,17 +20,11 @@ $post_args = array(
   // 'post__in'               => $allTheIDs,
   // 'orderby'                => 'comment_date',
   // 'author'                 => $feed_rc,
+  'fields'                 => 'ids',
   'meta_query'             => array( $comment_feed ),
 );
 
-$post_query = new WP_Query( $post_args );
-$posts_array= array();
-global $post;
-
-$lastposts = get_posts( $post_args );
-foreach ( $lastposts as $post ) : setup_postdata( $post );
-  $posts_array[] = get_the_ID(); //Array of post ids
-endforeach;
+$posts_array = get_posts( $post_args );
 wp_reset_postdata();
 
 if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
@@ -47,81 +41,22 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
   $num_nao_lidas = 0;
   $msgs_nao_lidas = false;
-  // $i = 0;
+  $i = 0;
 
   if ( !empty( $comments ) ) :
 
+    // Todas as solicitações com interações não lidas
+    if ($msgs_nao_lidas) {
+    echo '<a href="';
+    bloginfo('url');
+    echo '/interacoes/" class="item" style="text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Veja todas as solicitações com interações não lidas</strong></a>';
+    }
+
     foreach ( $comments as $comment ) :
 
-      // $i++;
+      $i++;
 
-      // Checa se há visita e quem visitou
-      if( have_rows('visitas', $comment->comment_post_ID) ) {
-
-        while ( have_rows('visitas', $comment->comment_post_ID) ) {
-          the_row();
-          $usuario_registrado[] = get_sub_field('usuario', $comment->comment_post_ID); // Array usuários registrados
-          $acesso_registrado[] = get_sub_field('acesso', $comment->comment_post_ID); // Array acessos registrados
-        }
-
-        $key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
-
-        // Usuário logado visitou
-        if ($key !== false) {
-
-          $last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
-
-          if ($last_comment_time > $acesso_registrado[$key]) {
-            $num_nao_lidas++;
-            $msgs_nao_lidas = true;
-            // if ($i > 31 && !$msgs_nao_lidas) {
-            //   $msgs_nao_lidas = true;
-            // }
-
-          }
-
-        } else {
-          $num_nao_lidas++; // Se há comentário, mas não visitou a tarefa ainda
-        }
-
-      }
-
-      $usuario_registrado = array(); // Limpa o array
-      $acesso_registrado = array(); // Limpa o array
-
-      endforeach;
-
-      // Todas as solicitações com interações não lidas
-      if ($msgs_nao_lidas) {
-      echo '<a href="';
-      bloginfo('url');
-      echo '/interacoes/" class="item" style="text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Veja todas as solicitações com interações não lidas</strong></a>';
-      }
-
-    endif;
-  endif;
-
-// COMMENT QUERY
-
-if (!empty($posts_array)) : // Se não tiver posts na query anterior, não inicia essa query.
-
-  $comment_args = array(
-      //'post_type'      => 'tarefa',
-      'number'         => '31',
-      'order'          => 'DESC',
-      'orderby'        => 'comment_date',
-      'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
-      'meta_query'     => array( $privado ),
-  );
-
-  $comments_query = new WP_Comment_Query;
-  $comments = $comments_query->query( $comment_args );
-
-  ?>
-
-  <?php if ( !empty( $comments ) ) : ?>
-
-    <?php foreach ( $comments as $comment ) : ?>
+      if ($i <= 30) : ?>
 
       <a href="<?php the_permalink($comment->comment_post_ID); ?>" class="item <?php lido_nao_lido('feed-lido', 'feed-nao-lido'); ?>" style="border-top: 1px solid #dedede !important;">
 
@@ -142,29 +77,57 @@ if (!empty($posts_array)) : // Se não tiver posts na query anterior, não inici
 
       </a>
 
-    <?php endforeach; ?>
+      <?php endif;
 
-    <?php if ( current_user_can( 'edit_pages' ) ) : ?>
+      // Checa se há visita e quem visitou
+      if( have_rows('visitas', $comment->comment_post_ID) ) {
+
+        while ( have_rows('visitas', $comment->comment_post_ID) ) {
+          the_row();
+          $usuario_registrado[] = get_sub_field('usuario', $comment->comment_post_ID); // Array usuários registrados
+          $acesso_registrado[] = get_sub_field('acesso', $comment->comment_post_ID); // Array acessos registrados
+        }
+
+        $key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
+
+        // Usuário logado visitou
+        if ($key !== false) {
+
+          $last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
+
+          if ($last_comment_time > $acesso_registrado[$key]) {
+            $num_nao_lidas++;
+            $msgs_nao_lidas = true;
+          }
+
+        } else {
+          $num_nao_lidas++; // Se há comentário, mas não visitou a tarefa ainda
+        }
+
+      }
+
+      $usuario_registrado = array(); // Limpa o array
+      $acesso_registrado = array(); // Limpa o array
+
+      endforeach; ?>
+
       <a href="<?php bloginfo('url') ?>/interacoes" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>
+
+      <?php else : ?>
+
+      <?php $num_nao_lidas = 0 ?>
+      <a class="item">
+        <i class="grey comment icon"></i>Não há interações
+      </a>
+
+      <?php endif; ?>
+
     <?php else : ?>
-      <a href="<?php bloginfo('url') ?>/interacoes" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>
-    <?php endif; ?>
 
-  <?php else : ?>
-
-  <?php $num_nao_lidas = 0 ?>
-  <a class="item">
-    <i class="grey comment icon"></i>Não há interações
-  </a>
-
-  <?php endif; ?>
-
-  <?php else : ?>
-
-  <?php $num_nao_lidas = 0 ?>
-  <a class="item">
-    <i class="grey comment icon"></i>Não há interações
-  </a>
+      <?php $num_nao_lidas = 0 ?>
+      <a class="item">
+        <i class="grey comment icon"></i>Não há interações
+      </a>
 
 <?php endif; wp_reset_postdata(); ?>
 
