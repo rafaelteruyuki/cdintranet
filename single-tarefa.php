@@ -857,6 +857,36 @@ include ( locate_template('template-parts/var-tarefas.php') );
 //     wp_reset_postdata();
 // }
 
+// Verificar comentários PRIVADOS *****
+
+$comment_args = array(
+  'fields' => 'ids',
+  'post_id' => get_the_ID(),
+);
+$comments = get_comments($comment_args);
+
+$interacoes_nao_lidas = get_field('interacoes_nao_lidas', 'user_' . $current_user->ID);
+$myArray = explode(', ', $interacoes_nao_lidas);
+
+echo '<pre>';
+  echo 'Comentários desta tarefa<br>';
+  var_dump($comments);
+
+  echo 'Comentários não lidos pelo usuário logado<br>';
+  var_dump($myArray);
+
+  echo 'Comentários que sobraram não lidos<br>';
+  $result = array_diff($myArray, $comments);
+  var_dump($result);
+
+  $myString = implode(', ', $result);
+  // var_dump($myString);
+  update_field('interacoes_nao_lidas', $myString, 'user_' . $current_user->ID);
+
+  $count = count($result);
+  update_field('num_nao_lidas', $count, 'user_' . $current_user->ID);
+
+echo '</pre>';
 ?>
 
 <script type="text/javascript">

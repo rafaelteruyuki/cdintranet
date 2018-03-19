@@ -1076,10 +1076,16 @@ AO CRIAR/ATUALIZAR TAREFA
 		  foreach ($result as $usuario) :
 				$interacoes_nao_lidas = get_field('interacoes_nao_lidas', 'user_' . $usuario);
 				if ($interacoes_nao_lidas) {
+					// Não lidas
 					$interacoes_nao_lidas = $interacoes_nao_lidas . ', ' . $comment_id;
 					update_field('interacoes_nao_lidas', $interacoes_nao_lidas, 'user_' . $usuario);
+					// Contagem
+					$myArray = explode(', ', $interacoes_nao_lidas);
+					$count = count($myArray);
+					update_field('num_nao_lidas', $count, 'user_' . $usuario);
 				} else {
 					update_field('interacoes_nao_lidas', $comment_id, 'user_' . $usuario);
+					update_field('num_nao_lidas', 1, 'user_' . $usuario);
 				}
 		  endforeach;
 		endif;
