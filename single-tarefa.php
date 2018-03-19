@@ -111,7 +111,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
           </div>
         </div>
 
-        <?php $participantes = get_field('participante'); if( $participantes ): ?>
+        <?php $participantes = get_field('participante'); ?>
 
         <!-- PARTICIPANTES -->
         <div class="item">
@@ -119,14 +119,26 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <div class="content">
             <div class="header">Participante(s)</div>
             <div class="description">
+              <div class="participantes">
+              <?php if( $participantes ): ?>
               	<?php foreach( $participantes as $participante ): ?>
               		<?php echo $participante['display_name']; ?><br>
               	<?php endforeach; ?>
+              <?php endif; ?>
+              </div>
+
+              <!-- PARTICIPAR DESTA SOLICITAÇÃO -->
+              <span id="novo-participante"></span>
+
+              <?php if (is_user_logged_in()) : ?>
+                <button class="ui blue mini button participar" data-id="<?php the_ID(); ?>" data-username="<?php echo $current_user->display_name; ?>" style="margin-top:10px;">Participar desta solicitação</button>
+              <?php else: ?>
+                <a class="ui mini button" href="<?php echo wp_login_url(get_permalink()); ?>" style="margin-top:10px;">Faça login para participar</a>
+              <?php endif; ?>
+
             </div>
           </div>
         </div>
-
-        <?php endif; ?>
 
         <!-- DATA DA SOLICITACAO -->
         <div class="item">
@@ -266,6 +278,21 @@ include ( locate_template('template-parts/var-tarefas.php') );
               </div>
             </div>
           </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('catalogo_de_pecas') ) : ?>
+
+        <!-- LINK DO CATALOGO -->
+        <div class="item">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Catálogo de peças</div>
+            <div class="description">
+              <a href="<?php the_permalink(get_field('catalogo_de_pecas')) ?>" class="ui small primary button" target="_blank" style="margin-top:10px;">Curso</a>
+            </div>
+          </div>
+        </div>
 
         <?php endif; ?>
 
@@ -831,5 +858,72 @@ include ( locate_template('template-parts/var-tarefas.php') );
 // }
 
 ?>
+
+<script type="text/javascript">
+
+$('.participar').click(function (){
+
+  var post_id = $(this).data('id');
+  var current_user_name = $(this).data('username');
+
+  // REMOVE O PRIMEIRO EVENTO (CLICK), PARA NAO INTERFERIR NO PROXIMO AJAX
+  $('.participar').unbind("click")
+
+  $.ajax({
+      method: 'POST',
+      url: ajaxurl,
+      data: {
+        action: 'participante',
+        post_id : post_id,
+      },
+
+      beforeSend: function() {
+        $('.participar').html('Carregando...');
+      },
+
+      success: function(response) {
+
+        // PARTICIPAR
+        if (response == 'yes') {
+          $('.participar').html('<i class="ui check icon"></i>Participando').removeClass('blue').addClass('green');
+          $('#novo-participante').html(current_user_name + '<br>');
+        }
+
+        // JA É PARTICIPANTE, DESEJA SAIR?
+        if (response == 'participante') {
+          $('.participar').removeClass('blue').addClass('orange').html('Você já é participante. Deseja sair?').click(function(){
+
+            // REMOVE O SEGUNDO EVENTO (CLICK), PARA IMPEDIR DE CLICAR NOVAMENTE
+            $('.participar').unbind("click")
+
+            $.ajax({
+              method: 'POST',
+              url: ajaxurl,
+              data: {
+                action: 'participante',
+                post_id : post_id,
+                sair : true,
+              },
+              beforeSend: function() {
+                $('.participar').html('Saindo...');
+              },
+              success: function() {
+                $('.participar').html('Você saiu').removeClass('blue').addClass('grey').unbind("click");
+                $('.participantes:contains(' + current_user_name + ')').each(function(){
+                    $(this).html($(this).html().split(current_user_name + '<br>').join(""));
+                });
+              }
+            });
+          });
+        }
+
+        // JA É AUTOR
+        if (response == 'author') $('.participar').removeClass('blue').addClass('orange').html('Você já é o autor desta solicitação');
+
+      }
+  });
+})
+
+</script>
 
 <?php get_footer(); ?>

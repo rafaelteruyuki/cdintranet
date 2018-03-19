@@ -1080,7 +1080,136 @@ AO CRIAR/ATUALIZAR TAREFA
 
 function carrega_loop () {
 
-	$response = get_template_part('comment','feed');
+	// // CD-FEED
+	// include ( locate_template('template-parts/cd-feed.php') );
+	//
+	// // REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC E DE USUARIOS NAO LOGADOS
+	// if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
+	//   $privado = array(
+	//   'key' => 'privado_interacao',
+	//   'value' => '1',
+	//   'compare' => '!=',
+	//   );
+	// }
+	//
+	// // META_QUERY DOS POSTS IDS
+	// $post_args = array(
+	//   'post_type'              => array( 'tarefa' ),
+	//   'posts_per_page'         => -1,
+	//   'order'                  => 'DESC',
+	//   // 'post__in'               => $allTheIDs,
+	//   // 'orderby'                => 'comment_date',
+	//   // 'author'                 => $feed_rc,
+	//   'fields'                 => 'ids',
+	//   'meta_query'             => array( $comment_feed ),
+	// );
+	//
+	// $posts_array = get_posts( $post_args );
+	// wp_reset_postdata();
+	//
+	// if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
+	//
+	//   $nao_lidas_args = array(
+	//       'order'          => 'DESC',
+	//       'orderby'        => 'comment_date',
+	//       'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+	//       'meta_query'     => array( $privado ),
+	//   );
+	//
+	//   $comments_query = new WP_Comment_Query;
+	//   $comments = $comments_query->query( $nao_lidas_args );
+	//
+	//   $num_nao_lidas = 0;
+	//   $i = 0;
+	//
+	//   $loop = '<a href="' . get_bloginfo('url') . '/interacoes/" class="item" id="interacoes-nao-lidas" style="display: none; text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Veja todas as solicitações com interações não lidas</strong></a>';
+	//
+	//   if ( !empty( $comments ) ) :
+	//
+	//     foreach ( $comments as $comment ) :
+	//
+	// 			$lido_nao_lido = 'feed-lido';
+	//
+	// 			// Checa se há visita e quem visitou
+	//       if( have_rows('visitas', $comment->comment_post_ID) ) {
+	//
+	//         while ( have_rows('visitas', $comment->comment_post_ID) ) {
+	//           the_row();
+	//           $usuario_registrado[] = get_sub_field('usuario', $comment->comment_post_ID); // Array usuários registrados
+	//           $acesso_registrado[] = get_sub_field('acesso', $comment->comment_post_ID); // Array acessos registrados
+	//         }
+	//
+	//         $key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
+	// 				$comment_time = get_comment_date('YmdHis', $comment->comment_ID);
+	//
+	//         // Usuário logado visitou
+	//         if ($key !== false) {
+	//
+	//           if ($comment_time > $acesso_registrado[$key]) {
+	// 						$lido_nao_lido = 'feed-nao-lido';
+	//             $num_nao_lidas++;
+	//           }
+	//
+	//         } else {
+	//           $num_nao_lidas++; // Se há comentário, mas não visitou a tarefa ainda
+	//         }
+	//
+	//       }
+	//
+	//       $usuario_registrado = array(); // Limpa o array
+	//       $acesso_registrado = array(); // Limpa o array
+	//
+	//       $i++;
+	//
+	//       if ($i <= 30) :
+	//
+	//       $loop .= '<a href="' . get_the_permalink($comment->comment_post_ID) . '" class="item ' . $lido_nao_lido . '" style="border-top: 1px solid #dedede !important;">';
+	// 			$loop .= '<span style="line-height:1.5;">';
+  //       $loop .= '<strong>' . $comment->comment_author . '</strong> disse:<br>';
+  // 			$loop .= '<em>' . get_comment_excerpt($comment->comment_ID) . '</em>';
+  // 			$loop .= '</span>';
+	// 			$loop .= '<br>';
+	// 			$loop .= '<span class="cd-disabled">';
+  //       $loop .= '<i class="purple comment icon"></i>Há ' . human_time_diff( get_comment_date('U', $comment), current_time('timestamp') );
+  //       if ( get_field('privado_interacao', $comment) ) {
+	// 			$loop .= '<i class="lock icon" style="margin:0;"></i>';
+	// 			}
+  //       if ( have_rows('arquivos_interacao', $comment) ) {
+	// 			$loop .= '<i class="attach icon"></i>';
+	// 			}
+  //     	$loop .= '<br>';
+	// 			$loop .= '<i class="green file text icon"></i>' . get_field('unidade', $comment->comment_post_ID) . '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID);
+  // 			$loop .= '</span>';
+	// 			$loop .= '</a>';
+	//
+	//       endif;
+	//
+	//       endforeach;
+	//
+  //     $loop .= '<a href="' . get_bloginfo('url') . '/interacoes" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
+	//
+  //     else :
+	//
+  //     $num_nao_lidas = 0;
+  //     $loop .= '<a class="item"><i class="grey comment icon"></i>Não há interações</a>';
+	//
+  //     endif;
+	//
+  // 	else :
+	//
+	// 	$num_nao_lidas = 0;
+  //   $loop .= '<a class="item"><i class="grey comment icon"></i>Não há interações</a>';
+	//
+	// 	endif; wp_reset_postdata();
+	//
+	// $response = json_encode(
+	// 	array(
+	// 		'loop' => $loop,
+	// 		'num_nao_lidas' => $num_nao_lidas,
+	// 		)
+	// 	);
+
+	$response = get_template_part('comment', 'feed');
 
 	echo $response;
 
@@ -1350,7 +1479,7 @@ HIGHLIGHT TAREFAS COM COMENTARIOS (MINHAS TAREFAS e MINHAS SOLICITACOES)
 
 ---------------------------- */
 
-function comment_nao_lido($nao_lido = 'background:#ebf7ff;', $comment_privado) {
+function comment_nao_lido($nao_lido = 'background:#ebf7ff;') {
 
 global $current_user;
 $post_id = get_the_ID();
@@ -1601,6 +1730,130 @@ function usuario_logado() {
 
 add_action('wp_ajax_usuario_logado', 'usuario_logado');
 add_action('wp_ajax_nopriv_usuario_logado', 'usuario_logado');
+
+/* --------------------------
+
+BOTÃO PARTICIPAR DESTA SOLICITAÇÃO AJAX
+
+---------------------------- */
+
+function participante() {
+
+	global $current_user;
+	$current_user_id = strval($current_user->ID); //converting to string just in case (importante)
+
+	$post_id = $_REQUEST['post_id'];
+	$post = get_post($post_id);
+	$author_id = $post->post_author;
+	$participantes_ids = get_field('field_59af2418778aa', $post_id, false);
+
+	// CHECA SE O USUARIO LOGADO É O AUTOR
+	if ($author_id != $current_user_id) $nao_autor = true;
+
+	// CHECA SE O USUÁRIO LOGADO ESTÁ COMO PARTICIPANTE / SE NAO HÁ PARTICIPANTES
+	if ($participantes_ids && !in_array($current_user_id, $participantes_ids)) $nao_participante = true;
+	if (!$participantes_ids) $nao_participante = true;
+
+	if ($nao_autor && $nao_participante) :
+
+		if (!is_array($participantes_ids)) {
+	      $participantes_ids = array();
+	  }
+		$participantes_ids[] = $current_user_id; // add the users ID to the array
+		update_field('field_59af2418778aa', $participantes_ids, $post_id);
+		$response = 'yes';
+
+	elseif ($nao_autor  && !$nao_participante):
+		$response = 'participante';
+
+	elseif (!$nao_autor  && $nao_participante):
+		$response = 'author';
+
+	elseif (!$nao_autor  && !$nao_participante):
+		$response = 'participante';
+
+	endif;
+
+	// PARA SAIR
+	if ($_REQUEST['sair'] == true) :
+		$array_diff = array_diff($participantes_ids, array($current_user_id));
+		update_field('field_59af2418778aa', $array_diff, $post_id);
+		$response = 'sair';
+	endif;
+
+	echo $response;
+
+	wp_die();
+
+}
+
+add_action('wp_ajax_participante', 'participante');
+add_action('wp_ajax_nopriv_participante', 'participante');
+
+/* --------------------------
+
+FORM TAREFA - GET CURSO
+
+---------------------------- */
+
+function get_curso() {
+
+	$post_id = $_REQUEST['post_id'];
+	$post = get_post($post_id);
+
+	if ($post_id) {
+
+		$modalidade = get_field('modalidade', $post_id);
+		$titulo = $post->post_title;
+		$area = get_field('area', $post_id);
+		$subarea = get_field('subarea-' . $area, $post_id);
+		$link = get_the_permalink($post_id);
+		$imagem_curso = get_the_post_thumbnail_url($post_id);
+
+		$response = json_encode(
+			array(
+				'modalidade' => $modalidade,
+				'titulo' => $titulo,
+				'area' => $area,
+				'link' => $link,
+				'imagem' => $imagem_curso,
+				'subarea' => $subarea)
+			);
+
+	} else {
+
+		$response = false;
+
+	}
+
+	echo $response;
+
+	wp_die();
+
+}
+
+add_action('wp_ajax_get_curso', 'get_curso');
+add_action('wp_ajax_nopriv_get_curso', 'get_curso');
+
+/* --------------------------
+
+FORM-TAREFA - COLOCA O POST ID (GET) COMO VALOR NO SELECT2
+
+---------------------------- */
+
+function my_acf_prepare_field( $field ) {
+
+	// Somente na página do form tarefa
+	if ( is_page(168) && isset($_GET['post_id']) ) {
+		$post_id = $_GET['post_id'];
+		$field['value'] = $post_id;
+	}
+
+	return $field;
+
+}
+
+add_filter('acf/prepare_field/name=catalogo_de_pecas', 'my_acf_prepare_field');
 
 /* --------------------------
 
@@ -2108,9 +2361,11 @@ NUMERO DE INTERACOES (PRIVADAS)
 
 ---------------------------- */
 
-function num_comentarios($text = true) {
+function num_comentarios($text = true, $post_id = 0) {
 
-	$post_id = get_the_ID();
+	if ($post_id == 0) {
+		$post_id = get_the_ID();
+	}
 
 	if ( current_user_can('senac') || !is_user_logged_in() ) {
 	  $privado = array(

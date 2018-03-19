@@ -79,7 +79,7 @@
 <div class="ui attached stackable inverted menu" style="border: 1px solid rgba(255, 255, 255, 0.1);">
   <div class="ui container" style="border-left:1px solid rgba(255, 255, 255, 0.1); border-right:1px solid rgba(255, 255, 255, 0.1)">
 
-    <a href="<?php bloginfo( 'url' ); ?>" class="item"><i class="grid layout icon"></i> Catálogo de Cursos</a>
+    <a href="<?php bloginfo( 'url' ); ?>" class="item"><i class="grid layout icon"></i> Catálogo de Peças</a>
     <a href="<?php bloginfo( 'url' ); ?>/solicitacao/" class="item"><i class="edit icon"></i>Nova solicitação</a>
     <a href="<?php bloginfo( 'url' ); ?>/redes-sociais/" class="item"><i class="globe icon"></i> Redes Sociais</a>
 
@@ -157,7 +157,7 @@ $('#calculadora-prazos').click(function() {
 });
 
 </script>
-<script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=4'></script>
+<script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=5'></script>
 <script type="text/javascript">
 // // Refresh para todos os arquivos
 // window.onload = function() {

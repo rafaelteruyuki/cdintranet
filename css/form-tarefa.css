@@ -139,3 +139,14 @@ input[type=text]:focus {
 .acf-field.acf-field-repeater.acf-field-593171a7fcd35 thead {
 	display: none;
 }
+
+/*.acf-fields > .acf-field:first-child {
+	display: none;
+}*/
+.acf-field--post-title {
+  display: none;
+}
+.acf-repeater ul li {
+  float: left;
+  margin-left: 0;
+}
