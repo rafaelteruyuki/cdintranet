@@ -1004,6 +1004,90 @@ AO CRIAR/ATUALIZAR TAREFA
 
 	/* --------------------------
 
+	INTERACOES NAO LIDAS
+
+	---------------------------- */
+
+	add_filter( 'comment_post', 'interacoes_nao_lidas' );
+
+	function interacoes_nao_lidas( $comment_id ) {
+
+		global $current_user;
+
+		$comment = get_comment( $comment_id );
+		$post_id = get_post( $comment->comment_post_ID );
+
+		$usuarios = array();
+
+		// Segmentação
+		$segmentacao = get_field('segmentacao', $post_id);
+
+		if ($segmentacao && in_array('gd2_gd4', $segmentacao)) :
+		  $get_users = get_users('role=designer_gd2_gd4');
+		  foreach ($get_users as $user) :
+		    $usuarios[] = $user->ID;
+		  endforeach;
+		endif;
+
+		if ($segmentacao && in_array('gd1_gd3', $segmentacao)) :
+		  $get_users = get_users('role=designer_gd1_gd3');
+		  foreach ($get_users as $user) :
+		    $usuarios[] = $user->ID;
+		  endforeach;
+		endif;
+
+		if ($segmentacao && in_array('institucional', $segmentacao)) :
+		  $get_users = get_users('role=designer_institucional');
+		  foreach ($get_users as $user) :
+		    $usuarios[] = $user->ID;
+		  endforeach;
+		endif;
+
+		if ($segmentacao && in_array('evento', $segmentacao)) :
+		  $get_users = get_users('role=portal');
+		  foreach ($get_users as $user) :
+		    $usuarios[] = $user->ID;
+		  endforeach;
+		endif;
+
+		// Responsáveis
+		$responsavel1 = get_field('responsavel_1', $post_id); if ($responsavel1) $usuarios[] = $responsavel1['ID'];
+		$responsavel2 = get_field('responsavel_2', $post_id); if ($responsavel2) $usuarios[] = $responsavel2['ID'];
+		$responsavel_portal = get_field('responsavel_portal', $post_id); if ($responsavel_portal) $usuarios[] = $responsavel_portal['ID'];
+		$responsavel_portal_2 = get_field('responsavel_portal_2', $post_id); if ($responsavel_portal_2) $usuarios[] = $responsavel_portal_2['ID'];
+
+		// Autor
+		$cd_author = get_field('cd_author', $post_id);
+		$usuarios[] = $cd_author['ID'];
+
+		// Participantes
+		$participantes = get_field('participante', $post_id); // array
+		if ($participantes) :
+		  foreach ($participantes as $participante) :
+		    $usuarios[] = $participante['ID'];
+		  endforeach;
+		endif;
+
+		// Elimina usuários duplicados
+		$result = array_unique($usuarios);
+
+		// Update usuários
+		if (!empty($result)) :
+		  foreach ($result as $usuario) :
+				$interacoes_nao_lidas = get_field('interacoes_nao_lidas', 'user_' . $usuario);
+				if ($interacoes_nao_lidas) {
+					$interacoes_nao_lidas = $interacoes_nao_lidas . ', ' . $comment_id;
+					update_field('interacoes_nao_lidas', $interacoes_nao_lidas, 'user_' . $usuario);
+				} else {
+					update_field('interacoes_nao_lidas', $comment_id, 'user_' . $usuario);
+				}
+		  endforeach;
+		endif;
+
+	}
+
+	/* --------------------------
+
 	VERIFICA SE ALGUM POST FOI ATUALIZADO PARA ATUALIZAR O FEED
 
 	---------------------------- */
