@@ -91,6 +91,7 @@ function contador_feed() {
     $('.contador').html(naoLido);
     $('.contador').addClass("red");
     $('.title-contador').html('(' + naoLido + ') ' + cd_title);
+    $('#interacoes-nao-lidas').show();
   } else if (naoLido == 0) {
     $('.contador').html('<i class="check icon" style="margin:0;"></i>');
     $('.contador').addClass("green");
@@ -99,6 +100,7 @@ function contador_feed() {
     $('.contador').html("30+");
     $('.contador').addClass("red");
     $('.title-contador').html('(30+) ' + cd_title);
+    $('#interacoes-nao-lidas').show();
   }
 
   loading_icon = true;
@@ -108,6 +110,57 @@ function contador_feed() {
   });
 
 }
+
+// function contador_feed() {
+//
+//   // FEED REFRESH
+//
+//   $.ajax({
+//       method: 'POST',
+//       url: ajaxurl,
+//       data: {action: 'carrega_loop'},
+//
+//       // beforeSend: function(response) {
+//       //   $('.contador').removeClass("green");
+//       //   $('.contador').removeClass("red");
+//       //   $('.contador').html('<i class="loading refresh icon" style="margin:0;"></i>');
+//       // },
+//
+//       success: function(response) {
+//
+//       var feedRefresh = $.parseJSON(response);
+//
+//       console.log(feedRefresh);
+//
+//        $('#refresh').html(feedRefresh['loop']);
+//
+//        var naoLido = 0;
+//        // naoLido = $('#refresh .feed-nao-lido').length;
+//        naoLido = feedRefresh['num_nao_lidas']; // Valor de num_nao_lidas vem da contagem do comment-feed.php
+//
+//        if (naoLido <= 30 && naoLido  >= 1){
+//          $('.contador').html(naoLido);
+//          $('.contador').addClass("red");
+//          $('.title-contador').html('(' + naoLido + ') ' + cd_title);
+//        } else if (naoLido == 0) {
+//          $('.contador').html('<i class="check icon" style="margin:0;"></i>');
+//          $('.contador').addClass("green");
+//          $('.title-contador').html(cd_title);
+//        } else if (naoLido > 30) {
+//          $('.contador').html("30+");
+//          $('.contador').addClass("red");
+//          $('.title-contador').html('(30+) ' + cd_title);
+//        }
+//
+//       }
+//   });
+//
+//   // $('#refresh').load('http://localhost:8888/cdintranet/wp-content/themes/comunicacao-digital/feed-refresh.php');
+//   // $('.refresh').addClass("loading");
+//
+//
+// }
+
 
 
 

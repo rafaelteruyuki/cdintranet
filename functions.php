@@ -1080,7 +1080,136 @@ AO CRIAR/ATUALIZAR TAREFA
 
 function carrega_loop () {
 
-	$response = get_template_part('comment','feed');
+	// // CD-FEED
+	// include ( locate_template('template-parts/cd-feed.php') );
+	//
+	// // REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC E DE USUARIOS NAO LOGADOS
+	// if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
+	//   $privado = array(
+	//   'key' => 'privado_interacao',
+	//   'value' => '1',
+	//   'compare' => '!=',
+	//   );
+	// }
+	//
+	// // META_QUERY DOS POSTS IDS
+	// $post_args = array(
+	//   'post_type'              => array( 'tarefa' ),
+	//   'posts_per_page'         => -1,
+	//   'order'                  => 'DESC',
+	//   // 'post__in'               => $allTheIDs,
+	//   // 'orderby'                => 'comment_date',
+	//   // 'author'                 => $feed_rc,
+	//   'fields'                 => 'ids',
+	//   'meta_query'             => array( $comment_feed ),
+	// );
+	//
+	// $posts_array = get_posts( $post_args );
+	// wp_reset_postdata();
+	//
+	// if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
+	//
+	//   $nao_lidas_args = array(
+	//       'order'          => 'DESC',
+	//       'orderby'        => 'comment_date',
+	//       'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+	//       'meta_query'     => array( $privado ),
+	//   );
+	//
+	//   $comments_query = new WP_Comment_Query;
+	//   $comments = $comments_query->query( $nao_lidas_args );
+	//
+	//   $num_nao_lidas = 0;
+	//   $i = 0;
+	//
+	//   $loop = '<a href="' . get_bloginfo('url') . '/interacoes/" class="item" id="interacoes-nao-lidas" style="display: none; text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Veja todas as solicitações com interações não lidas</strong></a>';
+	//
+	//   if ( !empty( $comments ) ) :
+	//
+	//     foreach ( $comments as $comment ) :
+	//
+	// 			$lido_nao_lido = 'feed-lido';
+	//
+	// 			// Checa se há visita e quem visitou
+	//       if( have_rows('visitas', $comment->comment_post_ID) ) {
+	//
+	//         while ( have_rows('visitas', $comment->comment_post_ID) ) {
+	//           the_row();
+	//           $usuario_registrado[] = get_sub_field('usuario', $comment->comment_post_ID); // Array usuários registrados
+	//           $acesso_registrado[] = get_sub_field('acesso', $comment->comment_post_ID); // Array acessos registrados
+	//         }
+	//
+	//         $key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
+	// 				$comment_time = get_comment_date('YmdHis', $comment->comment_ID);
+	//
+	//         // Usuário logado visitou
+	//         if ($key !== false) {
+	//
+	//           if ($comment_time > $acesso_registrado[$key]) {
+	// 						$lido_nao_lido = 'feed-nao-lido';
+	//             $num_nao_lidas++;
+	//           }
+	//
+	//         } else {
+	//           $num_nao_lidas++; // Se há comentário, mas não visitou a tarefa ainda
+	//         }
+	//
+	//       }
+	//
+	//       $usuario_registrado = array(); // Limpa o array
+	//       $acesso_registrado = array(); // Limpa o array
+	//
+	//       $i++;
+	//
+	//       if ($i <= 30) :
+	//
+	//       $loop .= '<a href="' . get_the_permalink($comment->comment_post_ID) . '" class="item ' . $lido_nao_lido . '" style="border-top: 1px solid #dedede !important;">';
+	// 			$loop .= '<span style="line-height:1.5;">';
+  //       $loop .= '<strong>' . $comment->comment_author . '</strong> disse:<br>';
+  // 			$loop .= '<em>' . get_comment_excerpt($comment->comment_ID) . '</em>';
+  // 			$loop .= '</span>';
+	// 			$loop .= '<br>';
+	// 			$loop .= '<span class="cd-disabled">';
+  //       $loop .= '<i class="purple comment icon"></i>Há ' . human_time_diff( get_comment_date('U', $comment), current_time('timestamp') );
+  //       if ( get_field('privado_interacao', $comment) ) {
+	// 			$loop .= '<i class="lock icon" style="margin:0;"></i>';
+	// 			}
+  //       if ( have_rows('arquivos_interacao', $comment) ) {
+	// 			$loop .= '<i class="attach icon"></i>';
+	// 			}
+  //     	$loop .= '<br>';
+	// 			$loop .= '<i class="green file text icon"></i>' . get_field('unidade', $comment->comment_post_ID) . '&nbsp;&nbsp;|&nbsp;&nbsp;' . get_the_title($comment->comment_post_ID);
+  // 			$loop .= '</span>';
+	// 			$loop .= '</a>';
+	//
+	//       endif;
+	//
+	//       endforeach;
+	//
+  //     $loop .= '<a href="' . get_bloginfo('url') . '/interacoes" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>';
+	//
+  //     else :
+	//
+  //     $num_nao_lidas = 0;
+  //     $loop .= '<a class="item"><i class="grey comment icon"></i>Não há interações</a>';
+	//
+  //     endif;
+	//
+  // 	else :
+	//
+	// 	$num_nao_lidas = 0;
+  //   $loop .= '<a class="item"><i class="grey comment icon"></i>Não há interações</a>';
+	//
+	// 	endif; wp_reset_postdata();
+	//
+	// $response = json_encode(
+	// 	array(
+	// 		'loop' => $loop,
+	// 		'num_nao_lidas' => $num_nao_lidas,
+	// 		)
+	// 	);
+
+	$response = get_template_part('comment', 'feed');
 
 	echo $response;
 

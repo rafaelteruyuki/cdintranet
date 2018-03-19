@@ -40,17 +40,14 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
   $comments = $comments_query->query( $nao_lidas_args );
 
   $num_nao_lidas = 0;
-  $msgs_nao_lidas = false;
   $i = 0;
+  ?>
+
+  <a href="<?php bloginfo('url')?>/interacoes/" class="item" id="interacoes-nao-lidas" style="display: none; text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Veja todas as solicitações com interações não lidas</strong></a>
+
+  <?php
 
   if ( !empty( $comments ) ) :
-
-    // Todas as solicitações com interações não lidas
-    if ($msgs_nao_lidas) {
-    echo '<a href="';
-    bloginfo('url');
-    echo '/interacoes/" class="item" style="text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Veja todas as solicitações com interações não lidas</strong></a>';
-    }
 
     foreach ( $comments as $comment ) :
 
@@ -97,7 +94,6 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
           if ($last_comment_time > $acesso_registrado[$key]) {
             $num_nao_lidas++;
-            $msgs_nao_lidas = true;
           }
 
         } else {
@@ -131,4 +127,6 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
 <?php endif; wp_reset_postdata(); ?>
 
-<script type="text/javascript">var num_nao_lidas = <?php echo $num_nao_lidas ?>;</script>
+<script type="text/javascript">
+  var num_nao_lidas = <?php echo $num_nao_lidas ?>;
+</script>
