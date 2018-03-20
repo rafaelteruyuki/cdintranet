@@ -1069,24 +1069,30 @@ AO CRIAR/ATUALIZAR TAREFA
 		endif;
 
 		// Elimina usuários duplicados
-		$result = array_unique($usuarios);
+		$usuarios = array_unique($usuarios);
 
 		// Update usuários
-		if (!empty($result)) :
-		  foreach ($result as $usuario) :
-				$interacoes_nao_lidas = get_field('interacoes_nao_lidas', 'user_' . $usuario);
-				if ($interacoes_nao_lidas) {
-					// Não lidas
-					$interacoes_nao_lidas = $interacoes_nao_lidas . ', ' . $comment_id;
-					update_field('interacoes_nao_lidas', $interacoes_nao_lidas, 'user_' . $usuario);
-					// Contagem
-					$myArray = explode(', ', $interacoes_nao_lidas);
-					$count = count($myArray);
-					update_field('num_nao_lidas', $count, 'user_' . $usuario);
-				} else {
-					update_field('interacoes_nao_lidas', $comment_id, 'user_' . $usuario);
-					update_field('num_nao_lidas', 1, 'user_' . $usuario);
-				}
+		if (!empty($usuarios)) :
+		  foreach ($usuarios as $usuario) :
+
+				$int_nao_lidas = get_user_meta( $usuario, 'int_nao_lidas', true );
+			  $num_nao_lidas = get_user_meta( $usuario, 'num_nao_lidas', true );
+
+			  if ($int_nao_lidas) {
+			    // Há interações (update)
+			    $int_nao_lidas[] = $comment_id;
+			    $num_nao_lidas = count($int_nao_lidas);
+			    update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
+			    update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
+			  } else {
+			    // Não há interações
+			    $int_nao_lidas = array();
+			    $int_nao_lidas[] = $comment_id;
+			    $num_nao_lidas = 1;
+			    update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
+			    update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
+			  }
+
 		  endforeach;
 		endif;
 
