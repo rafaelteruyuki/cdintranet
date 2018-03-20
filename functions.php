@@ -1008,14 +1008,15 @@ AO CRIAR/ATUALIZAR TAREFA
 
 	---------------------------- */
 
-	add_filter( 'comment_post', 'interacoes_nao_lidas' );
+	add_action( 'comment_post', 'interacoes_nao_lidas', 10, 2 );
 
-	function interacoes_nao_lidas( $comment_id ) {
+	function interacoes_nao_lidas( $comment_ID ) {
 
 		global $current_user;
 
-		$comment = get_comment( $comment_id );
+		$comment = get_comment( $comment_ID );
 		$post_id = get_post( $comment->comment_post_ID );
+		$privado = get_field('privado_interacao', 'comment_' . $comment_ID);
 
 		$usuarios = array();
 
@@ -1058,13 +1059,21 @@ AO CRIAR/ATUALIZAR TAREFA
 
 		// Autor
 		$cd_author = get_field('cd_author', $post_id);
-		$usuarios[] = $cd_author['ID'];
+		if ($privado) {
+			if (user_can($cd_author['ID'], 'edit_pages')) $usuarios[] = $cd_author['ID'];
+		} else {
+			$usuarios[] = $cd_author['ID'];
+		}
 
 		// Participantes
 		$participantes = get_field('participante', $post_id); // array
 		if ($participantes) :
 		  foreach ($participantes as $participante) :
-		    $usuarios[] = $participante['ID'];
+				if ($privado) {
+	        if (user_can($participante['ID'], 'edit_pages')) $usuarios[] = $participante['ID'];
+	      } else {
+	        $usuarios[] = $participante['ID'];
+	      }
 		  endforeach;
 		endif;
 
@@ -1080,14 +1089,15 @@ AO CRIAR/ATUALIZAR TAREFA
 
 			  if ($int_nao_lidas) {
 			    // Há interações (update)
-			    $int_nao_lidas[] = $comment_id;
+			    $int_nao_lidas[] = $comment_ID;
+					$int_nao_lidas = array_unique($int_nao_lidas);
 			    $num_nao_lidas = count($int_nao_lidas);
 			    update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
 			    update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
 			  } else {
 			    // Não há interações
 			    $int_nao_lidas = array();
-			    $int_nao_lidas[] = $comment_id;
+			    $int_nao_lidas[] = $comment_ID;
 			    $num_nao_lidas = 1;
 			    update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
 			    update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
