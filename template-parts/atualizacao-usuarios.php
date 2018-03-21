@@ -171,11 +171,11 @@ if ( !empty($posts_array) ) : // Se não tiver posts, não inicia essa query.
           $acesso_registrado[] = get_sub_field('acesso', $comment->comment_post_ID); // Array acessos registrados
         }
 
-        $key = array_search($user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
+        $key = array_search($user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
         $int_nao_lidas = get_user_meta( $user_ID, 'int_nao_lidas', true );
         $num_nao_lidas = get_user_meta( $user_ID, 'num_nao_lidas', true );
 
-        // Usuário logado visitou
+        // Usuário logado visitou a tarefa
         if ($key !== false) {
 
           $last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
@@ -187,48 +187,45 @@ if ( !empty($posts_array) ) : // Se não tiver posts, não inicia essa query.
       			    $int_nao_lidas[] = $comment->comment_ID;
       					$int_nao_lidas = array_unique($int_nao_lidas);
       			    $num_nao_lidas = count($int_nao_lidas);
-      			    update_user_meta( $user_ID, 'int_nao_lidas', $int_nao_lidas );
-      			    update_user_meta( $user_ID, 'num_nao_lidas', $num_nao_lidas );
       			  } else {
       			    // Não há interações
       			    $int_nao_lidas = array();
       			    $int_nao_lidas[] = $comment->comment_ID;
       			    $num_nao_lidas = 1;
-      			    update_user_meta( $user_ID, 'int_nao_lidas', $int_nao_lidas );
-      			    update_user_meta( $user_ID, 'num_nao_lidas', $num_nao_lidas );
       			  }
 
           }
 
-        } else {
+        } else { // Usuário logado não visitou a tarefa, mas há comentário nela
 
           if ($int_nao_lidas) {
             // Há interações (update)
             $int_nao_lidas[] = $comment->comment_ID;
             $int_nao_lidas = array_unique($int_nao_lidas);
             $num_nao_lidas = count($int_nao_lidas);
-            update_user_meta( $user_ID, 'int_nao_lidas', $int_nao_lidas );
-            update_user_meta( $user_ID, 'num_nao_lidas', $num_nao_lidas );
           } else {
             // Não há interações
             $int_nao_lidas = array();
             $int_nao_lidas[] = $comment->comment_ID;
             $num_nao_lidas = 1;
-            update_user_meta( $user_ID, 'int_nao_lidas', $int_nao_lidas );
-            update_user_meta( $user_ID, 'num_nao_lidas', $num_nao_lidas );
           }
 
         }
 
+        update_user_meta( $user_ID, 'int_nao_lidas', $int_nao_lidas );
+        update_user_meta( $user_ID, 'num_nao_lidas', $num_nao_lidas );
+
         $int_nao_lidas = array();
         $num_nao_lidas = array();
 
+        $usuario_registrado = array(); // Limpa o array
+        $acesso_registrado = array(); // Limpa o array
+
       }
 
-      $usuario_registrado = array(); // Limpa o array
-      $acesso_registrado = array(); // Limpa o array
-
     endforeach;
+
+    echo '*----- ' . $user_login . ' Updated -----*<br>';
 
   endif;
 

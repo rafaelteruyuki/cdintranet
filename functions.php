@@ -1092,16 +1092,15 @@ AO CRIAR/ATUALIZAR TAREFA
 			    $int_nao_lidas[] = $comment_ID;
 					$int_nao_lidas = array_unique($int_nao_lidas);
 			    $num_nao_lidas = count($int_nao_lidas);
-			    update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
-			    update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
 			  } else {
 			    // Não há interações
 			    $int_nao_lidas = array();
 			    $int_nao_lidas[] = $comment_ID;
 			    $num_nao_lidas = 1;
-			    update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
-			    update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
 			  }
+
+				update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
+				update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
 
 		  endforeach;
 		endif;

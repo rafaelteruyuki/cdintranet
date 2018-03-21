@@ -857,11 +857,11 @@ include ( locate_template('template-parts/var-tarefas.php') );
 //     wp_reset_postdata();
 // }
 
-// echo '<pre>';
-//
-// // ATUALIZAR USUARIOS - INTERACOES NAO LIDAS
-//
-// // 15 min para todos os usuários
+echo '<pre>';
+
+// ATUALIZAR USUARIOS - INTERACOES NAO LIDAS
+
+// 15 min para todos os usuários
 // $user_args = array(
 //   'role' => 'designer_gd2_gd4', // Mudar aqui
 //  );
@@ -869,38 +869,43 @@ include ( locate_template('template-parts/var-tarefas.php') );
 //
 // foreach ( $users as $user ) :
 //   $user_ID = $user->ID;
+//   $user_login = $user->user_login;
 //   include ( locate_template('template-parts/atualizacao-usuarios.php') );
-//   echo $user_ID . ' Updated<br>';
 // endforeach;
-//
-// // VER COMENTARIOS NAO LIDOS DO USUARIO LOGADO
-//
-// $usuario = $current_user->ID;
-//
-// echo 'Comentários não lidos pelo usuário logado<br>';
-// $int_nao_lidas = get_user_meta( $usuario, 'int_nao_lidas', true );
-// $num_nao_lidas = get_user_meta( $usuario, 'num_nao_lidas', true );
-// var_dump($int_nao_lidas);
-// var_dump($num_nao_lidas);
-//
-// echo 'Comentários desta tarefa<br>';
-// $comment_args = array(
-//   'fields' => 'ids',
-//   'post_id' => get_the_ID(),
-//   // 'meta_query' => array( $privado ),
-// );
-// $comments = get_comments($comment_args);
-// var_dump($comments);
-//
-// echo 'Comentários que sobraram não lidos<br>';
-// $int_nao_lidas = array_diff($int_nao_lidas, $comments);
-// $num_nao_lidas = count($int_nao_lidas);
-// update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
-// update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
-// var_dump($int_nao_lidas);
-// var_dump($num_nao_lidas);
-//
-// echo '</pre>';
+
+// VER COMENTARIOS NAO LIDOS DO USUARIO LOGADO
+
+// $user_ID = 151;
+// $user_login = 'andreia.javarotti';
+// include ( locate_template('template-parts/atualizacao-usuarios.php') );
+// $usuario = 151;
+
+$usuario = $current_user->ID;
+
+echo 'Comentários não lidos pelo usuário logado<br>';
+$int_nao_lidas = get_user_meta( $usuario, 'int_nao_lidas', true );
+$num_nao_lidas = get_user_meta( $usuario, 'num_nao_lidas', true );
+var_dump($int_nao_lidas);
+var_dump($num_nao_lidas);
+
+echo 'Comentários desta tarefa<br>';
+$comment_args = array(
+  'fields' => 'ids',
+  'post_id' => get_the_ID(),
+  // 'meta_query' => array( $privado ),
+);
+$comments = get_comments($comment_args);
+var_dump($comments);
+
+echo 'Comentários que sobraram não lidos<br>';
+$int_nao_lidas = array_diff($int_nao_lidas, $comments);
+$num_nao_lidas = count($int_nao_lidas);
+update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
+update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
+var_dump($int_nao_lidas);
+var_dump($num_nao_lidas);
+
+echo '</pre>';
 
 ?>
 
