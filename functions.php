@@ -1012,8 +1012,6 @@ AO CRIAR/ATUALIZAR TAREFA
 
 	function interacoes_nao_lidas( $comment_ID ) {
 
-		global $current_user;
-
 		$comment = get_comment( $comment_ID );
 		$post_id = get_post( $comment->comment_post_ID );
 		$privado = get_field('privado_interacao', 'comment_' . $comment_ID);
@@ -1104,10 +1102,139 @@ AO CRIAR/ATUALIZAR TAREFA
 				update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
 
 		  endforeach;
+			update_post_meta( $post_id, 'usuarios_tarefa', $usuarios );
 		endif;
 
 	}
-	
+
+	/* --------------------------
+
+	SUBTRAI INTERACOES PARA USUARIOS QUE NAO ESTAO MAIS NA TAREFA
+
+	---------------------------- */
+
+	add_action( 'save_post', 'subtrai_interacoes', 10, 2 );
+
+	function subtrai_interacoes( $post_id ) {
+
+		if (get_post_type($post_id) != 'tarefa') return;
+
+		$usuarios_tarefa = get_post_meta( $post_id, 'usuarios_tarefa', true );
+		$usuarios = array();
+
+		// Segmentação
+		$segmentacao = get_field('segmentacao', $post_id);
+
+		if ($segmentacao && in_array('gd2_gd4', $segmentacao)) :
+		  $get_users = get_users('role=designer_gd2_gd4');
+		  foreach ($get_users as $user) :
+		    $usuarios[] = $user->ID;
+		  endforeach;
+		endif;
+
+		if ($segmentacao && in_array('gd1_gd3', $segmentacao)) :
+		  $get_users = get_users('role=designer_gd1_gd3');
+		  foreach ($get_users as $user) :
+		    $usuarios[] = $user->ID;
+		  endforeach;
+		endif;
+
+		if ($segmentacao && in_array('institucional', $segmentacao)) :
+		  $get_users = get_users('role=designer_institucional');
+		  foreach ($get_users as $user) :
+		    $usuarios[] = $user->ID;
+		  endforeach;
+		endif;
+
+		if ($segmentacao && in_array('evento', $segmentacao)) :
+		  $get_users = get_users('role=portal');
+		  foreach ($get_users as $user) :
+		    $usuarios[] = $user->ID;
+		  endforeach;
+		endif;
+
+		// Responsáveis
+		$responsavel1 = get_field('responsavel_1', $post_id); if ($responsavel1) $usuarios[] = $responsavel1['ID'];
+		$responsavel2 = get_field('responsavel_2', $post_id); if ($responsavel2) $usuarios[] = $responsavel2['ID'];
+		$responsavel_portal = get_field('responsavel_portal', $post_id); if ($responsavel_portal) $usuarios[] = $responsavel_portal['ID'];
+		$responsavel_portal_2 = get_field('responsavel_portal_2', $post_id); if ($responsavel_portal_2) $usuarios[] = $responsavel_portal_2['ID'];
+
+		// Autor
+		$cd_author = get_field('cd_author', $post_id);
+		if ($privado) {
+			if (user_can($cd_author['ID'], 'edit_pages')) $usuarios[] = $cd_author['ID'];
+		} else {
+			$usuarios[] = $cd_author['ID'];
+		}
+
+		// Participantes
+		$participantes = get_field('participante', $post_id); // array
+		if ($participantes) :
+		  foreach ($participantes as $participante) :
+				if ($privado) {
+	        if (user_can($participante['ID'], 'edit_pages')) $usuarios[] = $participante['ID'];
+	      } else {
+	        $usuarios[] = $participante['ID'];
+	      }
+		  endforeach;
+		endif;
+
+		// Elimina usuários duplicados
+		$usuarios = array_unique($usuarios);
+
+		// Subtrai os comentários para usuários que não estão mais nessa tarefa
+		$usuarios_sairam = array_diff($usuarios_tarefa, $usuarios);
+		$usuarios_entraram = array_diff($usuarios, $usuarios_tarefa);
+
+		if ($usuarios_tarefa && $usuarios_sairam) {
+
+			$comment_args = array(
+				'fields' => 'ids',
+				'post_id' => $post_id,
+			);
+			$int_sairam = get_comments($comment_args);
+
+			foreach ($usuarios_sairam as $usuario) :
+				$int_nao_lidas = get_user_meta( $usuario, 'int_nao_lidas', true );
+			  $num_nao_lidas = get_user_meta( $usuario, 'num_nao_lidas', true );
+
+				$int_nao_lidas = array_diff($int_nao_lidas, $int_sairam);
+				$int_nao_lidas = array_unique($int_nao_lidas);
+				$int_nao_lidas = array_map('intval', $int_nao_lidas);
+				$num_nao_lidas = count($int_nao_lidas);
+				update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
+				update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
+			endforeach;
+
+		}
+
+		// Update usuários
+		if (!empty($usuarios)) :
+
+			$comment_args = array(
+				'fields' => 'ids',
+				'post_id' => $post_id,
+			);
+			$int_entraram = get_comments($comment_args);
+
+		  foreach ($usuarios as $usuario) :
+
+				$int_nao_lidas = get_user_meta( $usuario, 'int_nao_lidas', true );
+			  $num_nao_lidas = get_user_meta( $usuario, 'num_nao_lidas', true );
+
+				$int_nao_lidas = array_diff($int_nao_lidas, $int_entraram);
+				$num_nao_lidas = count($int_nao_lidas);
+				$int_nao_lidas = array_unique($int_nao_lidas);
+				$int_nao_lidas = array_map('intval', $int_nao_lidas);
+				update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
+				update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
+
+		  endforeach;
+			update_post_meta( $post_id, 'usuarios_tarefa', $usuarios );
+		endif;
+
+	}
+
 	/* --------------------------
 
 	VERIFICA SE ALGUM POST FOI ATUALIZADO PARA ATUALIZAR O FEED

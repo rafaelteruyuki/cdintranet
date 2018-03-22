@@ -869,7 +869,7 @@ echo '<pre>';
 
 // $user_args = array(
 //   // 'role' => 'designer_gd2_gd4', // Mudar aqui
-//   'number' => 20,
+//   'number' => -1,
 //   // 'offset' => 20,
 //   'fields' => array('ID', 'user_login'),
 //  );
@@ -915,6 +915,18 @@ update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
 update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
 var_dump($int_nao_lidas);
 var_dump($num_nao_lidas);
+
+echo 'Usuários tarefa<br>';
+$usuarios_tarefa = get_post_meta( get_the_ID(), 'usuarios_tarefa', true );
+var_dump($usuarios_tarefa);
+
+// echo 'Usuários sairam<br>';
+// $usuarios_sairam = array_diff($usuarios_tarefa, array(40, 50, 151));
+// var_dump($usuarios_sairam);
+//
+// echo 'Usuários entraram<br>';
+// $usuarios_entraram = array_diff(array(40, 50, 151), $usuarios_tarefa);
+// var_dump($usuarios_entraram);
 
 echo '</pre>';
 
