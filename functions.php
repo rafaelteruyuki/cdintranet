@@ -1090,7 +1090,6 @@ AO CRIAR/ATUALIZAR TAREFA
 			  if ($int_nao_lidas) {
 			    // Há interações (update)
 			    $int_nao_lidas[] = $comment_ID;
-					$int_nao_lidas = array_unique($int_nao_lidas);
 			    $num_nao_lidas = count($int_nao_lidas);
 			  } else {
 			    // Não há interações
@@ -1099,6 +1098,8 @@ AO CRIAR/ATUALIZAR TAREFA
 			    $num_nao_lidas = 1;
 			  }
 
+				$int_nao_lidas = array_unique($int_nao_lidas);
+				$int_nao_lidas = array_map('intval', $int_nao_lidas);
 				update_user_meta( $usuario, 'int_nao_lidas', $int_nao_lidas );
 				update_user_meta( $usuario, 'num_nao_lidas', $num_nao_lidas );
 
@@ -1106,7 +1107,7 @@ AO CRIAR/ATUALIZAR TAREFA
 		endif;
 
 	}
-
+	
 	/* --------------------------
 
 	VERIFICA SE ALGUM POST FOI ATUALIZADO PARA ATUALIZAR O FEED

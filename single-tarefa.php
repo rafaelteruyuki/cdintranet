@@ -861,24 +861,35 @@ echo '<pre>';
 
 // ATUALIZAR USUARIOS - INTERACOES NAO LIDAS
 
-// 15 min para todos os usuários
+// global $wpdb;
+// $value = array(5555, 6666);
+// $values = '('. 5555 .',"'. 6666 . '")';
+// $sql = "UPDATE `wp_usermeta` SET `meta_value` = 99 WHERE `user_id` = 47 AND `meta_key` = 'int_nao_lidas'";
+// $wpdb->query($sql);
+
 // $user_args = array(
-//   'role' => 'designer_gd2_gd4', // Mudar aqui
+//   // 'role' => 'designer_gd2_gd4', // Mudar aqui
+//   'number' => 20,
+//   // 'offset' => 20,
+//   'fields' => array('ID', 'user_login'),
 //  );
 // $users = get_users( $user_args );
 //
+// // delete_metadata( 'user', 0, 'int_nao_lidas', '', true );
+// include ( locate_template('template-parts/atualizacao-usuarios.php') );
 // foreach ( $users as $user ) :
 //   $user_ID = $user->ID;
 //   $user_login = $user->user_login;
-//   include ( locate_template('template-parts/atualizacao-usuarios.php') );
+//   var_dump($user_login);
+//   atualizacao_usuarios($user_ID, $user_login);
+//   // delete_metadata( 'user', $user_ID, 'int_nao_lidas', '', false );
 // endforeach;
 
 // VER COMENTARIOS NAO LIDOS DO USUARIO LOGADO
 
-// $user_ID = 151;
-// $user_login = 'andreia.javarotti';
+// $user_ID = 75;
+// $user_login = 'amanda.cbermudes';
 // include ( locate_template('template-parts/atualizacao-usuarios.php') );
-// $usuario = 151;
 
 $usuario = $current_user->ID;
 

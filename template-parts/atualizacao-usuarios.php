@@ -1,5 +1,7 @@
 <?php
 
+function atualizacao_usuarios($user_ID = 0, $user_login = '') {
+
 //FEED GD2 E GD4
 
 if ( user_can( $user_ID, 'designer_gd2_gd4' ) ) {
@@ -201,7 +203,6 @@ if ( !empty($posts_array) ) : // Se não tiver posts, não inicia essa query.
           if ($int_nao_lidas) {
             // Há interações (update)
             $int_nao_lidas[] = $comment->comment_ID;
-            $int_nao_lidas = array_unique($int_nao_lidas);
             $num_nao_lidas = count($int_nao_lidas);
           } else {
             // Não há interações
@@ -212,12 +213,13 @@ if ( !empty($posts_array) ) : // Se não tiver posts, não inicia essa query.
 
         }
 
+        $int_nao_lidas = array_unique($int_nao_lidas);
+				$int_nao_lidas = array_map('intval', $int_nao_lidas);
         update_user_meta( $user_ID, 'int_nao_lidas', $int_nao_lidas );
         update_user_meta( $user_ID, 'num_nao_lidas', $num_nao_lidas );
 
         $int_nao_lidas = array();
         $num_nao_lidas = array();
-
         $usuario_registrado = array(); // Limpa o array
         $acesso_registrado = array(); // Limpa o array
 
@@ -229,4 +231,8 @@ if ( !empty($posts_array) ) : // Se não tiver posts, não inicia essa query.
 
   endif;
 
-endif; wp_reset_postdata(); ?>
+endif; wp_reset_postdata();
+
+}
+
+?>
