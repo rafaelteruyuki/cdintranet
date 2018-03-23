@@ -857,6 +857,33 @@ include ( locate_template('template-parts/var-tarefas.php') );
 //     wp_reset_postdata();
 // }
 
+$nao_lidas_args = array(
+    'order'          => 'DESC',
+    'orderby'        => 'comment_date',
+    // 'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+    'meta_query'     => array(
+      'relation'		=> 'AND',
+      array(
+      'key' => 'interacao_lida_0_usuario', //   OU   'interacao_lida_$_usuario',
+      'value' => $current_user->ID,
+      'compare' => '=',
+      ),
+      array(
+      'key' => 'interacao_lida_0_lida', //   OU   'interacao_lida_$_usuario',
+      'value' => 1,
+      'compare' => '=',
+      ),
+    ),
+);
+
+$comments_query = new WP_Comment_Query;
+$comments = $comments_query->query( $nao_lidas_args );
+foreach ($comments as $comment) {
+  echo '<pre>';
+  var_dump($comment->comment_ID);
+  echo '</pre>';
+}
+
 ?>
 
 <script type="text/javascript">

@@ -50,6 +50,14 @@ $comments = get_comments($comment_list_args); ?>
 
 <div class="ui threaded comments">
 
+<?php
+$current_user =  wp_get_current_user();
+$row = array(
+	'usuario'	=> $current_user->ID,
+	'lida'	=> true,
+);
+?>
+
 <?php foreach ( $comments as $comment ) : ?>
 
 	<div id="comment-<?php comment_ID() ?>" class="comment">
@@ -84,6 +92,40 @@ $comments = get_comments($comment_list_args); ?>
 			</div>
 	  </div>
 	</div>
+
+	<?php
+	// Registra os usuários que acessam
+	$usuarios_registrados = array();
+
+	if( have_rows('interacao_lida', $comment) ) {
+		while( have_rows('interacao_lida', $comment) ) { the_row();
+			$usuario = get_sub_field('usuario');
+			$usuarios_registrados[] = $usuario['ID'];
+		}
+	}
+
+	array_unshift($usuarios_registrados,""); unset($usuarios_registrados[0]);
+
+	if ( $usuarios_registrados && in_array($current_user->ID, $usuarios_registrados) ) {
+
+		$row_number = array_search($current_user->ID, $usuarios_registrados);
+		update_row('interacao_lida', $row_number, $row);
+
+	} else {
+		$i = add_row('interacao_lida', $row, $comment);
+	}
+
+	// Visualizar
+	if( have_rows('interacao_lida', $comment) ) {
+		while( have_rows('interacao_lida', $comment) ) { the_row();
+			$user = get_sub_field('usuario');
+			echo $user['ID'] . ' - ';
+			var_dump(get_sub_field('lida'));
+			echo '<br>';
+		}
+	}
+
+	?>
 
 <?php endforeach; ?>
 
