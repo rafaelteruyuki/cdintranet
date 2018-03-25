@@ -857,30 +857,40 @@ include ( locate_template('template-parts/var-tarefas.php') );
 //     wp_reset_postdata();
 // }
 
+include ( locate_template('template-parts/cd-feed.php') );
+$post_args = array(
+  'post_type'              => array( 'tarefa' ),
+  'posts_per_page'         => -1,
+  'order'                  => 'DESC',
+  'fields'                 => 'ids',
+  'meta_query'             => array( $comment_feed ),
+);
+
+$posts_array = get_posts( $post_args );
+wp_reset_postdata();
+
 $nao_lidas_args = array(
     'order'          => 'DESC',
     'orderby'        => 'comment_date',
-    // 'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+    'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+    // 'count' => true,
     'meta_query'     => array(
-      'relation'		=> 'AND',
       array(
-      'key' => 'interacao_lida_0_usuario', //   OU   'interacao_lida_$_usuario',
-      'value' => $current_user->ID,
-      'compare' => '=',
-      ),
-      array(
-      'key' => 'interacao_lida_0_lida', //   OU   'interacao_lida_$_usuario',
-      'value' => 1,
-      'compare' => '=',
+      'key' => 'interacao_lida',
+      'value' => $current_user->ID, // Não precisa de aspas pq o valor guardado é INT (numero inteiro)
+      'compare' => 'NOT LIKE',
       ),
     ),
 );
 
 $comments_query = new WP_Comment_Query;
 $comments = $comments_query->query( $nao_lidas_args );
+// var_dump($comments);
 foreach ($comments as $comment) {
   echo '<pre>';
   var_dump($comment->comment_ID);
+  $post = get_post($comment->comment_post_ID);
+  var_dump($post->guid);
   echo '</pre>';
 }
 

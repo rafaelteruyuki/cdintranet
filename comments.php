@@ -50,14 +50,6 @@ $comments = get_comments($comment_list_args); ?>
 
 <div class="ui threaded comments">
 
-<?php
-$current_user =  wp_get_current_user();
-$row = array(
-	'usuario'	=> $current_user->ID,
-	'lida'	=> true,
-);
-?>
-
 <?php foreach ( $comments as $comment ) : ?>
 
 	<div id="comment-<?php comment_ID() ?>" class="comment">
@@ -94,36 +86,31 @@ $row = array(
 	</div>
 
 	<?php
-	// Registra os usuários que acessam
-	$usuarios_registrados = array();
 
-	if( have_rows('interacao_lida', $comment) ) {
-		while( have_rows('interacao_lida', $comment) ) { the_row();
-			$usuario = get_sub_field('usuario');
-			$usuarios_registrados[] = $usuario['ID'];
-		}
-	}
+	// delete_comment_meta( $comment->comment_ID, 'interacao_lida' );
 
-	array_unshift($usuarios_registrados,""); unset($usuarios_registrados[0]);
+	$current_user =  wp_get_current_user();
 
-	if ( $usuarios_registrados && in_array($current_user->ID, $usuarios_registrados) ) {
+	$interacao_lida = get_comment_meta( $comment->comment_ID, 'interacao_lida', true );
 
-		$row_number = array_search($current_user->ID, $usuarios_registrados);
-		update_row('interacao_lida', $row_number, $row);
-
+	if ($interacao_lida) {
+		// Há usuário(s) que leram essa interação (acrescenta o usuário a esse array)
+		$interacao_lida[] = $current_user->ID;
+		$interacao_lida = array_unique($interacao_lida);
 	} else {
-		$i = add_row('interacao_lida', $row, $comment);
+		// Não há usuários que leram essa interação (cria um array e insere o usuário)
+		$interacao_lida = array();
+		$interacao_lida[] = $current_user->ID;
 	}
 
-	// Visualizar
-	if( have_rows('interacao_lida', $comment) ) {
-		while( have_rows('interacao_lida', $comment) ) { the_row();
-			$user = get_sub_field('usuario');
-			echo $user['ID'] . ' - ';
-			var_dump(get_sub_field('lida'));
-			echo '<br>';
-		}
-	}
+	$interacao_lida = array_unique($interacao_lida);
+	$interacao_lida = array_map('intval', $interacao_lida);
+  update_comment_meta( $comment->comment_ID, 'interacao_lida', $interacao_lida );
+	// echo '<pre>';
+	// var_dump($interacao_lida);
+	// echo '</pre>';
+
+  $interacao_lida = array();
 
 	?>
 
