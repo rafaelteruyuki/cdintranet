@@ -133,7 +133,7 @@
         <i class="comment icon" style="margin:0;"></i>
         <div class="contador floating ui label"><i class="loading refresh icon" style="margin:0;"></i></div>
         <div class="menu" id="refresh">
-          <?php // get_template_part('comment','feed') ?>
+          <?php get_template_part('comment','feed') ?>
         </div>
       </div>
       <?php endif; ?>
@@ -157,7 +157,7 @@ $('#calculadora-prazos').click(function() {
 });
 
 </script>
-<script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=5'></script>
+<script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=6'></script>
 <script type="text/javascript">
 // // Refresh para todos os arquivos
 // window.onload = function() {

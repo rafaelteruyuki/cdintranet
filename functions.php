@@ -1473,15 +1473,6 @@ function lido_nao_lido_single() {
 
 };
 
-function my_posts_where( $where ) {
-
-	$where = str_replace("meta_key = 'interacao_lida_$", "meta_key LIKE 'interacao_lida_%", $where);
-
-	return $where;
-}
-
-add_filter('posts_where', 'my_posts_where');
-
 /* --------------------------
 
 HIGHLIGHT TAREFAS COM COMENTARIOS (MINHAS TAREFAS e MINHAS SOLICITACOES)
