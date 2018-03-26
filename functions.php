@@ -1460,22 +1460,20 @@ function new_task( $new_task = '<span class="ui blue mini label">Nova</span>' ) 
 
 	global $current_user;
 	$post_id = get_the_ID();
+	$tarefa_lida = get_post_meta( $post_id, 'tarefa_lida', true );
 
 	if ( !is_archive() && current_user_can('edit_pages') ) { // Não exibe na página Todas as Tarefas nem para usuários Senac
 
-	  if ( have_rows('visitas', $post_id) ) {
-	      while ( have_rows('visitas', $post_id) ) { the_row();
-	          $usuario_registrado[] = get_sub_field('usuario', $post_id);
-	          $acesso_registrado[] = get_sub_field('acesso', $post_id);
-	      }
+		if ($tarefa_lida) {
 
-	    // Procura o usuário no array de usuários registrados
-	    if ( !in_array($current_user->user_login, $usuario_registrado) ) {
-	      echo $new_task;
-	    }
-	  } else {
+			if (!in_array($current_user->ID, $tarefa_lida)) {
+				echo $new_task;
+			}
+
+		} else {
 			echo $new_task;
-	  }
+		}
+
 	}
 
 }

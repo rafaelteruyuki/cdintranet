@@ -5,20 +5,22 @@ include ( locate_template('template-parts/cd-feed.php') );
 
 /* --------------------------
 
-GRAVA O ID DO USUARIO LOGADO NAS INTERACOES LIDAS DO POST EM QUESTAO
+GRAVA O ID DO USUARIO LOGADO NAS INTERACOES LIDAS DO POST EM QUESTAO E NA TAREFA
 
 ---------------------------- */
 
 if (is_singular('tarefa')) :
 
-$lidas_args = array(
-  'post_id' => get_the_ID(),
-  'fields' => 'ids',
-  'meta_query' => array( $privado ),
-);
+  // Interações
 
-$comments_query = new WP_Comment_Query;
-$comments = $comments_query->query( $lidas_args );
+  $lidas_args = array(
+    'post_id' => get_the_ID(),
+    'fields' => 'ids',
+    'meta_query' => array( $privado ),
+  );
+
+  $comments_query = new WP_Comment_Query;
+  $comments = $comments_query->query( $lidas_args );
 
   if ( !empty( $comments ) ) :
 
@@ -45,6 +47,24 @@ $comments = $comments_query->query( $lidas_args );
     endforeach;
 
   endif;
+
+  // Tarefas
+
+  $tarefa_lida = get_post_meta( get_the_ID(), 'tarefa_lida', true );
+
+  if ($tarefa_lida) {
+    // Há usuário(s) que leram essa tarefa (acrescenta o usuário a esse array)
+    $tarefa_lida[] = $current_user->ID;
+    $tarefa_lida = array_unique($tarefa_lida);
+  } else {
+    // Não há usuários que leram essa tarefa (cria um array e insere o usuário)
+    $tarefa_lida = array();
+    $tarefa_lida[] = $current_user->ID;
+  }
+
+  $tarefa_lida = array_unique($tarefa_lida);
+  $tarefa_lida = array_map('intval', $tarefa_lida);
+  update_post_meta( get_the_ID(), 'tarefa_lida', $tarefa_lida );
 
 endif;
 

@@ -14,12 +14,15 @@ get_header();
 $user_args = array(
   'number' => 200,
   'fields' => array('ID', 'user_login'),
-  // 'offset' => 20,
-  // 'role' => 'designer_gd2_gd4', // Mudar aqui
- );
+  // 'role__in' => array('designer_gd2_gd4', 'designer_gd1_gd3', 'designer_institucional', 'portal' ),
+  // 'role__in' => array('senac' ),
+  // 'offset' => 10,
+  // 'role' => 'designer_gd2_gd4',
+);
 $cd_users = get_users( $user_args );
 
 // delete_metadata( 'comment', 0, 'interacao_lida', '', true );
+// delete_metadata( 'post', 0, 'tarefa_lida', '', true );
 
 include ( locate_template('template-parts/atualizacao-comentarios.php') );
 foreach ( $cd_users as $cd_user ) :

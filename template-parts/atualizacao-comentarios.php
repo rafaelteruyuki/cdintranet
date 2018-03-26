@@ -148,6 +148,8 @@ $post_args = array(
 $posts_array = get_posts( $post_args );
 wp_reset_postdata();
 
+// Interaçoes
+
 if ( !empty($posts_array) ) : // Se não tiver posts, não inicia essa query.
 
   $nao_lidas_args = array(
@@ -213,7 +215,52 @@ if ( !empty($posts_array) ) : // Se não tiver posts, não inicia essa query.
 
   endif;
 
-endif; wp_reset_postdata();
+endif;
+
+
+// Tarefas
+
+if ( !empty($posts_array) ) : // Se não tiver posts, não inicia essa query.
+
+  foreach ($posts_array as $post) {
+
+    $tarefa_lida = get_post_meta( $post, 'tarefa_lida', true );
+
+    if ( have_rows('visitas', $post) ) {
+	      while ( have_rows('visitas', $post) ) { the_row();
+	          $usuario_registrado[] = get_sub_field('usuario', $post);
+	          $acesso_registrado[] = get_sub_field('acesso', $post);
+	      }
+
+	    // Procura o usuário no array de usuários registrados
+	    if ( in_array($user_login, $usuario_registrado) ) {
+
+        if ($tarefa_lida) {
+          // Há usuário(s) que leram essa tarefa (acrescenta o usuário a esse array)
+          $tarefa_lida[] = $user_ID;
+          $tarefa_lida = array_unique($tarefa_lida);
+        } else {
+          // Não há usuários que leram essa tarefa (cria um array e insere o usuário)
+          $tarefa_lida = array();
+          $tarefa_lida[] = $user_ID;
+        }
+
+	    }
+	  }
+
+    $tarefa_lida = array_unique($tarefa_lida);
+    $tarefa_lida = array_map('intval', $tarefa_lida);
+    update_post_meta( $post, 'tarefa_lida', $tarefa_lida );
+
+    $tarefa_lida = array();
+
+  }
+
+  echo '*----- ' . $user_login . ' Updated -----*<br>';
+
+endif;
+
+wp_reset_postdata();
 
 }
 

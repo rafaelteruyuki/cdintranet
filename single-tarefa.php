@@ -855,8 +855,6 @@ include ( locate_template('template-parts/var-tarefas.php') );
 //     wp_reset_postdata();
 // }
 
-
-
 ?>
 
 <script type="text/javascript">
