@@ -12,8 +12,8 @@ get_header();
 <?php
 
 $user_args = array(
-  'number' => -1,
-  // 'fields' => array('ID', 'user_login'),
+  'number' => 200,
+  'fields' => array('ID', 'user_login'),
   // 'offset' => 20,
   // 'role' => 'designer_gd2_gd4', // Mudar aqui
  );
@@ -25,7 +25,7 @@ include ( locate_template('template-parts/atualizacao-comentarios.php') );
 foreach ( $cd_users as $cd_user ) :
   $cd_user_ID = $cd_user->ID;
   $cd_user_login = $cd_user->user_login;
-  atualizacao_comentarios($cd_user_ID, $cd_user_login);
+  // atualizacao_comentarios($cd_user_ID, $cd_user_login);
 endforeach;
 
 // // VISUALIZAR COMENTARIOS NAO LIDOS PELO USUARIO LOGADO
