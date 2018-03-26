@@ -27,7 +27,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
   <td class="left aligned">
     <?php new_task(); ?>
     <strong><?php the_title(); ?></strong>
-    <?php if ( !current_user_can('portal') ) : ?>
+    <?php if ( current_user_can('edit_pages') && !current_user_can('portal') ) : ?>
     <span style="float:right">
       <?php if (!$texto_luares) : ?><i class="file text icon" style="float:right; color: #CCC;"></i><?php endif; ?>
       <?php if ($texto_luares['value'] == 'solicitar-texto') : ?><i class="red file text icon cd-popup" title="Solicitar texto" style="float:right;"></i><?php endif; ?>
