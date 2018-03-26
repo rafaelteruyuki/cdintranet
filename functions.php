@@ -1363,115 +1363,22 @@ LIDO / NAO LIDO
 
 ---------------------------- */
 
-function get_lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
+function lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
 
 // table-body / header
 
 	global $current_user;
+	$comment = get_comment();
 
-	$modificado = get_the_modified_time('YmdHis');
-	$comment_modificado = get_comment_time('YmdHis');
-	$comment = get_comment( $comment_id );
-	$post_id = get_post( $comment->comment_post_ID );
+	$interacao_lida = get_comment_meta( $comment->comment_ID, 'interacao_lida', true );
 
-	$usuario_registrado = array();
-	$acesso_registrado = array();
+	if (!in_array($current_user->ID, $interacao_lida)) {
+		return $nao_lido;
+	} else {
+		$lido;
+	}
 
-	if( have_rows('visitas', $post_id) ):
-
-	    while ( have_rows('visitas', $post_id) ) : the_row();
-
-	        $usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
-	        $acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
-
-	    endwhile;
-
-	endif;
-
-	$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
-
-  if ( is_user_logged_in() ) {
-
-    // se existir a key do usuário, executa a função
-    if ($key !== false) {
-
-      if ($comment_modificado > $acesso_registrado[$key]) {
-        return $nao_lido;
-      } else {
-        return $lido;
-      };
-
-      // se não, coloca como não visualizado
-    } else {
-      return $nao_lido;
-    };
-
-  };
-
-};
-
-function lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
-
-	$lido_nao_lido = get_lido_nao_lido($lido, $nao_lido);
-
-	echo apply_filters( 'filtro', $lido_nao_lido, $lido, $nao_lido );
 }
-
-function lido_nao_lido_single() {
-
-	// No header.php e na função my_acf_save_post
-
-	if ( is_user_logged_in() &&  is_singular( 'tarefa' ) ) {
-
-	global $current_user;
-
-	$modificado = get_the_modified_time('YmdHis');
-	$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
-
-	// Row do ACF
-	$row = array(
-		'usuario'	=> $current_user->user_login,
-		'acesso'	=> $acesso,
-	);
-
-	// Declara os arrays
-	$usuario_registrado = array();
-	$acesso_registrado = array();
-
-	// Transforma as rows em array que possam ser acessados fora do loop
-	if( have_rows('visitas') ):
-
-			while ( have_rows('visitas') ) : the_row();
-
-					$usuario_registrado[] = get_sub_field('usuario');
-					$acesso_registrado[] = get_sub_field('acesso');
-
-			endwhile;
-
-	endif;
-
-	// Faz a key do array começar em 1, não em 0, pq a row do ACF começa em 1. O número da key do usuário é igual ao número da row onde ele está inserido
-	array_unshift($usuario_registrado,"");
-	unset($usuario_registrado[0]);
-
-		// Procura o usuário no array de usuários registrados
-		if ( in_array($current_user->user_login, $usuario_registrado) ) {
-
-			// Identifica sua posição (key) no array
-			$key = array_search($current_user->user_login, $usuario_registrado);
-			$row_number = $key;
-
-			// Como ele já está registrado, apenas atualiza seu acesso na row dele
-			update_row('visitas', $row_number, $row);
-
-		} else {
-			// Se não acessou nunca, uma row é criada para ele
-			$i = add_row('visitas', $row);
-		};
-
-	};
-
-};
 
 /* --------------------------
 
@@ -1499,39 +1406,17 @@ $post_id = get_the_ID();
 		$args = array(
 			'number' => '1',
 			'post_id' => $post_id,
+			'fields' => 'ids',
 			'meta_query' => array( $privado )
 		);
-		$comments = get_comments($args);
+		$last_comment = get_comments($args);
 
-		if ($comments) {
+		if ($last_comment) {
 
-			// Checa se há visita e quem visitou
-			if( have_rows('visitas', $post_id) ) {
+			$interacao_lida = get_comment_meta( $last_comment[0], 'interacao_lida', true );
 
-				while ( have_rows('visitas', $post_id) ) {
-					the_row();
-					$usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
-					$acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
-				}
-
-				$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
-
-				// Usuário logado visitou
-				if ($key !== false) {
-
-					// Faz a comparação com o último comentário
-					foreach($comments as $comment) {
-
-						$last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
-
-						if ($last_comment_time > $acesso_registrado[$key]) {
-							return $nao_lido;
-						}
-
-					}
-
-				}
-
+			if (!in_array($current_user->ID, $interacao_lida)) {
+				return $nao_lido;
 			}
 
 		}

@@ -9,11 +9,11 @@ $.post(
     if (response == 'edit_pages') {
       contador();
       setInterval(notificacao_new_task_push_ajax, 120000);
-      setInterval(contador_feed, 120000);
-      // contador_feed();
+      setInterval(feed_refresh, 120000);
+      // feed_refresh();
     } else if (response == 'senac') {
       contador();
-      setInterval(contador_feed, 120000);
+      setInterval(feed_refresh, 120000);
     }
 
   }
@@ -55,31 +55,29 @@ function notificacao_new_task_push_ajax() {
 
 }
 
-// CONTADOR FEED
+// FEED REFRESH
 
-var loading_icon = false;
-
-function contador_feed() {
-
-  // FEED REFRESH
+function feed_refresh() {
 
   $.ajax({
       url: ajaxurl,
       method: 'POST',
       data: {action: 'carrega_loop'},
+
       beforeSend: function(response) {
         $('.contador').html('<i class="loading refresh icon" style="margin:0;"></i>').removeClass("green").removeClass("red");
       },
+
       success: function(response) {
-
        $('#refresh').html(response);
-       // naoLido = $('#refresh .feed-nao-lido').length;
        contador();
-
+       // naoLido = $('#refresh .feed-nao-lido').length;
       }
   });
 
 }
+
+// CONTADOR
 
 function contador() {
   var naoLido = 0;
@@ -101,7 +99,7 @@ function contador() {
   }
 }
 
-// function contador_feed() {
+// function feed_refresh() {
 //
 //   // FEED REFRESH
 //

@@ -85,34 +85,12 @@ $comments = get_comments($comment_list_args); ?>
 	  </div>
 	</div>
 
-	<?php
-
-	// delete_comment_meta( $comment->comment_ID, 'interacao_lida' );
-
-	$current_user =  wp_get_current_user();
-
-	$interacao_lida = get_comment_meta( $comment->comment_ID, 'interacao_lida', true );
-
-	if ($interacao_lida) {
-		// Há usuário(s) que leram essa interação (acrescenta o usuário a esse array)
-		$interacao_lida[] = $current_user->ID;
-		$interacao_lida = array_unique($interacao_lida);
-	} else {
-		// Não há usuários que leram essa interação (cria um array e insere o usuário)
-		$interacao_lida = array();
-		$interacao_lida[] = $current_user->ID;
-	}
-
-	$interacao_lida = array_unique($interacao_lida);
-	$interacao_lida = array_map('intval', $interacao_lida);
-  update_comment_meta( $comment->comment_ID, 'interacao_lida', $interacao_lida );
-	// echo '<pre>';
-	// var_dump($interacao_lida);
-	// echo '</pre>';
-
-  $interacao_lida = array();
-
-	?>
+<?php
+// $interacao_lida = get_comment_meta( $comment->comment_ID, 'interacao_lida', true );
+// echo '<pre>';
+// var_dump($interacao_lida);
+// echo '</pre>';
+?>
 
 <?php endforeach; ?>
 
