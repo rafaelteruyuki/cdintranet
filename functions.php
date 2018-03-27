@@ -2413,6 +2413,23 @@ function my_trashed_post_handler($post_id) {
   exit;
 }
 
+// /* --------------------------
+//
+// LOGIN OBRIGATORIO PARA TODOS OS USUARIOS
+//
+// ---------------------------- */
+//
+// function my_page_template_redirect()  {
+//
+//   if( !is_user_logged_in() ) {
+//     wp_safe_redirect( wp_login_url() );
+// 		exit;
+//   }
+//
+// }
+//
+// add_action( 'template_redirect', 'my_page_template_redirect' );
+
 /* --------------------------
 
 MUDA O DIRETORIO DE UPLOAD
