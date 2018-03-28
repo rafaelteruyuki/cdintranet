@@ -79,17 +79,17 @@
 <div class="ui attached stackable inverted menu" style="border: 1px solid rgba(255, 255, 255, 0.1);">
   <div class="ui container" style="border-left:1px solid rgba(255, 255, 255, 0.1); border-right:1px solid rgba(255, 255, 255, 0.1)">
 
-    <a href="<?php bloginfo( 'url' ); ?>" class="item"><i class="grid layout icon"></i> Catálogo de Peças</a>
-    <a href="<?php bloginfo( 'url' ); ?>/solicitacao/" class="item"><i class="edit icon"></i>Nova solicitação</a>
-    <a href="<?php bloginfo( 'url' ); ?>/redes-sociais/" class="item"><i class="globe icon"></i> Redes Sociais</a>
-
-    <!-- <div class="ui dropdown item">
-        <i class="edit icon"></i>Solicitações
+    <!-- <a href="<?php // bloginfo( 'url' ); ?>" class="item"><i class="grid layout icon"></i> Catálogo de Peças</a> -->
+    <div class="ui dropdown item">
+        <i class="grid layout icon"></i>Peças
         <i class="dropdown icon"></i>
         <div class="menu">
-          <a href="<?php // bloginfo( 'url' ); ?>/solicitacao/" class="item"><i class="edit icon"></i>Nova</a>
+          <a href="<?php bloginfo( 'url' ); ?>" class="item"><i class="grid layout icon"></i>Catálogo</a>
+          <a href="<?php bloginfo( 'url' ); ?>/wp-content/uploads/Campanhas_Email_Marketing.xlsx" class="item"><i class="linkify icon"></i>Tagueamento</a>
         </div>
-    </div> -->
+    </div>
+    <a href="<?php bloginfo( 'url' ); ?>/solicitacao/" class="item"><i class="edit icon"></i>Nova solicitação</a>
+    <a href="<?php bloginfo( 'url' ); ?>/redes-sociais/" class="item"><i class="globe icon"></i> Redes Sociais</a>
 
     <div class="right menu">
 
