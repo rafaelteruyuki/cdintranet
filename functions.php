@@ -1078,8 +1078,8 @@ AO CRIAR/ATUALIZAR TAREFA
 	// add_action('wp_ajax_carrega_loop', 'carrega_loop');
 	// add_action('wp_ajax_nopriv_carrega_loop', 'carrega_loop');
 
-// function carrega_loop () {
-// 
+function carrega_loop () {
+
 	// // CD-FEED
 	// include ( locate_template('template-parts/cd-feed.php') );
 	//
@@ -1208,16 +1208,16 @@ AO CRIAR/ATUALIZAR TAREFA
 	// 		'num_nao_lidas' => $num_nao_lidas,
 	// 		)
 	// 	);
-//
-// 	$response = get_template_part('comment', 'feed');
-//
-// 	echo $response;
-//
-// 	wp_die();
-//
-// }
-// add_action('wp_ajax_carrega_loop', 'carrega_loop');
-// add_action('wp_ajax_nopriv_carrega_loop', 'carrega_loop');
+
+	$response = get_template_part('comment', 'feed');
+
+	echo $response;
+
+	wp_die();
+
+}
+add_action('wp_ajax_carrega_loop', 'carrega_loop');
+add_action('wp_ajax_nopriv_carrega_loop', 'carrega_loop');
 
 /* --------------------------
 
