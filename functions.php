@@ -2303,6 +2303,24 @@ function my_trashed_post_handler($post_id) {
   exit;
 }
 
+
+
+function foto_cd_user($user_id = 0, $width = 24) {
+
+	if ($user_id == 0) {
+		return;
+	}
+
+	$foto = get_field('foto', 'user_' . $user_id);
+
+	if ($foto) {
+		echo '<img src="' . $foto['sizes']['thumbnail'] . '" width="' . $width . '">';
+	} else {
+		echo '<img src="http://0.gravatar.com/avatar/0c635272c0d5eaac9fd98261a0c7d398?s=48&d=mm&r=g" width="' . $width .'">';
+	}
+
+}
+
 // /* --------------------------
 //
 // LOGIN OBRIGATORIO PARA TODOS OS USUARIOS

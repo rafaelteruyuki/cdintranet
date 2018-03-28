@@ -55,7 +55,7 @@ $comments = get_comments($comment_list_args); ?>
 	<div id="comment-<?php comment_ID() ?>" class="comment">
 	  <a class="avatar">
 			<span class="ui mini circular image">
-	    <?php echo get_avatar( $comment, 100 ); ?>
+	    <?php foto_cd_user($comment->user_id, 48); ?>
 			</span>
 	  </a>
 	  <div class="content">

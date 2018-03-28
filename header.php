@@ -103,7 +103,9 @@
       <!--LOGIN-->
       <?php if ( is_user_logged_in() ) : ?>
         <div class="ui dropdown item cd-user-logado">
-          <span class="ui mini rounded image"><?php echo get_avatar( $current_user->ID, 24 ); ?></span><?php echo $current_user->display_name ?>
+          <span class="ui mini rounded image">
+          <?php foto_cd_user($current_user->ID); ?>
+          </span><?php echo $current_user->display_name ?>
           <i class="dropdown icon"></i>
           <div class="menu">
             <!--LOGIN DESIGNER E ADMIN-->
@@ -111,7 +113,6 @@
             <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
             <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
             <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
-            <a href="<?php bloginfo( 'url' ); ?>/notificacoes-por-e-mail/" class="item"><i class="mail square icon"></i>Notificações por e-mail</a>
             <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
             <?php endif; ?>
             <?php if ( current_user_can( 'portal' ) ) : ?>
@@ -120,8 +121,8 @@
             <!--LOGIN OUTROS-->
             <?php if ( current_user_can( 'senac' ) ) : ?>
             <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
-            <a href="<?php bloginfo( 'url' ); ?>/notificacoes-por-e-mail/" class="item"><i class="mail square icon"></i>Notificações por e-mail</a>
             <?php endif; ?>
+            <a href="<?php bloginfo( 'url' ); ?>/meu-perfil/" class="item"><i class="user icon"></i>Meu perfil</a>
             <a href="<?php echo wp_logout_url( home_url() ); ?>" class="item"><i class="sign out icon"></i>Sair</a>
           </div>
         </div>

@@ -451,25 +451,25 @@ include ( locate_template('template-parts/var-tarefas.php') );
                 <div style="margin-top:10px;">
                   <?php if ($responsavel1) : ?>
                     <span class="ui mini circular image cd-popup" title="<?php echo $responsavel1['display_name'] ?>">
-                      <?php echo $responsavel1['user_avatar'];?>
+                      <?php foto_cd_user($responsavel1['ID'], 48);?>
                     </span>
                     &nbsp;
                   <?php endif; ?>
                   <?php if ($responsavel2) : ?>
                     <span class="ui mini circular image cd-popup" title="<?php echo $responsavel2['display_name'] ?>">
-                      <?php echo $responsavel2['user_avatar'];?>
+                      <?php foto_cd_user($responsavel2['ID'], 48);?>
                     </span>
                     &nbsp;
                   <?php endif; ?>
                   <?php if ($responsavel3) : ?>
                     <span class="ui mini circular image cd-popup" title="<?php echo $responsavel3['display_name'] ?>">
-                      <?php echo $responsavel3['user_avatar'];?>
+                      <?php foto_cd_user($responsavel3['ID'], 48);?>
                     </span>
                     &nbsp;
                   <?php endif; ?>
                   <?php if ($responsavel4) : ?>
                     <span class="ui mini circular image cd-popup" title="<?php echo $responsavel4['display_name'] ?>">
-                      <?php echo $responsavel4['user_avatar'];?>
+                      <?php foto_cd_user($responsavel4['ID'], 48);?>
                     </span>
                     &nbsp;
                   <?php endif; ?>
