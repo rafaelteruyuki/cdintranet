@@ -958,6 +958,13 @@ AO CRIAR/ATUALIZAR TAREFA
 					// );
 					// $i = add_row('visitas', $row, $post_id);
 
+					// Tarefas
+
+					$tarefa_lida = array();
+					$tarefa_lida[] = $current_user->ID;
+				  $tarefa_lida = array_map('intval', $tarefa_lida);
+				  update_post_meta( $post_id, 'tarefa_lida', $tarefa_lida );
+
 				}
 
     // Update the post into the database - Se não não atualiza o cache do Search & Filter

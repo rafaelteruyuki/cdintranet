@@ -21,6 +21,25 @@ global $current_user;
   // CD-FEED
   include ( locate_template('template-parts/cd-feed.php') );
 
+  // // NOVAS TAREFAS
+  //
+  // $novas_args = array(
+  //   'post_type'              => array( 'tarefa' ),
+  //   'posts_per_page'         => -1,
+  //   'order'                  => 'DESC',
+  //   'meta_query'     => array(
+  //     'relation' => 'AND',
+  //     array(
+  //     'key' => 'tarefa_lida',
+  //     'value' => $current_user->ID, // Não precisa de aspas pq o valor guardado é INT (numero inteiro)
+  //     'compare' => 'NOT LIKE',
+  //     ),
+  //     $comment_feed
+  //   ),
+  // );
+  //
+  // $novas = new WP_Query($novas_args);
+
   $post_args = array(
     'post_type'              => array( 'tarefa' ),
     'posts_per_page'         => -1,
