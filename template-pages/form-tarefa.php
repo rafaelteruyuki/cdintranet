@@ -72,6 +72,14 @@ $test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 9
 
 <?php endif;?>
 
-<script type="text/javascript" src="<?php bloginfo('template_url') ?>/js/get-curso-form-tarefa.js"></script>
+<?php $unidade = get_field('unidade', 'user_' . $current_user->ID); if ($unidade) : ?>
+<span id="cd-user-unidade" style="display:none"><?= $unidade['unidade'] ?></span>
+<?php endif;?>
+
+<?php $telefone = get_field('telefone', 'user_' . $current_user->ID); if ($telefone) : ?>
+<span id="cd-user-telefone" style="display:none"><?= $telefone ?></span>
+<?php endif;?>
+
+<script type="text/javascript" src="<?php bloginfo('template_url') ?>/js/get-curso-form-tarefa.js?ver=1.1"></script>
 
 <?php get_footer(); ?>

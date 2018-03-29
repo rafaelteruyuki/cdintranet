@@ -8,6 +8,13 @@ var subarea = $('[data-name="subarea_tarefa"] .acf-input select');
 var imagem = '<a id="link" href="" target="_blank" style="display:none;"><img id=imagem-curso src="" style="width:50%; padding:20px 0 0;"></a>';
 $(imagem).insertAfter(select_curso);
 
+// INSERE OS VALORES SALVOS DO MEU PERFIL NO FORMULARIO
+
+var unidade = $('#acf-field_58d1a32b9f77e');
+var telefone = $('#acf-field_58dd757e6b614');
+unidade.val($('#cd-user-unidade').html());
+telefone.val($('#cd-user-telefone').html()).mask('(00) 0000-0000');
+
 // SE O USUARIO VIER DA PAGINA DO CURSO
 
 $(function(){

@@ -63,6 +63,8 @@ get_header(); ?>
 
 <?php endif;?>
 
-<script type="text/javascript" src="<?php bloginfo('template_url') ?>/js/get-curso-form-tarefa.js"></script>
+<script type="text/javascript">
+  $('[data-name="telefone"] .acf-input input').mask('(00) 0000-0000');
+</script>
 
 <?php get_footer(); ?>
