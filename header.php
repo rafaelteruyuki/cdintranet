@@ -103,9 +103,7 @@
       <!--LOGIN-->
       <?php if ( is_user_logged_in() ) : ?>
         <div class="ui dropdown item cd-user-logado">
-          <span class="ui mini rounded image">
-          <?php foto_cd_user($current_user->ID); ?>
-          </span><?php echo $current_user->display_name ?>
+          <span class="ui mini rounded image"><?php echo get_avatar( $current_user->ID, 24 ); ?></span><?php echo $current_user->display_name ?>
           <i class="dropdown icon"></i>
           <div class="menu">
             <!--LOGIN DESIGNER E ADMIN-->

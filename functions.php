@@ -2306,26 +2306,51 @@ function my_trashed_post_handler($post_id) {
 
 /* --------------------------
 
-FOTO CD USER
+ACF AVATAR
 
 ---------------------------- */
 
-function foto_cd_user($user_id = 0, $width = 24) {
+/**
+ * Use ACF image field as avatar
+ * @author Mike Hemberger
+ * @link http://thestizmedia.com/acf-pro-simple-local-avatars/
+ * @uses ACF Pro image field (tested return value set as Array )
+ */
+add_filter('get_avatar', 'tsm_acf_profile_avatar', 10, 5);
+function tsm_acf_profile_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
+    $user = '';
 
-	if ($user_id == 0) {
-		return;
-	}
-
-	$foto = get_field('foto', 'user_' . $user_id);
-	// $user = get_user_by('id', $user_id);
-
-	if ($foto) {
-		echo '<img src="' . $foto['sizes']['thumbnail'] . '" width="' . $width . '">';
-	} else {
-		echo '<img src="http://0.gravatar.com/avatar/0c635272c0d5eaac9fd98261a0c7d398?s=48&d=mm&r=g" width="' . $width .'">';
-		// echo '<span class="ui avatar image" style="background: #d6d6d6; text-align: center; padding-top: 0.25em; color: white; font-weight: bold;" width="' . $width . '">' . $user->first_name[0] . $user->last_name[0] . '</span>';
-	}
-
+    // Get user by id or email
+    if ( is_numeric( $id_or_email ) ) {
+        $id   = (int) $id_or_email;
+        $user = get_user_by( 'id' , $id );
+    } elseif ( is_object( $id_or_email ) ) {
+        if ( ! empty( $id_or_email->user_id ) ) {
+            $id   = (int) $id_or_email->user_id;
+            $user = get_user_by( 'id' , $id );
+        }
+    } else {
+        $user = get_user_by( 'email', $id_or_email );
+    }
+    if ( ! $user ) {
+        return $avatar;
+    }
+    // Get the user id
+    $user_id = $user->ID;
+    // Get the file id
+    $image_id = get_user_meta($user_id, 'foto', true); // CHANGE TO YOUR FIELD NAME
+    // Bail if we don't have a local avatar
+    if ( ! $image_id ) {
+        return $avatar;
+    }
+    // Get the file size
+    $image_url  = wp_get_attachment_image_src( $image_id, 'thumbnail' ); // Set image size by name
+    // Get the file url
+    $avatar_url = $image_url[0];
+    // Get the img markup
+    $avatar = '<img alt="' . $alt . '" src="' . $avatar_url . '" class="avatar avatar-' . $size . '" height="' . $size . '" width="' . $size . '"/>';
+    // Return our new avatar
+    return $avatar;
 }
 
 // /* --------------------------
