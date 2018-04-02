@@ -64,7 +64,16 @@ get_header(); ?>
 <?php endif;?>
 
 <script type="text/javascript">
-  $('[data-name="telefone"] .acf-input input').mask('(00) 0000-0000');
+  var SPMaskBehavior = function (val) {
+    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+  },
+  spOptions = {
+    onKeyPress: function(val, e, field, options) {
+        field.mask(SPMaskBehavior.apply({}, arguments), options);
+      }
+  };
+
+  $('[data-name="telefone"] .acf-input input').mask(SPMaskBehavior, spOptions);
   $('#success-message').delay(3000).fadeOut(400)
 </script>
 

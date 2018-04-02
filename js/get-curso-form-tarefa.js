@@ -13,7 +13,17 @@ $(imagem).insertAfter(select_curso);
 var unidade = $('#acf-field_58d1a32b9f77e');
 var telefone = $('#acf-field_58dd757e6b614');
 unidade.val($('#cd-user-unidade').html());
-telefone.val($('#cd-user-telefone').html()).mask('(00) 0000-0000');
+
+var SPMaskBehavior = function (val) {
+  return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+},
+spOptions = {
+  onKeyPress: function(val, e, field, options) {
+      field.mask(SPMaskBehavior.apply({}, arguments), options);
+    }
+};
+
+telefone.val($('#cd-user-telefone').html()).mask(SPMaskBehavior, spOptions);
 
 // SE O USUARIO VIER DA PAGINA DO CURSO
 
