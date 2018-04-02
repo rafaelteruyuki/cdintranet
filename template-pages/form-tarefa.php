@@ -80,6 +80,6 @@ $test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 9
 <span id="cd-user-telefone" style="display:none"><?= $telefone ?></span>
 <?php endif;?>
 
-<script type="text/javascript" src="<?php bloginfo('template_url') ?>/js/get-curso-form-tarefa.js?ver=1.1"></script>
+<script type="text/javascript" src="<?php bloginfo('template_url') ?>/js/get-curso-form-tarefa.js?ver=1.2"></script>
 
 <?php get_footer(); ?>
