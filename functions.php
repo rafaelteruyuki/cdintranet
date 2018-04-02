@@ -2304,7 +2304,11 @@ function my_trashed_post_handler($post_id) {
   exit;
 }
 
+/* --------------------------
 
+FOTO CD USER
+
+---------------------------- */
 
 function foto_cd_user($user_id = 0, $width = 24) {
 
@@ -2313,11 +2317,13 @@ function foto_cd_user($user_id = 0, $width = 24) {
 	}
 
 	$foto = get_field('foto', 'user_' . $user_id);
+	// $user = get_user_by('id', $user_id);
 
 	if ($foto) {
 		echo '<img src="' . $foto['sizes']['thumbnail'] . '" width="' . $width . '">';
 	} else {
 		echo '<img src="http://0.gravatar.com/avatar/0c635272c0d5eaac9fd98261a0c7d398?s=48&d=mm&r=g" width="' . $width .'">';
+		// echo '<span class="ui avatar image" style="background: #d6d6d6; text-align: center; padding-top: 0.25em; color: white; font-weight: bold;" width="' . $width . '">' . $user->first_name[0] . $user->last_name[0] . '</span>';
 	}
 
 }
