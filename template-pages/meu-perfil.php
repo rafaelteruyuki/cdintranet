@@ -24,7 +24,7 @@ get_header(); ?>
        'label_placement'      => 'top',
        'submit_value'         => 'Atualizar',
        'updated_message'      => 'Salvo!',
-       'html_updated_message'	=> '<div id="message" class="acf-error-message" style="background: #22ba44;border-left: #1ca53a solid 4px;"><p>%s</p></div>',
+       'html_updated_message'	=> '<div id="success-message" class="acf-error-message" style="background: #22ba44;border-left: #1ca53a solid 4px;"><p>%s</p></div>',
        'html_submit_button'	  => '<input type="submit" class="ui primary large fluid button" value="%s" style="margin-top:20px" />',
        'uploader'             => 'basic',
 );
@@ -65,6 +65,7 @@ get_header(); ?>
 
 <script type="text/javascript">
   $('[data-name="telefone"] .acf-input input').mask('(00) 0000-0000');
+  $('#success-message').delay(3000).fadeOut(400)
 </script>
 
 <?php get_footer(); ?>
