@@ -1268,6 +1268,18 @@ REDIRECT USUARIOS PARA A HOME APOS LOGIN
 
 	    $args['meta_query'] = array( $minhas_tarefas_feed );
 
+			if (isset($_GET["novas"])) {
+				$args['meta_query'] = array(
+					'relation' => 'AND',
+							array(
+							'key' => 'tarefa_lida',
+							'value' => $current_user->ID, // Não precisa de aspas pq o valor guardado é INT (numero inteiro)
+							'compare' => 'NOT LIKE',
+							),
+					$minhas_tarefas_feed,
+				);
+			}
+
 		}
 
 		// Minhas solicitações

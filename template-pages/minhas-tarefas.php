@@ -82,14 +82,20 @@ function url_check() {
     <!--<div class="ui yellow circular label" title="Em produção" id="totalEmProducao"></div>-->
     <!--<div class="ui green circular label" title="Finalizadas" id="totalConcluido"></div>-->
 
-    <div class="ui large buttons" style="margin: 0 10px">
-      <a data-tooltip="Filtros" class="ui icon cd-filtro button tarefas cd-filter-on">
-        <i class="filter icon"></i>
-      </a>
-      <a data-tooltip="Limpar" href="<?php bloginfo('url'); ?>/minhas-tarefas" class="ui icon button">
-        <i class="undo icon"></i>
-      </a>
-    </div>
+    <?php if (isset($_GET["novas"])) : ?>
+      <a class="ui primary button" href="<?php bloginfo('url') ?>/minhas-tarefas/">Visualizar todas</a>
+    <?php else : ?>
+      <a class="ui primary button" href="<?php bloginfo('url') ?>/minhas-tarefas/?novas">Novas</a>
+      <div class="ui large buttons" style="margin: 0 10px">
+        <a data-tooltip="Filtros" class="ui icon cd-filtro button tarefas cd-filter-on">
+          <i class="filter icon"></i>
+        </a>
+        <a data-tooltip="Limpar" href="<?php bloginfo('url'); ?>/minhas-tarefas" class="ui icon button">
+          <i class="undo icon"></i>
+        </a>
+      </div>
+    <?php endif; ?>
+
 
     <!-- TABS -->
     <!-- <div class="ui large buttons cd-tab">
@@ -115,11 +121,24 @@ function url_check() {
 
   <?php
 
-    // CD-FEED
-    include ( locate_template('template-parts/cd-feed.php') );
+  // CD-FEED
+  include ( locate_template('template-parts/cd-feed.php') );
 
-    $args['search_filter_id'] = 2817;
+  if (isset($_GET["nao_lidas"])) {
+    $post_args = array(
+      'post_type'              => array( 'tarefa' ),
+      'posts_per_page'         => -1,
+      'order'                  => 'DESC',
+      'fields'                 => 'ids',
+      'meta_query'             => array( $comment_feed ),
+    );
+    $posts_array = get_posts( $post_args );
 
+    // Todo o código aqui
+
+  } else {
+
+  $args['search_filter_id'] = 2817;
   $wp_query = new WP_Query( $args );
 
   if ( $wp_query->have_posts() ) : ?>
@@ -144,7 +163,11 @@ function url_check() {
 
 	<?php else : ?>
 	<h3 class="ui center aligned header cd-margem">Não há tarefas para o filtro selecionado.</h3>
-<?php endif; wp_reset_postdata(); ?>
+  <?php endif; wp_reset_postdata();
+
+  }
+
+  ?>
 
 </div>
 
