@@ -44,7 +44,7 @@
         <div>Sandro Neto Ribeiro</div>
         <br>
         <h3 class="ui dividing header inverted">Gerente</h3>
-        <div>Otavio Fernando Genta Cordioli</div>
+        <div>Juliano Márcio Calderero</div>
       </div>
 
     </div>
