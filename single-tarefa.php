@@ -2,8 +2,6 @@
 
 <?php get_header(); ?>
 
-<?php lido_nao_lido_single(); // LIDO / NAO LIDO / REGISTRA NA SINGLE ?>
-
 <link rel="stylesheet" href="<?php bloginfo('url'); ?>/wp-content/themes/comunicacao-digital/css/form-tarefa.css">
 
 <style type="text/css">

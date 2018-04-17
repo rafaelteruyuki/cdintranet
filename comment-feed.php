@@ -3,44 +3,101 @@
 // CD-FEED
 include ( locate_template('template-parts/cd-feed.php') );
 
-// REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC E DE USUARIOS NAO LOGADOS
-if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
-  $privado = array(
-  'key' => 'privado_interacao',
-  'value' => '1',
-  'compare' => '!=',
+/* --------------------------
+
+GRAVA O ID DO USUARIO LOGADO NAS INTERACOES LIDAS DO POST EM QUESTAO E NA TAREFA
+
+---------------------------- */
+
+if (is_singular('tarefa')) :
+
+  // Interações
+
+  $lidas_args = array(
+    'post_id' => get_the_ID(),
+    'fields' => 'ids',
+    'meta_query' => array( $privado ),
   );
-}
+
+  $comments_query = new WP_Comment_Query;
+  $comments = $comments_query->query( $lidas_args );
+
+  if ( !empty( $comments ) ) :
+
+    foreach ( $comments as $comment ) :
+
+    $interacao_lida = get_comment_meta( $comment, 'interacao_lida', true );
+
+    if ($interacao_lida) {
+      // Há usuário(s) que leram essa interação (acrescenta o usuário a esse array)
+      $interacao_lida[] = $current_user->ID;
+      $interacao_lida = array_unique($interacao_lida);
+    } else {
+      // Não há usuários que leram essa interação (cria um array e insere o usuário)
+      $interacao_lida = array();
+      $interacao_lida[] = $current_user->ID;
+    }
+
+    $interacao_lida = array_unique($interacao_lida);
+    $interacao_lida = array_map('intval', $interacao_lida);
+    update_comment_meta( $comment, 'interacao_lida', $interacao_lida );
+
+    $interacao_lida = array();
+
+    endforeach;
+
+  endif;
+
+  // Tarefas
+
+  $tarefa_lida = get_post_meta( get_the_ID(), 'tarefa_lida', true );
+
+  if ($tarefa_lida) {
+    // Há usuário(s) que leram essa tarefa (acrescenta o usuário a esse array)
+    $tarefa_lida[] = $current_user->ID;
+    $tarefa_lida = array_unique($tarefa_lida);
+  } else {
+    // Não há usuários que leram essa tarefa (cria um array e insere o usuário)
+    $tarefa_lida = array();
+    $tarefa_lida[] = $current_user->ID;
+  }
+
+  $tarefa_lida = array_unique($tarefa_lida);
+  $tarefa_lida = array_map('intval', $tarefa_lida);
+  update_post_meta( get_the_ID(), 'tarefa_lida', $tarefa_lida );
+
+endif;
+
+/* --------------------------
+
+PEGA TODOS OS POSTS QUE TEM RELACAO COM O USUARIO LOGADO
+
+---------------------------- */
 
 // META_QUERY DOS POSTS IDS
 $post_args = array(
   'post_type'              => array( 'tarefa' ),
   'posts_per_page'         => -1,
   'order'                  => 'DESC',
-  // 'post__in'               => $allTheIDs,
-  // 'orderby'                => 'comment_date',
-  // 'author'                 => $feed_rc,
   'fields'                 => 'ids',
   'meta_query'             => array( $comment_feed ),
 );
 
 $posts_array = get_posts( $post_args );
-wp_reset_postdata();
 
 if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
-  $nao_lidas_args = array(
+  $comments_args = array(
       'order'          => 'DESC',
       'orderby'        => 'comment_date',
+      'number'         => '31',
       'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
       'meta_query'     => array( $privado ),
   );
 
   $comments_query = new WP_Comment_Query;
-  $comments = $comments_query->query( $nao_lidas_args );
+  $comments = $comments_query->query( $comments_args );
 
-  $num_nao_lidas = 0;
-  $i = 0;
   ?>
 
   <a href="<?php bloginfo('url')?>/interacoes/" class="item" id="interacoes-nao-lidas" style="display: none; text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Veja todas as solicitações com interações não lidas</strong></a>
@@ -49,13 +106,9 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
   if ( !empty( $comments ) ) :
 
-    foreach ( $comments as $comment ) :
+    foreach ( $comments as $comment ) : ?>
 
-      $i++;
-
-      if ($i <= 30) : ?>
-
-      <a href="<?php the_permalink($comment->comment_post_ID); ?>" class="item <?php lido_nao_lido('feed-lido', 'feed-nao-lido'); ?>" style="border-top: 1px solid #dedede !important;">
+      <a href="<?php the_permalink($comment->comment_post_ID); ?>" class="item <?php echo lido_nao_lido('feed-lido', 'feed-nao-lido'); ?>" style="border-top: 1px solid #dedede !important;">
 
   			<span style="line-height:1.5;">
           <strong><?= $comment->comment_author ?></strong> disse:
@@ -74,59 +127,45 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
       </a>
 
-      <?php endif;
-
-      // Checa se há visita e quem visitou
-      if( have_rows('visitas', $comment->comment_post_ID) ) {
-
-        while ( have_rows('visitas', $comment->comment_post_ID) ) {
-          the_row();
-          $usuario_registrado[] = get_sub_field('usuario', $comment->comment_post_ID); // Array usuários registrados
-          $acesso_registrado[] = get_sub_field('acesso', $comment->comment_post_ID); // Array acessos registrados
-        }
-
-        $key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
-
-        // Usuário logado visitou
-        if ($key !== false) {
-
-          $last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
-
-          if ($last_comment_time > $acesso_registrado[$key]) {
-            $num_nao_lidas++;
-          }
-
-        } else {
-          $num_nao_lidas++; // Se há comentário, mas não visitou a tarefa ainda
-        }
-
-      }
-
-      $usuario_registrado = array(); // Limpa o array
-      $acesso_registrado = array(); // Limpa o array
-
-      endforeach; ?>
+      <?php endforeach; ?>
 
       <a href="<?php bloginfo('url') ?>/interacoes" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>
 
       <?php else : ?>
 
-      <?php $num_nao_lidas = 0 ?>
-      <a class="item">
-        <i class="grey comment icon"></i>Não há interações
-      </a>
+      <a class="item"><i class="grey comment icon"></i>Não há interações</a>
 
       <?php endif; ?>
 
     <?php else : ?>
 
-      <?php $num_nao_lidas = 0 ?>
-      <a class="item">
-        <i class="grey comment icon"></i>Não há interações
-      </a>
+    <a class="item"><i class="grey comment icon"></i>Não há interações</a>
 
-<?php endif; wp_reset_postdata(); ?>
+<?php endif;
 
-<script type="text/javascript">
-  var num_nao_lidas = <?php echo $num_nao_lidas ?>;
-</script>
+/* --------------------------
+
+CONTA O NUMERO DE INTERACORES NAO LIDAS PELO USUARIO LOGADO
+
+---------------------------- */
+
+$nao_lidas_args = array(
+    'post__in'       => $posts_array,
+    'count' => true,
+    'meta_query'     => array(
+      'relation' => 'AND',
+      array(
+      'key' => 'interacao_lida',
+      'value' => $current_user->ID, // Não precisa de aspas pq o valor guardado é INT (numero inteiro)
+      'compare' => 'NOT LIKE',
+      ),
+      $privado
+    ),
+);
+
+$comments_query = new WP_Comment_Query;
+$comments = $comments_query->query( $nao_lidas_args );
+wp_reset_postdata();
+?>
+
+<span style="display:none;" id="num_nao_lidas"><?= $comments ?></span>

@@ -18,16 +18,27 @@ global $current_user;
 
   <?php
 
-  if ( current_user_can( 'senac' ) ) {
-    $privado = array(
-    'key' => 'privado_interacao',
-    'value' => '1',
-    'compare' => '!=',
-    );
-  }
-
   // CD-FEED
   include ( locate_template('template-parts/cd-feed.php') );
+
+  // // NOVAS TAREFAS
+  //
+  // $novas_args = array(
+  //   'post_type'              => array( 'tarefa' ),
+  //   'posts_per_page'         => -1,
+  //   'order'                  => 'DESC',
+  //   'meta_query'     => array(
+  //     'relation' => 'AND',
+  //     array(
+  //     'key' => 'tarefa_lida',
+  //     'value' => $current_user->ID, // Não precisa de aspas pq o valor guardado é INT (numero inteiro)
+  //     'compare' => 'NOT LIKE',
+  //     ),
+  //     $comment_feed
+  //   ),
+  // );
+  //
+  // $novas = new WP_Query($novas_args);
 
   $post_args = array(
     'post_type'              => array( 'tarefa' ),
@@ -37,58 +48,39 @@ global $current_user;
     'meta_query'             => array( $comment_feed ),
   );
 
-  $posts = get_posts( $post_args );
+  $posts_array = get_posts( $post_args );
 
   // SE TIVER POSTS
-  if ( $posts ) :
+  if ( $posts_array ) :
 
-    foreach ( $posts as $post ) :
-      $posts_array[] = $post;
-    endforeach;
+    $nao_lidas_args = array(
+        'post__in'       => $posts_array,
+        'meta_query'     => array(
+          'relation' => 'AND',
+          array(
+          'key' => 'interacao_lida',
+          'value' => $current_user->ID, // Não precisa de aspas pq o valor guardado é INT (numero inteiro)
+          'compare' => 'NOT LIKE',
+          ),
+          $privado
+        ),
+    );
 
-      // COMENTARIOS
-      $comments_args = array(
-          'order'          => 'DESC',
-          'orderby'        => 'comment_date',
-          'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
-          'meta_query'     => array( $privado ),
-      );
-
-      $comments_query = new WP_Comment_Query;
-      $comments = $comments_query->query( $comments_args );
-
-      $interacao = 0;
+    $comments_query = new WP_Comment_Query;
+    $comments = $comments_query->query( $nao_lidas_args );
 
       // SE TIVER COMENTARIOS
       if ( $comments ) :
 
-  			foreach ( $comments as $comment ) {
+  			foreach ( $comments as $comment ) :
 
-          // SE TIVER VISITAS
-          if ( have_rows('visitas', $comment->comment_post_ID) ) {
+      			$interacao_lida = get_comment_meta( $comment->comment_ID, 'interacao_lida', true );
 
-    				while ( have_rows('visitas', $comment->comment_post_ID) ) {
-    					the_row();
-    					$usuario_registrado[] = get_sub_field('usuario', $comment->comment_post_ID); // Array usuários registrados
-    					$acesso_registrado[] = get_sub_field('acesso', $comment->comment_post_ID); // Array acessos registrados
-    				}
-
-        		$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
-            $comment_time = get_comment_date('YmdHis', $comment->comment_ID);
-
-            // Se o usuário não visitou e há comentário, coloca seu acesso como 0 para ser menor que o comment_time e aparecer
-            if ($key === false) {
-              $acesso_registrado[$key] = 0;
-            }
-
-    				// Usuário logado visitou
-    				if ( $comment_time > $acesso_registrado[$key] ) :
+      			if (!in_array($current_user->ID, $interacao_lida)) :
 
               // NAO INSERE POSTS DUPLICADOS
               if ( !in_array($comment->comment_post_ID, $comment_post_IDs, true ) ) :
               $comment_post_IDs[] = $comment->comment_post_ID;
-
-              $interacao++;
 
               // VARIAVEIS TAREFAS
               $responsavel1 = get_field('responsavel_1', $comment->comment_post_ID);
@@ -159,20 +151,15 @@ global $current_user;
 
             <?php
 
-                endif;
-
               endif;
 
-              $usuario_registrado = array(); // Limpa o array
-              $acesso_registrado = array(); // Limpa o array
+            endif;
 
-  					}
+					endforeach;
 
-  				}
+        else :
 
-          if ($interacao == 0) :
-            echo '<div class="ui center aligned container cd-margem"><h3>Você visualizou todas as interações.</h3></div>';
-          endif;
+          echo '<div class="ui center aligned container cd-margem"><h3>Você visualizou todas as interações.</h3></div>';
 
         endif;
 

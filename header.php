@@ -111,7 +111,6 @@
             <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
             <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
             <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
-            <a href="<?php bloginfo( 'url' ); ?>/notificacoes-por-e-mail/" class="item"><i class="mail square icon"></i>Notificações por e-mail</a>
             <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
             <?php endif; ?>
             <?php if ( current_user_can( 'portal' ) ) : ?>
@@ -120,8 +119,8 @@
             <!--LOGIN OUTROS-->
             <?php if ( current_user_can( 'senac' ) ) : ?>
             <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
-            <a href="<?php bloginfo( 'url' ); ?>/notificacoes-por-e-mail/" class="item"><i class="mail square icon"></i>Notificações por e-mail</a>
             <?php endif; ?>
+            <a href="<?php bloginfo( 'url' ); ?>/meu-perfil/" class="item"><i class="user icon"></i>Meu perfil</a>
             <a href="<?php echo wp_logout_url( home_url() ); ?>" class="item"><i class="sign out icon"></i>Sair</a>
           </div>
         </div>
@@ -133,7 +132,7 @@
         <i class="comment icon" style="margin:0;"></i>
         <div class="contador floating ui label"><i class="loading refresh icon" style="margin:0;"></i></div>
         <div class="menu" id="refresh">
-          <?php // get_template_part('comment','feed') ?>
+          <?php get_template_part('comment','feed') ?>
         </div>
       </div>
       <?php endif; ?>
@@ -157,7 +156,7 @@ $('#calculadora-prazos').click(function() {
 });
 
 </script>
-<script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=5'></script>
+<script id="script-refresh" type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=6.1'></script>
 <script type="text/javascript">
 // // Refresh para todos os arquivos
 // window.onload = function() {

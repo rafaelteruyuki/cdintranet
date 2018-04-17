@@ -7,13 +7,13 @@ $.post(
   function(response) {
 
     if (response == 'edit_pages') {
-      contador_feed();
+      contador();
       setInterval(notificacao_new_task_push_ajax, 120000);
-      setInterval(contador_feed, 120000);
-      // contador_feed();
+      setInterval(feed_refresh, 120000);
+      // feed_refresh();
     } else if (response == 'senac') {
-      contador_feed();
-      setInterval(contador_feed, 120000);
+      contador();
+      setInterval(feed_refresh, 120000);
     }
 
   }
@@ -55,38 +55,33 @@ function notificacao_new_task_push_ajax() {
 
 }
 
-// CONTADOR FEED
+// FEED REFRESH
 
-var loading_icon = false;
+function feed_refresh() {
 
-function contador_feed() {
-
-  // FEED REFRESH
-
-  $.post({
+  $.ajax({
       url: ajaxurl,
+      method: 'POST',
       data: {action: 'carrega_loop'},
+
+      beforeSend: function(response) {
+        $('.contador').html('<i class="loading refresh icon" style="margin:0;"></i>').removeClass("green").removeClass("red");
+      },
+
       success: function(response) {
        $('#refresh').html(response);
+       contador();
+       // naoLido = $('#refresh .feed-nao-lido').length;
       }
   });
 
-  // $('#refresh').load('http://localhost:8888/cdintranet/wp-content/themes/comunicacao-digital/feed-refresh.php');
-  // $('.refresh').addClass("loading");
+}
 
-  $('.contador').removeClass("green");
-  $('.contador').removeClass("red");
+// CONTADOR
 
-  if (loading_icon == true) {
-    $('.contador').html('<i class="loading refresh icon" style="margin:0;"></i>');
-  }
-
-  $(document).ajaxStop(function() {
-
+function contador() {
   var naoLido = 0;
-  // naoLido = $('#refresh .feed-nao-lido').length;
-  naoLido = num_nao_lidas; // Valor de num_nao_lidas vem da contagem do comment-feed.php
-
+  naoLido = $('#num_nao_lidas').html(); // Valor de num_nao_lidas vem da contagem do comment-feed.php
   if (naoLido <= 30 && naoLido  >= 1){
     $('.contador').html(naoLido);
     $('.contador').addClass("red");
@@ -102,16 +97,9 @@ function contador_feed() {
     $('.title-contador').html('(30+) ' + cd_title);
     $('#interacoes-nao-lidas').show();
   }
-
-  loading_icon = true;
-
-  $(this).unbind('ajaxStop');
-
-  });
-
 }
 
-// function contador_feed() {
+// function feed_refresh() {
 //
 //   // FEED REFRESH
 //

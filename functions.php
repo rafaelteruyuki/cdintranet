@@ -31,6 +31,7 @@ function carrega_scripts() {
 	wp_enqueue_script( 'semantic-js', get_template_directory_uri() . '/js/semantic.min.js', array('jquery'), '1.0', true );
 	wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '1.0', true );
 	wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '1.0', true );
+	wp_enqueue_script( 'jquery-mask', get_template_directory_uri() . '/js/jquery.mask.min.js', array('jquery'), '1.0', false );
 	wp_enqueue_script( 'main', get_template_directory_uri()."/js/main.js", array('jquery'), '1.0', true);
 	wp_enqueue_script( 'custom-js', get_template_directory_uri()."/js/scripts.js", array('jquery'), '1.0', true);
 
@@ -950,13 +951,20 @@ AO CRIAR/ATUALIZAR TAREFA
 					// Define o cd_author
 					update_field( 'cd_author', $author_id, $post_id);
 
-					// Registra o acesso
-					$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
-					$row = array(
-						'usuario'	=> $current_user->user_login,
-						'acesso'	=> $acesso,
-					);
-					$i = add_row('visitas', $row, $post_id);
+					// // Registra o acesso
+					// $acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
+					// $row = array(
+					// 	'usuario'	=> $current_user->user_login,
+					// 	'acesso'	=> $acesso,
+					// );
+					// $i = add_row('visitas', $row, $post_id);
+
+					// Tarefas
+
+					$tarefa_lida = array();
+					$tarefa_lida[] = $current_user->ID;
+				  $tarefa_lida = array_map('intval', $tarefa_lida);
+				  update_post_meta( $post_id, 'tarefa_lida', $tarefa_lida );
 
 				}
 
@@ -966,9 +974,9 @@ AO CRIAR/ATUALIZAR TAREFA
 		// Salva o the_modified_author, pois o ACF form não salva o meta_value da meta_key _edit_last
 		update_post_meta( $post_id, '_edit_last', $current_user->ID );
 
-		// Atualizar feed == checked
-		global $wpdb;
-		$wpdb->query($wpdb->prepare("UPDATE wp_usermeta SET meta_value=1 WHERE meta_key='atualizar_feed'", ''));
+		// // Atualizar feed == checked
+		// global $wpdb;
+		// $wpdb->query($wpdb->prepare("UPDATE wp_usermeta SET meta_value=1 WHERE meta_key='atualizar_feed'", ''));
 
 		}
   }
@@ -1363,115 +1371,22 @@ LIDO / NAO LIDO
 
 ---------------------------- */
 
-function get_lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
+function lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
 
 // table-body / header
 
 	global $current_user;
+	$comment = get_comment();
 
-	$modificado = get_the_modified_time('YmdHis');
-	$comment_modificado = get_comment_time('YmdHis');
-	$comment = get_comment( $comment_id );
-	$post_id = get_post( $comment->comment_post_ID );
+	$interacao_lida = get_comment_meta( $comment->comment_ID, 'interacao_lida', true );
 
-	$usuario_registrado = array();
-	$acesso_registrado = array();
+	if (!in_array($current_user->ID, $interacao_lida)) {
+		return $nao_lido;
+	} else {
+		$lido;
+	}
 
-	if( have_rows('visitas', $post_id) ):
-
-	    while ( have_rows('visitas', $post_id) ) : the_row();
-
-	        $usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
-	        $acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
-
-	    endwhile;
-
-	endif;
-
-	$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
-
-  if ( is_user_logged_in() ) {
-
-    // se existir a key do usuário, executa a função
-    if ($key !== false) {
-
-      if ($comment_modificado > $acesso_registrado[$key]) {
-        return $nao_lido;
-      } else {
-        return $lido;
-      };
-
-      // se não, coloca como não visualizado
-    } else {
-      return $nao_lido;
-    };
-
-  };
-
-};
-
-function lido_nao_lido($lido = 'cd-lida', $nao_lido = 'cd-nao-lida') {
-
-	$lido_nao_lido = get_lido_nao_lido($lido, $nao_lido);
-
-	echo apply_filters( 'filtro', $lido_nao_lido, $lido, $nao_lido );
 }
-
-function lido_nao_lido_single() {
-
-	// No header.php e na função my_acf_save_post
-
-	if ( is_user_logged_in() &&  is_singular( 'tarefa' ) ) {
-
-	global $current_user;
-
-	$modificado = get_the_modified_time('YmdHis');
-	$acesso = date( 'YmdHis', current_time( 'timestamp', 0 ) );
-
-	// Row do ACF
-	$row = array(
-		'usuario'	=> $current_user->user_login,
-		'acesso'	=> $acesso,
-	);
-
-	// Declara os arrays
-	$usuario_registrado = array();
-	$acesso_registrado = array();
-
-	// Transforma as rows em array que possam ser acessados fora do loop
-	if( have_rows('visitas') ):
-
-			while ( have_rows('visitas') ) : the_row();
-
-					$usuario_registrado[] = get_sub_field('usuario');
-					$acesso_registrado[] = get_sub_field('acesso');
-
-			endwhile;
-
-	endif;
-
-	// Faz a key do array começar em 1, não em 0, pq a row do ACF começa em 1. O número da key do usuário é igual ao número da row onde ele está inserido
-	array_unshift($usuario_registrado,"");
-	unset($usuario_registrado[0]);
-
-		// Procura o usuário no array de usuários registrados
-		if ( in_array($current_user->user_login, $usuario_registrado) ) {
-
-			// Identifica sua posição (key) no array
-			$key = array_search($current_user->user_login, $usuario_registrado);
-			$row_number = $key;
-
-			// Como ele já está registrado, apenas atualiza seu acesso na row dele
-			update_row('visitas', $row_number, $row);
-
-		} else {
-			// Se não acessou nunca, uma row é criada para ele
-			$i = add_row('visitas', $row);
-		};
-
-	};
-
-};
 
 /* --------------------------
 
@@ -1499,39 +1414,17 @@ $post_id = get_the_ID();
 		$args = array(
 			'number' => '1',
 			'post_id' => $post_id,
+			'fields' => 'ids',
 			'meta_query' => array( $privado )
 		);
-		$comments = get_comments($args);
+		$last_comment = get_comments($args);
 
-		if ($comments) {
+		if ($last_comment) {
 
-			// Checa se há visita e quem visitou
-			if( have_rows('visitas', $post_id) ) {
+			$interacao_lida = get_comment_meta( $last_comment[0], 'interacao_lida', true );
 
-				while ( have_rows('visitas', $post_id) ) {
-					the_row();
-					$usuario_registrado[] = get_sub_field('usuario', $post_id); // Array usuários registrados
-					$acesso_registrado[] = get_sub_field('acesso', $post_id); // Array acessos registrados
-				}
-
-				$key = array_search($current_user->user_login, $usuario_registrado); // Procura a posição no array de usuários registrados
-
-				// Usuário logado visitou
-				if ($key !== false) {
-
-					// Faz a comparação com o último comentário
-					foreach($comments as $comment) {
-
-						$last_comment_time = get_comment_date('YmdHis', $comment->comment_ID);
-
-						if ($last_comment_time > $acesso_registrado[$key]) {
-							return $nao_lido;
-						}
-
-					}
-
-				}
-
+			if (!in_array($current_user->ID, $interacao_lida)) {
+				return $nao_lido;
 			}
 
 		}
@@ -1575,22 +1468,20 @@ function new_task( $new_task = '<span class="ui blue mini label">Nova</span>' ) 
 
 	global $current_user;
 	$post_id = get_the_ID();
+	$tarefa_lida = get_post_meta( $post_id, 'tarefa_lida', true );
 
 	if ( !is_archive() && current_user_can('edit_pages') ) { // Não exibe na página Todas as Tarefas nem para usuários Senac
 
-	  if ( have_rows('visitas', $post_id) ) {
-	      while ( have_rows('visitas', $post_id) ) { the_row();
-	          $usuario_registrado[] = get_sub_field('usuario', $post_id);
-	          $acesso_registrado[] = get_sub_field('acesso', $post_id);
-	      }
+		if ($tarefa_lida) {
 
-	    // Procura o usuário no array de usuários registrados
-	    if ( !in_array($current_user->user_login, $usuario_registrado) ) {
-	      echo $new_task;
-	    }
-	  } else {
+			if (!in_array($current_user->ID, $tarefa_lida)) {
+				echo $new_task;
+			}
+
+		} else {
 			echo $new_task;
-	  }
+		}
+
 	}
 
 }
@@ -2411,6 +2302,55 @@ function my_trashed_post_handler($post_id) {
 	$url = get_option('siteurl') . '/solicitacao-excluida';
   wp_redirect($url);
   exit;
+}
+
+/* --------------------------
+
+ACF AVATAR
+
+---------------------------- */
+
+/**
+ * Use ACF image field as avatar
+ * @author Mike Hemberger
+ * @link http://thestizmedia.com/acf-pro-simple-local-avatars/
+ * @uses ACF Pro image field (tested return value set as Array )
+ */
+add_filter('get_avatar', 'tsm_acf_profile_avatar', 10, 5);
+function tsm_acf_profile_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
+    $user = '';
+
+    // Get user by id or email
+    if ( is_numeric( $id_or_email ) ) {
+        $id   = (int) $id_or_email;
+        $user = get_user_by( 'id' , $id );
+    } elseif ( is_object( $id_or_email ) ) {
+        if ( ! empty( $id_or_email->user_id ) ) {
+            $id   = (int) $id_or_email->user_id;
+            $user = get_user_by( 'id' , $id );
+        }
+    } else {
+        $user = get_user_by( 'email', $id_or_email );
+    }
+    if ( ! $user ) {
+        return $avatar;
+    }
+    // Get the user id
+    $user_id = $user->ID;
+    // Get the file id
+    $image_id = get_user_meta($user_id, 'foto', true); // CHANGE TO YOUR FIELD NAME
+    // Bail if we don't have a local avatar
+    if ( ! $image_id ) {
+        return $avatar;
+    }
+    // Get the file size
+    $image_url  = wp_get_attachment_image_src( $image_id, 'thumbnail' ); // Set image size by name
+    // Get the file url
+    $avatar_url = $image_url[0];
+    // Get the img markup
+    $avatar = '<img alt="' . $alt . '" src="' . $avatar_url . '" class="avatar avatar-' . $size . '" height="' . $size . '" width="' . $size . '"/>';
+    // Return our new avatar
+    return $avatar;
 }
 
 // /* --------------------------

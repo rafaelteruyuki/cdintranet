@@ -90,6 +90,15 @@ $responsavel_portal2 = array(
   'compare' => '='
 );
 
+// REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC E DE USUARIOS NAO LOGADOS
+if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
+  $privado = array(
+  'key' => 'privado_interacao',
+  'value' => '1',
+  'compare' => '!=',
+  );
+}
+
 // --------------------------- FEED ---------------------------- //
 
 // MINHAS TAREFAS
