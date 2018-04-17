@@ -419,42 +419,6 @@ function cf_search_distinct( $where ) {
 }
 add_filter( 'posts_distinct', 'cf_search_distinct' );
 
-
-/* --------------------------
-
-CUSTOM ROLE - DESIGNER
-
----------------------------- */
-
-add_role( 'designer', 'Designer', array(
-	'delete_others_pages'		=> true,
-	'delete_others_posts'		=> true,
-	'delete_pages'				=> true,
-	'delete_posts'				=> true,
-	'delete_private_pages'		=> true,
-	'delete_private_posts'		=> true,
-	'delete_published_pages'	=> true,
-	'delete_published_posts'	=> true,
-	'edit_others_pages'			=> true,
-	'edit_others_posts'			=> true,
-	'edit_pages'				=> true,
-	'edit_posts'				=> true,
-	'edit_private_pages'		=> true,
-	'edit_private_posts'		=> true,
-	'edit_published_pages'		=> true,
-	'edit_published_posts'		=> true,
-	'manage_categories'			=> true,
-	'manage_links'				=> true,
-	'moderate_comments'			=> true,
-	'publish_pages'				=> true,
-	'publish_posts'				=> true,
-	'read'						=> true,
-	'read_private_pages'		=> true,
-	'read_private_posts'		=> true,
-	'unfiltered_html'			=> true,
-	'upload_files'				=> true
-));
-
 /* --------------------------
 
 CUSTOM ROLE - DESIGNER GD2 e GD4
@@ -462,6 +426,7 @@ CUSTOM ROLE - DESIGNER GD2 e GD4
 ---------------------------- */
 
 add_role( 'designer_gd2_gd4', 'Designer GD2/GD4', array(
+	'edit_dashboard'			=> true,
 	'delete_others_pages'		=> true,
 	'delete_others_posts'		=> true,
 	'delete_pages'				=> true,
@@ -497,6 +462,7 @@ CUSTOM ROLE - DESIGNER GD1 e GD3
 ---------------------------- */
 
 add_role( 'designer_gd1_gd3', 'Designer GD1/GD3', array(
+	'edit_dashboard'			=> true,
 	'delete_others_pages'		=> true,
 	'delete_others_posts'		=> true,
 	'delete_pages'				=> true,
@@ -532,6 +498,7 @@ CUSTOM ROLE - DESIGNER INSTITUCIONAL
 ---------------------------- */
 
 add_role( 'designer_institucional', 'Designer Institucional', array(
+	'edit_dashboard'			=> true,
 	'delete_others_pages'		=> true,
 	'delete_others_posts'		=> true,
 	'delete_pages'				=> true,
@@ -629,6 +596,43 @@ add_role( 'senac', 'Senac', array(
 	'unfiltered_html'			=> true,
 	'upload_files'				=> true
 ));
+
+/* --------------------------
+
+CUSTOM ROLE - REDES SOCIAIS
+
+---------------------------- */
+
+add_role( 'redes_sociais', 'Redes Sociais', array(
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+
 
 function wpse27856_set_content_type(){
     return "text/html";

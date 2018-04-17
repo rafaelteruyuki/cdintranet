@@ -106,22 +106,49 @@
           <span class="ui mini rounded image"><?php echo get_avatar( $current_user->ID, 24 ); ?></span><?php echo $current_user->display_name ?>
           <i class="dropdown icon"></i>
           <div class="menu">
-            <!--LOGIN DESIGNER E ADMIN-->
-            <?php if ( current_user_can( 'edit_pages' ) ) : ?>
-            <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
-            <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
-            <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
-            <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+
+            <!-- ADMINISTRADOR -->
+            <?php if ( current_user_can( 'administrator' ) ) : ?>
+              <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
+              <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+              <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+              <a href="<?php bloginfo( 'url' ); ?>/exportar-tarefas/" class="item"><i class="download icon"></i>Exportar tarefas</a>
             <?php endif; ?>
+
+            <!-- DESIGNERS -->
+            <?php if ( current_user_can( 'edit_dashboard' ) ) : ?>
+              <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
+              <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+              <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+            <?php endif; ?>
+
+            <!-- PORTAL -->
             <?php if ( current_user_can( 'portal' ) ) : ?>
-            <a href="<?php bloginfo( 'url' ); ?>/exportar-tarefas/" class="item"><i class="download icon"></i>Exportar tarefas</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
+              <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+              <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+              <a href="<?php bloginfo( 'url' ); ?>/exportar-tarefas/" class="item"><i class="download icon"></i>Exportar tarefas</a>
             <?php endif; ?>
-            <!--LOGIN OUTROS-->
+
+            <!-- REDES SOCIAIS -->
+            <?php if ( current_user_can( 'redes_sociais' ) ) : ?>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
+              <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+              <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+            <?php endif; ?>
+
+            <!-- SENAC -->
             <?php if ( current_user_can( 'senac' ) ) : ?>
-            <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
             <?php endif; ?>
+
+            <!-- TODOS -->
             <a href="<?php bloginfo( 'url' ); ?>/meu-perfil/" class="item"><i class="user icon"></i>Meu perfil</a>
             <a href="<?php echo wp_logout_url( home_url() ); ?>" class="item"><i class="sign out icon"></i>Sair</a>
+
           </div>
         </div>
       <?php endif; ?>
@@ -157,14 +184,3 @@ $('#calculadora-prazos').click(function() {
 
 </script>
 <script id="script-refresh" type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=6.1'></script>
-<script type="text/javascript">
-// // Refresh para todos os arquivos
-// window.onload = function() {
-//     if(!window.location.hash) {
-//         window.location = window.location + '#loaded';
-//         window.location.reload(true);
-//     }
-// }
-</script>
-
-<?php // update_field( 'field_595feb818431d', true,'user_' . $current_user->ID); // Atualizar feed == checked ?>
