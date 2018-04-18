@@ -24,17 +24,16 @@ include ( locate_template('template-parts/var-tarefas.php') );
     ?>
 
   </td>
-  <td class="left aligned">
-    <?php new_task(); ?>
-    <strong><?php the_title(); ?></strong>
+  <td class="left aligned" style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:200px; font-weight:bold;">
+    <?php new_task(); echo ' '; the_title(); ?>
     <?php if ( current_user_can('edit_dashboard') ) : ?>
-    <span style="float:right">
-      <?php if (!$texto_luares) : ?><i class="file text icon" style="float:right; color: #CCC;"></i><?php endif; ?>
-      <?php if ($texto_luares['value'] == 'solicitar-texto') : ?><i class="red file text icon cd-popup" title="Solicitar texto" style="float:right;"></i><?php endif; ?>
-      <?php if ($texto_luares['value'] == 'texto-solicitado') : ?><i class="green file text icon cd-popup" title="Texto solicitado" style="float:right;"></i><?php endif; ?>
-      <?php if (!$imagem_gd) : ?><i class="file image outline icon" style="float:right; color: #CCC;"></i><?php endif; ?>
-      <?php if ($imagem_gd['value'] == 'solicitar-imagem') : ?><i class="red file image outline icon cd-popup" title="Solicitar imagem" style="float:right;"></i><?php endif; ?>
-      <?php if ($imagem_gd['value'] == 'imagem-solicitada') : ?><i class="green file image outline icon cd-popup" title="Imagem solicitada" style="float:right;"></i><?php endif; ?>
+    <span style="float:right;">
+      <?php if (!$texto_luares) : ?><i class="file text icon" style="color: #CCC;"></i><?php endif; ?>
+      <?php if ($texto_luares['value'] == 'solicitar-texto') : ?><i class="red file text icon cd-popup" title="Solicitar texto"></i><?php endif; ?>
+      <?php if ($texto_luares['value'] == 'texto-solicitado') : ?><i class="green file text icon cd-popup" title="Texto solicitado"></i><?php endif; ?>
+      <?php if (!$imagem_gd) : ?><i class="file image outline icon" style="color: #CCC;"></i><?php endif; ?>
+      <?php if ($imagem_gd['value'] == 'solicitar-imagem') : ?><i class="red file image outline icon cd-popup" title="Solicitar imagem"></i><?php endif; ?>
+      <?php if ($imagem_gd['value'] == 'imagem-solicitada') : ?><i class="green file image outline icon cd-popup" title="Imagem solicitada"></i><?php endif; ?>
     </span>
     <?php endif; ?>
   </td>
