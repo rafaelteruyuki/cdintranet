@@ -8,7 +8,7 @@ if ( current_user_can( 'designer_gd2_gd4' ) ) {
   $segmentacao = array(
     'key'		=> 'segmentacao',
     'value'		=> 'gd2_gd4',
-    'compare' => 'LIKE'
+    'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
   );
 }
 
@@ -18,7 +18,7 @@ if ( current_user_can( 'designer_gd1_gd3' ) ) {
   $segmentacao = array(
     'key'		=> 'segmentacao',
     'value'		=> 'gd1_gd3',
-    'compare' => 'LIKE'
+    'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
   );
 }
 
@@ -28,7 +28,7 @@ if ( current_user_can( 'designer_institucional' ) ) {
   $segmentacao = array(
     'key'		=> 'segmentacao',
     'value'		=> 'institucional',
-    'compare' => 'LIKE'
+    'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
   );
 }
 
@@ -38,7 +38,7 @@ if ( current_user_can( 'portal' ) ) {
   $segmentacao = array(
     'key'		=> 'segmentacao',
     'value'		=> 'evento',
-    'compare' => 'LIKE'
+    'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
   );
 }
 
@@ -46,49 +46,58 @@ if ( current_user_can( 'portal' ) ) {
 
 $participante = array(
   'key' => 'participante',
-  'value' => $current_user->ID,
-  'compare' => 'LIKE',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
 );
 
 // CD_AUTHOR
 
 $cd_author = array(
   'key'		=> 'cd_author',
-  'value'		=> $current_user->ID,
-  'compare' => 'LIKE'
+  'value'		=> $current_user->ID, // Não precisa de aspas aspas, o valor é único
+  'compare' => '=' // Para procurar o valor em valor único salvo
 );
 
 // RESPONSAVEL 1
 
 $responsavel1 = array(
   'key' => 'responsavel_1',
-  'value' => $current_user->ID,
-  'compare' => 'LIKE',
+  'value'		=> $current_user->ID,
+  'compare' => '='
 );
 
 // RESPONSAVEL 2
 
 $responsavel2 = array(
   'key' => 'responsavel_2',
-  'value' => $current_user->ID,
-  'compare' => 'LIKE',
+  'value'		=> $current_user->ID,
+  'compare' => '='
 );
 
 // RESPONSAVEL PORTAL 1
 
 $responsavel_portal1 = array(
   'key' => 'responsavel_portal',
-  'value' => $current_user->ID,
-  'compare' => 'LIKE',
+  'value'		=> $current_user->ID,
+  'compare' => '='
 );
 
 // RESPONSAVEL PORTAL 2
 
 $responsavel_portal2 = array(
   'key' => 'responsavel_portal2',
-  'value' => $current_user->ID,
-  'compare' => 'LIKE',
+  'value'		=> $current_user->ID,
+  'compare' => '='
 );
+
+// REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC E DE USUARIOS NAO LOGADOS
+if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
+  $privado = array(
+  'key' => 'privado_interacao',
+  'value' => '1',
+  'compare' => '!=',
+  );
+}
 
 // --------------------------- FEED ---------------------------- //
 

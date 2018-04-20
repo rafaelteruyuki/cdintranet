@@ -14,6 +14,21 @@
 
 <body <?php body_class(); ?>>
 
+  <!--[if lt IE 9]>
+  <div style="margin:0 auto; padding:20px; background-color: #00CCFF; text-align:center; font-family: Arial, Verdana; line-height:1.5; color:#2D2D2D; font-size:18px;">
+    <p><img src="http://www.sp.senac.br/msg/gd4/ie-branco.png" width="110" height="108" alt=""/></p>
+    <p style="font-size:24px;"><strong>ATENÇÃO!</strong></p>
+    <p>
+      Você está utilizando uma versão desatualizada do Internet Explorer. <br />
+      <strong>O site não será exibido corretamente.</strong> Por favor, atualize seu navegador.<br />
+      <br />
+    </p>
+    <a href="http://windows.microsoft.com/ie" target="_blank" style="padding:20px; background-color:#2D2D2D; text-decoration:none; color:#FFFFFF;"><strong>Baixar a versão mais recente</strong></a>
+    <br />
+    <br />
+  </div>
+  <![endif]-->
+
 <!-- SIDEBAR FILTROS -->
 
 <div class="ui wide sidebar vertical menu tarefas">
@@ -64,17 +79,17 @@
 <div class="ui attached stackable inverted menu" style="border: 1px solid rgba(255, 255, 255, 0.1);">
   <div class="ui container" style="border-left:1px solid rgba(255, 255, 255, 0.1); border-right:1px solid rgba(255, 255, 255, 0.1)">
 
-    <a href="<?php bloginfo( 'url' ); ?>" class="item"><i class="grid layout icon"></i> Catálogo de Cursos</a>
-    <a href="<?php bloginfo( 'url' ); ?>/solicitacao/" class="item"><i class="edit icon"></i>Nova solicitação</a>
-    <a href="<?php bloginfo( 'url' ); ?>/redes-sociais/" class="item"><i class="globe icon"></i> Redes Sociais</a>
-
-    <!-- <div class="ui dropdown item">
-        <i class="edit icon"></i>Solicitações
+    <!-- <a href="<?php // bloginfo( 'url' ); ?>" class="item"><i class="grid layout icon"></i> Catálogo de Peças</a> -->
+    <div class="ui dropdown item">
+        <i class="grid layout icon"></i>Peças
         <i class="dropdown icon"></i>
         <div class="menu">
-          <a href="<?php // bloginfo( 'url' ); ?>/solicitacao/" class="item"><i class="edit icon"></i>Nova</a>
+          <a href="<?php bloginfo( 'url' ); ?>" class="item"><i class="grid layout icon"></i>Catálogo</a>
+          <a href="<?php bloginfo( 'url' ); ?>/wp-content/uploads/Campanhas_Email_Marketing.xlsx" class="item"><i class="linkify icon"></i>Tagueamento</a>
         </div>
-    </div> -->
+    </div>
+    <a href="<?php bloginfo( 'url' ); ?>/solicitacao/" class="item"><i class="edit icon"></i>Nova solicitação</a>
+    <a href="<?php bloginfo( 'url' ); ?>/redes-sociais/" class="item"><i class="globe icon"></i> Redes Sociais</a>
 
     <div class="right menu">
 
@@ -91,23 +106,49 @@
           <span class="ui mini rounded image"><?php echo get_avatar( $current_user->ID, 24 ); ?></span><?php echo $current_user->display_name ?>
           <i class="dropdown icon"></i>
           <div class="menu">
-            <!--LOGIN DESIGNER E ADMIN-->
-            <?php if ( current_user_can( 'edit_pages' ) ) : ?>
-            <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
-            <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
-            <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
-            <a href="<?php bloginfo( 'url' ); ?>/notificacoes-por-e-mail/" class="item"><i class="mail square icon"></i>Notificações por e-mail</a>
-            <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+
+            <!-- ADMINISTRADOR -->
+            <?php if ( current_user_can( 'administrator' ) ) : ?>
+              <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
+              <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+              <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+              <a href="<?php bloginfo( 'url' ); ?>/exportar-tarefas/" class="item"><i class="download icon"></i>Exportar tarefas</a>
             <?php endif; ?>
+
+            <!-- DESIGNERS -->
+            <?php if ( current_user_can( 'edit_dashboard' ) ) : ?>
+              <a href="<?php bloginfo( 'url' ); ?>/wp-admin/post-new.php?post_type=curso" class="item"><i class="block layout icon"></i>Novo Curso</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
+              <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+              <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+            <?php endif; ?>
+
+            <!-- PORTAL -->
             <?php if ( current_user_can( 'portal' ) ) : ?>
-            <a href="<?php bloginfo( 'url' ); ?>/exportar-tarefas/" class="item"><i class="download icon"></i>Exportar tarefas</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
+              <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+              <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+              <a href="<?php bloginfo( 'url' ); ?>/exportar-tarefas/" class="item"><i class="download icon"></i>Exportar tarefas</a>
             <?php endif; ?>
-            <!--LOGIN OUTROS-->
+
+            <!-- REDES SOCIAIS -->
+            <?php if ( current_user_can( 'redes_sociais' ) ) : ?>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
+              <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
+              <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
+            <?php endif; ?>
+
+            <!-- SENAC -->
             <?php if ( current_user_can( 'senac' ) ) : ?>
-            <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
-            <a href="<?php bloginfo( 'url' ); ?>/notificacoes-por-e-mail/" class="item"><i class="mail square icon"></i>Notificações por e-mail</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
             <?php endif; ?>
+
+            <!-- TODOS -->
+            <a href="<?php bloginfo( 'url' ); ?>/meu-perfil/" class="item"><i class="user icon"></i>Meu perfil</a>
             <a href="<?php echo wp_logout_url( home_url() ); ?>" class="item"><i class="sign out icon"></i>Sair</a>
+
           </div>
         </div>
       <?php endif; ?>
@@ -118,7 +159,7 @@
         <i class="comment icon" style="margin:0;"></i>
         <div class="contador floating ui label"><i class="loading refresh icon" style="margin:0;"></i></div>
         <div class="menu" id="refresh">
-          <?php // get_template_part('comment','feed') ?>
+          <?php get_template_part('comment','feed') ?>
         </div>
       </div>
       <?php endif; ?>
@@ -142,15 +183,4 @@ $('#calculadora-prazos').click(function() {
 });
 
 </script>
-<script type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=4'></script>
-<script type="text/javascript">
-// // Refresh para todos os arquivos
-// window.onload = function() {
-//     if(!window.location.hash) {
-//         window.location = window.location + '#loaded';
-//         window.location.reload(true);
-//     }
-// }
-</script>
-
-<?php // update_field( 'field_595feb818431d', true,'user_' . $current_user->ID); // Atualizar feed == checked ?>
+<script id="script-refresh" type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=6.1'></script>

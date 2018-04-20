@@ -11,7 +11,7 @@ Template Name: Exportar Tarefas
   <?php the_title(); ?>
 </h2>
 
-<?php if ( current_user_can('portal') ) : ?>
+<?php if ( current_user_can('portal') || current_user_can('administrator') ) : ?>
 
 <style media="screen">
 
@@ -58,7 +58,7 @@ $(function() {
 </div>
 
 <div class="ui center aligned container cd-margem">
-  <a class="ui green labeled icon huge button" id="btnExport" onClick="javascript:fnExcelReport();">
+  <a class="ui green labeled icon huge button export">
     <i class="download icon"></i>
     Baixar planilha
   </a>
@@ -77,39 +77,39 @@ $args = array(
   // 'orderby'                => 'modified',
   // 'author'                 => $feed_rc,
   // 'meta_query'             => array( $feed_cd ),
-  'meta_query'             => array(
-    array(
-      'key'		=> 'publicacao_pecas',
-      'value'		=> '"publicacao"',
-      'compare' => 'LIKE'
-    ),
-  ),
+  // 'meta_query'             => array(
+  //   array(
+  //     'key'		=> 'publicacao_pecas',
+  //     'value'		=> '"publicacao"',
+  //     'compare' => 'LIKE'
+  //   ),
+  // ),
 );
 
 $query = new WP_Query( $args );
 
 ?>
 
-<div class="cd-margem content">
+<div class="cd-margem content" id=table_wrapper>
 
   <?php if ( $query->have_posts() ) : ?>
 
 	<!-- TABELA TAREFAS -->
 
-  <table border="1" id=table_wrapper>
-    <tbody>
+  <table border="1">
+
       <thead>
         <tr>
           <th>Unidade</th>
           <th>Finalidade</th>
-          <!-- <th>Modalidade do Curso</th> -->
+          <th>Modalidade do Curso</th>
           <th>Publicação / Peças</th>
           <th>Nº atividades</th>
           <th>Título</th>
           <th>Área</th>
           <th>Sub-área</th>
           <th>Data da solicitação</th>
-          <th>Data início evento<!-- /curso --></th>
+          <th>Data início evento / curso</th>
           <th>Previsão publicação</th>
           <th>Previsão peças</th>
           <th>Tipo de criação</th>
@@ -121,6 +121,8 @@ $query = new WP_Query( $args );
           <th>Link</th>
         </tr>
       </thead>
+
+      <tbody>
 
 		  <?php while ( $query->have_posts() ) : $query->the_post();?>
 
@@ -135,11 +137,11 @@ $query = new WP_Query( $args );
       <tr>
         <td><?php if ( get_field('unidade') ) { the_field('unidade'); } ?></td>
         <td><?php if ($finalidade) { echo $finalidade['label']; } ?></td>
-        <!-- <td><?php // if ($modalidade) { echo $modalidade['label']; } ?></td> -->
+        <td><?php if ($modalidade) { echo $modalidade['label']; } ?></td>
         <td><?php if( $opcoes ) : foreach( $opcoes as $opcao ): ?><?php $i++; if ($i >= 2) { echo ', ';}; echo $field['choices'][ $opcao ]; ?><?php endforeach; endif; ?></td>
         <td><?php if ( get_field('numero_de_atividades') ) { the_field('numero_de_atividades'); } ?></td>
         <td><?php the_title(); ?></td>
-        <td><?php if( get_field('area_divulgacao_tarefa') ) { the_field('area_divulgacao_tarefa'); } ?></td>
+        <td><?php if( $area = get_field('area_divulgacao_tarefa') ) { echo $area['label']; } ?></td>
         <td><?php if( get_field('subarea_tarefa') ) { the_field('subarea_tarefa'); } ?></td>
         <td><?php $data = get_the_date('d/m/y'); echo $data; ?></td>
         <td><?php if ( get_field('data_de_inicio_do_evento') ) { the_field('data_de_inicio_do_evento'); } elseif ( get_field('data_de_inicio_do_curso') ) { the_field('data_de_inicio_do_curso'); } ?></td>
@@ -175,5 +177,7 @@ $query = new WP_Query( $args );
 </div>
 
 <?php endif; ?>
+
+<script type="text/javascript" src="<?php bloginfo('template_url')?>/js/export-to-excel.js"></script>
 
 <?php get_footer(); ?>

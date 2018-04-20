@@ -7,13 +7,13 @@ $.post(
   function(response) {
 
     if (response == 'edit_pages') {
-      contador_feed();
+      contador();
       setInterval(notificacao_new_task_push_ajax, 120000);
-      setInterval(contador_feed, 120000);
-      // contador_feed();
+      setInterval(feed_refresh, 120000);
+      // feed_refresh();
     } else if (response == 'senac') {
-      contador_feed();
-      setInterval(contador_feed, 120000);
+      contador();
+      setInterval(feed_refresh, 120000);
     }
 
   }
@@ -55,41 +55,38 @@ function notificacao_new_task_push_ajax() {
 
 }
 
-// CONTADOR FEED
+// FEED REFRESH
 
-var loading_icon = false;
+function feed_refresh() {
 
-function contador_feed() {
-
-  // FEED REFRESH
-
-  $.post({
+  $.ajax({
       url: ajaxurl,
+      method: 'POST',
       data: {action: 'carrega_loop'},
+
+      beforeSend: function(response) {
+        $('.contador').html('<i class="loading refresh icon" style="margin:0;"></i>').removeClass("green").removeClass("red");
+      },
+
       success: function(response) {
        $('#refresh').html(response);
+       contador();
+       // naoLido = $('#refresh .feed-nao-lido').length;
       }
   });
 
-  // $('#refresh').load('http://localhost:8888/cdintranet/wp-content/themes/comunicacao-digital/feed-refresh.php');
-  // $('.refresh').addClass("loading");
+}
 
-  $('.contador').removeClass("green");
-  $('.contador').removeClass("red");
+// CONTADOR
 
-  if (loading_icon == true) {
-    $('.contador').html('<i class="loading refresh icon" style="margin:0;"></i>');
-  }
-
-  $(document).ajaxStop(function() {
-
+function contador() {
   var naoLido = 0;
-  naoLido = $('#refresh .feed-nao-lido').length;
-
+  naoLido = $('#num_nao_lidas').html(); // Valor de num_nao_lidas vem da contagem do comment-feed.php
   if (naoLido <= 30 && naoLido  >= 1){
     $('.contador').html(naoLido);
     $('.contador').addClass("red");
     $('.title-contador').html('(' + naoLido + ') ' + cd_title);
+    $('#interacoes-nao-lidas').show();
   } else if (naoLido == 0) {
     $('.contador').html('<i class="check icon" style="margin:0;"></i>');
     $('.contador').addClass("green");
@@ -98,15 +95,60 @@ function contador_feed() {
     $('.contador').html("30+");
     $('.contador').addClass("red");
     $('.title-contador').html('(30+) ' + cd_title);
+    $('#interacoes-nao-lidas').show();
   }
-
-  loading_icon = true;
-
-  $(this).unbind('ajaxStop');
-
-  });
-
 }
+
+// function feed_refresh() {
+//
+//   // FEED REFRESH
+//
+//   $.ajax({
+//       method: 'POST',
+//       url: ajaxurl,
+//       data: {action: 'carrega_loop'},
+//
+//       // beforeSend: function(response) {
+//       //   $('.contador').removeClass("green");
+//       //   $('.contador').removeClass("red");
+//       //   $('.contador').html('<i class="loading refresh icon" style="margin:0;"></i>');
+//       // },
+//
+//       success: function(response) {
+//
+//       var feedRefresh = $.parseJSON(response);
+//
+//       console.log(feedRefresh);
+//
+//        $('#refresh').html(feedRefresh['loop']);
+//
+//        var naoLido = 0;
+//        // naoLido = $('#refresh .feed-nao-lido').length;
+//        naoLido = feedRefresh['num_nao_lidas']; // Valor de num_nao_lidas vem da contagem do comment-feed.php
+//
+//        if (naoLido <= 30 && naoLido  >= 1){
+//          $('.contador').html(naoLido);
+//          $('.contador').addClass("red");
+//          $('.title-contador').html('(' + naoLido + ') ' + cd_title);
+//        } else if (naoLido == 0) {
+//          $('.contador').html('<i class="check icon" style="margin:0;"></i>');
+//          $('.contador').addClass("green");
+//          $('.title-contador').html(cd_title);
+//        } else if (naoLido > 30) {
+//          $('.contador').html("30+");
+//          $('.contador').addClass("red");
+//          $('.title-contador').html('(30+) ' + cd_title);
+//        }
+//
+//       }
+//   });
+//
+//   // $('#refresh').load('http://localhost:8888/cdintranet/wp-content/themes/comunicacao-digital/feed-refresh.php');
+//   // $('.refresh').addClass("loading");
+//
+//
+// }
+
 
 
 

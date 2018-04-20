@@ -85,6 +85,13 @@ $comments = get_comments($comment_list_args); ?>
 	  </div>
 	</div>
 
+<?php
+// $interacao_lida = get_comment_meta( $comment->comment_ID, 'interacao_lida', true );
+// echo '<pre>';
+// var_dump($interacao_lida);
+// echo '</pre>';
+?>
+
 <?php endforeach; ?>
 
 </div>
