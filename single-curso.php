@@ -257,7 +257,7 @@
               <tr>
                 <td width="50">&nbsp;</td>
                 <td width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;" id="texto">
-                  <?php if(get_field('texto-curso')) the_field('texto-curso'); ?>
+                  <?php if(get_field('texto-curso')) convert_string_to_html(get_field('texto-curso')); ?>
                 </td>
                 <td width="50">&nbsp;</td>
               </tr>

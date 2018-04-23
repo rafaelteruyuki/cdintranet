@@ -2357,6 +2357,20 @@ function tsm_acf_profile_avatar( $avatar, $id_or_email, $size, $default, $alt ) 
     return $avatar;
 }
 
+/* --------------------------
+
+CONVERTER STRING EM HTML, IGNORANDO AS TAGS HTML
+
+---------------------------- */
+
+/**
+ * @link https://stackoverflow.com/questions/1364933/htmlentities-in-php-but-preserving-html-tags
+ */
+
+function convert_string_to_html($string = 0) {
+	echo htmlspecialchars_decode(htmlentities($string, ENT_NOQUOTES, 'UTF-8', false), ENT_NOQUOTES);
+}
+
 // /* --------------------------
 //
 // LOGIN OBRIGATORIO PARA TODOS OS USUARIOS
