@@ -116,8 +116,6 @@
 
       <div class="ui hidden divider"></div>
 
-      <!-- FORM EMAIL MARKETING -->
-
       <style media="screen">
       .ui.form select {
         height: 2.62em;
@@ -166,7 +164,7 @@
 
         if( $field ) {
 
-          echo '<select id="unidade">';
+          echo '<select id="select-unidade">';
 
           foreach( $field['choices'] as $k => $v ) {
             if (isset($_GET['unidade']) && $v == $_GET['unidade']) {
@@ -187,7 +185,7 @@
 
         <div class="four wide field">
           <label>Cor de fundo <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
-          <input id="input-fundo" type="text" value="#000001" class="eyedropper-color">
+          <input id="input-fundo" type="text" value="#FFFFFF" class="eyedropper-color">
         </div>
 
         <div class="four wide field">
@@ -245,7 +243,7 @@
         </tr>
         <tr>
           <td>
-            <table id="fundo" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+            <table class="fundo" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
               <tr>
                 <td width="50">&nbsp;</td>
                 <td width="500" align="left">&nbsp;</td>
@@ -270,8 +268,8 @@
               </tr>
               <tr>
                 <td width="50">&nbsp;</td>
-                <td width="500" align="center" bgcolor="<?= $inscreva_se_fundo ?>">
-                    <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; color:<?= $inscreva_se_texto ?>; font-weight:bold; display:block;"><br />Inscreva-se.<br /><br /></a>
+                <td width="500" align="center" id="cta-bg">
+                    <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block;"><br />Inscreva-se.<br /><br /></a>
                 </td>
                 <td width="50">&nbsp;</td>
               </tr>
@@ -295,10 +293,10 @@
         </tr>
         <tr>
           <td>
-            <table id="assinatura" width="600" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="<?= $assinatura_fundo ?>">
+            <table id="assinatura" class="fundo" width="600" border="0" cellspacing="0" cellpadding="0" align="center">
               <tr>
-                <td >&nbsp;</td>
-                <td >&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
                 <td valign="middle">&nbsp;</td>
                 <td valign="middle">&nbsp;</td>
                 <td valign="middle">&nbsp;</td>
@@ -307,7 +305,7 @@
                 <td width="20" >&nbsp;</td>
                 <td align="right" valign="bottom" style="font-size:16px"><font color="<?= $assinatura_texto ?>"  face="Arial, Verdana"> <strong>APRENDIZADO E CONHECIMENTO PARA SEMPRE.</strong><br />
                   <br />
-                  Acesse <a href="<?= $unidades[$unidade]['url']; ?>&utm_source=Email_Marketing&utm_medium=email&utm_campaign=<?= $unidade; ?>_Livres" target="_blank" style="color:<?= $assinatura_texto ?>"><strong>www.sp.senac.br/<?= $unidades[$unidade]['nome_url']; ?></strong></a> e conhe&ccedil;a a programa&ccedil;&atilde;o completa da unidade.<br />
+                  Acesse <a id="link-unidade" href="<?= $unidades[$unidade]['url']; ?>&utm_source=Email_Marketing&utm_medium=email&utm_campaign=<?= $unidade; ?>_Livres" target="_blank" style="color:<?= $assinatura_texto ?>"></a> e conhe&ccedil;a a programa&ccedil;&atilde;o completa da unidade.<br />
                   <br />
                 <img src="<?php if ($assinatura_texto == '#000001') { echo $tel_preto; } else { echo $tel_branco; }?>"  width="20" style="border:0;"  />&nbsp;<?= $unidades[$unidade]['telefone']; ?><br />
                   &nbsp;<a href="<?= $unidades[$unidade]['google_maps']; ?>" target="_blank" style="color:<?= $assinatura_texto ?>"><img src="<?php if ($assinatura_texto == '#000001') { echo $pin_preto; } else { echo $pin_branco; } ?>" height="20" style="border:0;" />&nbsp;<?= $unidades[$unidade]['endereco']; ?></a></font></td>
@@ -414,35 +412,57 @@ $(function() {
     $('#imagem').attr('src', $(this).val());
   });
 
-  // Portal
-  $('#input-portal').keyup(function() {
-    var portal = $(this).val();
-    var unidade_tag = 'AAA';
-    var modalidade_tag = 'Livres';
-    var portal_tag = '&utm_source=Email_Marketing&utm_medium=email&utm_campaign=' + unidade_tag + '_' + modalidade_tag;
-    $('#portal').attr('href', portal + portal_tag );
-  });
-
   // Fundo
   $('#input-fundo').keyup(function() {
-    $('#fundo').attr('bgcolor', $(this).val());
-  });
-
-  // Texto
-  var texto = $('#texto').attr('style');
-  $('#select-texto').change(function() {
-    if ( $(this).val() == 'preto' ) {
-      $('#texto').attr('style', texto + ' color: #000001;');
-    } else if ( $(this).val() == 'branco' ) {
-      $('#texto').attr('style', texto + ' color: #FFFFFF;');
-    }
+    $('.fundo').attr('bgcolor', $(this).val());
   });
 
   // Unidade
-  $('#unidade').change(function() {
-    var unidade_tag = $(this).val();
-    $('title').html(unidades[unidade_tag]['sigla']);
+  $('#select-unidade').change(function() {
+
+    var unidade = $(this).val();
+    var sigla = unidades[unidade]['sigla'];
+    var nome = unidades[unidade]['nome'];
+    var nome_url = unidades[unidade]['nome_url'];
+    var endereco = unidades[unidade]['endereco'];
+    var telefone = unidades[unidade]['telefone'];
+    var url = unidades[unidade]['url'];
+    var google_maps = unidades[unidade]['google_maps'];
+
+    var parametro1 = '&utm_source=Email_Marketing&utm_medium=email&utm_campaign=' + sigla;
+    var parametro2 = '_' + '<?= $lblModalidade ?>';
+    var tagueamento = parametro1 + parametro2;
+
+    var portal = $('#input-portal').val();
+    $('#portal').attr('href', portal + tagueamento);
+
+    $('#link-unidade').html('<strong>www.sp.senac.br/' + nome_url + '</strong>');
+
+    // Portal
+    $('#input-portal').keyup(function() {
+      var portal = $(this).val();
+      $('#portal').attr('href', portal + tagueamento);
+    });
+
+    // Texto e CTA
+    var texto = $('#texto').attr('style');
+    var portal = $('#portal').attr('style');
+    $('#select-texto').change(function() {
+      if ( $(this).val() == 'preto' ) {
+        $('#cta-bg').attr('bgcolor', '#000001');
+        $('#portal').attr('style', portal + ' color: ' + $('#input-fundo').val()); // cta-texto
+        $('#texto').attr('style', texto + ' color: #000001;');
+      } else if ( $(this).val() == 'branco' ) {
+        $('#cta-bg').attr('bgcolor', '#FFFFFF');
+        $('#portal').attr('style', portal + ' color: ' + $('#input-fundo').val()); // cta-texto
+        $('#texto').attr('style', texto + ' color: #FFFFFF;');
+      }
+    });
+
   });
+
+  $('#select-unidade').trigger('change');
+  $('#select-texto').trigger('change');
 
 });
 
