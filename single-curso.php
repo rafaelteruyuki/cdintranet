@@ -198,10 +198,10 @@
 
         <div class="four wide field">
           <label>Assinatura</label>
-          <select name="assinatura">
-            <option value="#000001">Preto</option>
-            <option value="#FFFFFF">Branco</option>
-            <option value="colorida">Colorida</option>
+          <select id="select-assinatura">
+            <option value="preto">Preto</option>
+            <option value="branco">Branco</option>
+            <option value="colorido">Colorida</option>
           </select>
         </div>
 
@@ -226,16 +226,8 @@
 
     <div id="email-marketing">
 
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title >Senac <?= $unidades[$unidade]['nome']; ?> - <?= $lblModalidade ?> - <?php the_title(); ?></title>
-    </head>
-
-    <body>
     <div align="center">
-      <table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid <?= $borda ?>; border-collapse:collapse;">
+      <table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr>
           <td>
             <img id="imagem" alt="<?= $lblModalidade ?> - <?php the_title(); ?>" width="600" style="display:block; border:0;" />
@@ -243,7 +235,7 @@
         </tr>
         <tr>
           <td>
-            <table class="fundo" width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+            <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
               <tr>
                 <td width="50">&nbsp;</td>
                 <td width="500" align="left">&nbsp;</td>
@@ -269,7 +261,7 @@
               <tr>
                 <td width="50">&nbsp;</td>
                 <td width="500" align="center" id="cta-bg">
-                    <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block;"><br />Inscreva-se.<br /><br /></a>
+                    <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block;"><br /><span>Inscreva-se.</span><br /><br /></a>
                 </td>
                 <td width="50">&nbsp;</td>
               </tr>
@@ -293,7 +285,7 @@
         </tr>
         <tr>
           <td>
-            <table id="assinatura" class="fundo" width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+            <table id="assinatura" width="600" border="0" cellspacing="0" cellpadding="0" align="center">
               <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -303,14 +295,19 @@
               </tr>
               <tr>
                 <td width="20" >&nbsp;</td>
-                <td align="right" valign="bottom" style="font-size:16px"><font color="<?= $assinatura_texto ?>"  face="Arial, Verdana"> <strong>APRENDIZADO E CONHECIMENTO PARA SEMPRE.</strong><br />
-                  <br />
-                  Acesse <a id="link-unidade" href="<?= $unidades[$unidade]['url']; ?>&utm_source=Email_Marketing&utm_medium=email&utm_campaign=<?= $unidade; ?>_Livres" target="_blank" style="color:<?= $assinatura_texto ?>"></a> e conhe&ccedil;a a programa&ccedil;&atilde;o completa da unidade.<br />
-                  <br />
-                <img src="<?php if ($assinatura_texto == '#000001') { echo $tel_preto; } else { echo $tel_branco; }?>"  width="20" style="border:0;"  />&nbsp;<?= $unidades[$unidade]['telefone']; ?><br />
-                  &nbsp;<a href="<?= $unidades[$unidade]['google_maps']; ?>" target="_blank" style="color:<?= $assinatura_texto ?>"><img src="<?php if ($assinatura_texto == '#000001') { echo $pin_preto; } else { echo $pin_branco; } ?>" height="20" style="border:0;" />&nbsp;<?= $unidades[$unidade]['endereco']; ?></a></font></td>
+                <td align="right" valign="bottom" style="font-family: Arial, Helvetica, sans-serif; font-size:16px;">
+                  <strong>APRENDIZADO E CONHECIMENTO PARA SEMPRE.</strong><br /><br />
+                  Acesse <a id="link-unidade" target="_blank"><strong></strong></a> e conhe&ccedil;a a programa&ccedil;&atilde;o completa da unidade.<br /><br />
+                  <img id="tel-icon" width="20" style="border:0;" /><span id="tel-text" style="margin-left: 5px;"></span><br />
+                  <a id="pin-icon" target="_blank">
+                    <img height="20" style="border:0;" />
+                    <span id="pin-text" style="text-decoration: underline; margin-left: 5px;"></span>
+                  </a>
+                </td>
                 <td width="20" valign="middle">&nbsp;</td>
-                <td width="121" valign="middle"><img title="Senac S&atilde;o Paulo" src="<?= $logo ?>" alt="Senac S&atilde;o Paulo"  border="0" width="121" height="135" /></td>
+                <td width="121" valign="middle">
+                  <img id="logo-senac" title="Senac S&atilde;o Paulo" alt="Senac S&atilde;o Paulo"  border="0" width="121" height="135" />
+                </td>
                 <td width="20" valign="middle">&nbsp;</td>
               </tr>
               <tr>
@@ -359,9 +356,6 @@
         </tr>
       </table>
       </div>
-    </body>
-
-    </html>
 
     </div>
 
@@ -412,11 +406,6 @@ $(function() {
     $('#imagem').attr('src', $(this).val());
   });
 
-  // Fundo
-  $('#input-fundo').keyup(function() {
-    $('.fundo').attr('bgcolor', $(this).val());
-  });
-
   // Unidade
   $('#select-unidade').change(function() {
 
@@ -430,13 +419,24 @@ $(function() {
     var google_maps = unidades[unidade]['google_maps'];
 
     var parametro1 = '&utm_source=Email_Marketing&utm_medium=email&utm_campaign=' + sigla;
-    var parametro2 = '_' + '<?= $lblModalidade ?>';
+    var parametro2 = '<?= $lblModalidade ?>';
+
+    if (parametro2 == 'Curso Livre') {
+      parametro2 = '_Livres';
+    } else if (parametro2 == 'Extensão') {
+      parametro2 = '_Extensao';
+    }
+
     var tagueamento = parametro1 + parametro2;
 
     var portal = $('#input-portal').val();
     $('#portal').attr('href', portal + tagueamento);
 
-    $('#link-unidade').html('<strong>www.sp.senac.br/' + nome_url + '</strong>');
+    $('#link-unidade strong').html('www.sp.senac.br/' + nome_url);
+    $('#link-unidade').attr('href', url + tagueamento);
+    $('#pin-text').html(endereco);
+    $('#pin-icon').attr('href', google_maps);
+    $('#tel-text').html('&nbsp;' + telefone);
 
     // Portal
     $('#input-portal').keyup(function() {
@@ -450,12 +450,47 @@ $(function() {
     $('#select-texto').change(function() {
       if ( $(this).val() == 'preto' ) {
         $('#cta-bg').attr('bgcolor', '#000001');
-        $('#portal').attr('style', portal + ' color: ' + $('#input-fundo').val()); // cta-texto
+        $('#portal span').attr('style', 'color: ' + $('#input-fundo').val()); // cta-texto
         $('#texto').attr('style', texto + ' color: #000001;');
       } else if ( $(this).val() == 'branco' ) {
         $('#cta-bg').attr('bgcolor', '#FFFFFF');
-        $('#portal').attr('style', portal + ' color: ' + $('#input-fundo').val()); // cta-texto
+        $('#portal span').attr('style', 'color: ' + $('#input-fundo').val()); // cta-texto
         $('#texto').attr('style', texto + ' color: #FFFFFF;');
+      }
+    });
+
+    // Assinatura
+    $('#select-assinatura').change(function() {
+
+      var url_img = 'http://www1.sp.senac.br/hotsites/msg/gcr/';
+
+      if ( $(this).val() == 'preto' ) {
+        $('#link-unidade').attr('style', 'color: #000001');
+        $('#assinatura').attr('bgcolor', '');
+        $('#assinatura').attr('style', 'color: #000001');
+        $('#tel-icon').attr('src', url_img + 'tel_preto.png');
+        $('#pin-icon img').attr('src', url_img + 'pin_preto.png');
+        $('#pin-icon').attr('style', 'color: #000001');
+        $('#logo-senac').attr('src', url_img + 'senac70_preto.png');
+
+      } else if ( $(this).val() == 'branco' ) {
+        $('#link-unidade').attr('style', 'color: #FFFFFF');
+        $('#assinatura').attr('bgcolor', '');
+        $('#assinatura').attr('style', 'color: #FFFFFF');
+        $('#tel-icon').attr('src', url_img + 'tel_branco.png');
+        $('#pin-icon img').attr('src', url_img + 'pin_branco.png');
+        $('#pin-icon').attr('style', 'color: #FFFFFF');
+        $('#logo-senac').attr('src', url_img + 'senac70_branco.png');
+
+      } else if ( $(this).val() == 'colorido' ) {
+        $('#link-unidade').attr('style', 'color: #000001');
+        $('#assinatura').attr('bgcolor', '#EFEFEF');
+        $('#assinatura').attr('style', 'color: #000001');
+        $('#tel-icon').attr('src', url_img + 'tel_preto.png');
+        $('#pin-icon img').attr('src', url_img + 'pin_preto.png');
+        $('#pin-icon').attr('style', 'color: #000001');
+        $('#logo-senac').attr('src', url_img + 'senac70_cor.png');
+
       }
     });
 
@@ -463,6 +498,8 @@ $(function() {
 
   $('#select-unidade').trigger('change');
   $('#select-texto').trigger('change');
+  $('#select-assinatura').trigger('change');
+  $('#select-assinatura').trigger('keyup');
 
 });
 
@@ -479,7 +516,9 @@ $(".ui.eyedropper.icon").css('cursor', 'pointer');
 
 $( ".ui.eyedropper.icon" ).click(function() {
 
-  $('img').mousemove(function(e) {
+  var cta_style = $('#portal').attr('style');
+
+  $('.imagem-single-curso, #imagem').mousemove(function(e) {
 
       if(!this.canvas) {
           this.canvas = $('<canvas />')[0];
@@ -499,7 +538,12 @@ $( ".ui.eyedropper.icon" ).click(function() {
       }
 
       var hex = rgb2hex( 'rgba(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ', ' + pixelData[3] + ')' );
+
       $('.eyedropper-color:focus').val(hex);
+
+      $('#container').attr('bgcolor', $('#input-fundo').val());
+      $('#container').attr('style', 'border: 1px solid ' + $('#input-fundo').val() + '; border-collapse: collapse;');
+      $('#portal span').attr('style', 'color: ' + $('#input-fundo').val());
 
   });
 
@@ -512,6 +556,33 @@ $( ".ui.eyedropper.icon" ).click(function() {
 //     $('body').css('cursor', 'crosshair');
 //   });
 // });
+
+// var teste = $("#email-marketing")[0].outerHTML;
+// var teste = new XMLSerializer().serializeToString(document.doctype);
+// var teste = document.documentElement.innerHTML;
+// $('html')[0].outerHTML
+// alert(teste);
+
+
+var doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+var open_html = '<html xmlns="http://www.w3.org/1999/xhtml">'
+var head = '<head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><title>' + '<?= $lblModalidade ?> - <?php the_title(); ?>' + '</title></head>';
+var open_body = '<body>'
+var email = $('#email-marketing').html();
+var close_body = '</body>'
+var close_html = '</html>'
+
+var html = $('#email-marketing').clone();
+var htmlString = html.html();
+
+var email_download = doc_type + open_html + head + open_body + email + close_body + close_html;
+
+var a = document.body.appendChild(
+        document.createElement("a")
+    );
+a.download = "export.html";
+a.href = "data:text/html,charset=iso-8859-1" + htmlString;
+a.innerHTML = "[Export conent]";
 
 </script>
 
