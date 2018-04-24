@@ -64,6 +64,7 @@
       </div>
       <br>
       <?php edit_post_link('Editar', '', '', '', 'ui button'); ?>
+      <div id="criar-email" class="ui secondary button">Criar e-mail marketing</div>
 
       <div class="ui divider"></div>
 
@@ -126,7 +127,7 @@
   </div>
 </div>
 
-<div class="ui grid container">
+<div class="ui grid container" id="section-email" style="display:none;">
 
   <div class="six wide column">
 
@@ -136,7 +137,7 @@
 
       <h3>Criar e-mail marketing</h3>
 
-      <form action="<?php bloginfo('url')?>/email-marketing" method="get" target="_blank" class="ui form">
+      <div class="ui form">
 
       <!-- CURSO -->
       <input type="hidden" name="modalidade" value="<?= $lblModalidade ?>">
@@ -146,7 +147,7 @@
       <!-- IMAGEM -->
       <div class="field">
         <label>Link da imagem</label>
-        <input type="text" value="http://www1.sp.senac.br/hotsites/msg/" id="input-imagem">
+        <input type="text" value="<?php if (get_post_meta('save_imagem')) echo 'Oi'; ?> http://www1.sp.senac.br/hotsites/msg/" id="input-imagem">
       </div>
 
       <!-- PORTAL -->
@@ -210,9 +211,11 @@
       <!-- <h4 class="ui dividing header">Assinatura</h4> -->
 
       <div class="ui hidden divider"></div>
-      <input type="submit" name="" value="Criar e-mail" class="ui secondary button">
 
-      </form>
+      <div class="ui secondary button" id="salvar-email" data-id=<?php the_ID(); ?>>Salvar</div>
+      <a class="ui secondary button" id="baixar-email" style="display:none;">Baixar e-mail</a>
+
+    </div>
 
     </div>
 
@@ -230,7 +233,7 @@
       <table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr>
           <td>
-            <img id="imagem" alt="<?= $lblModalidade ?> - <?php the_title(); ?>" width="600" style="display:block; border:0;" />
+            <img id="imagem" alt="<?php echo $lblModalidade . ' - ' . get_the_title(); ?>" width="600" style="display:block; border:0;" src="http://placehold.it/640x480" />
           </td>
         </tr>
         <tr>
@@ -249,7 +252,7 @@
               <tr>
                 <td width="50">&nbsp;</td>
                 <td width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;" id="texto">
-                  <?php if(get_field('texto-curso')) convert_string_to_html(get_field('texto-curso')); ?>
+                  <?php if(get_field('texto-curso')) echo get_field('texto-curso'); ?>
                 </td>
                 <td width="50">&nbsp;</td>
               </tr>
@@ -261,7 +264,7 @@
               <tr>
                 <td width="50">&nbsp;</td>
                 <td width="500" align="center" id="cta-bg">
-                    <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block;"><br /><span>Inscreva-se.</span><br /><br /></a>
+                    <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block; text-decoration:none;"><br /><span>Inscreva-se.</span><br /><br /></a>
                 </td>
                 <td width="50">&nbsp;</td>
               </tr>
@@ -371,6 +374,8 @@
     Voltar
   </a>
 </span>
+
+<script src="<?php bloginfo('template_url') ?>/js/he.js"></script>
 
 <script type="text/javascript">
 
@@ -557,33 +562,65 @@ $( ".ui.eyedropper.icon" ).click(function() {
 //   });
 // });
 
-// var teste = $("#email-marketing")[0].outerHTML;
-// var teste = new XMLSerializer().serializeToString(document.doctype);
-// var teste = document.documentElement.innerHTML;
-// $('html')[0].outerHTML
-// alert(teste);
+$('#salvar-email').click(function(){
 
+  var doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' + '\n';
+  var open_html = '<html xmlns="http://www.w3.org/1999/xhtml">' + '\n';
+  var head = '<head>' + '\n' + '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />' + '\n' + '<title>' + '<?php convert_string_to_html( $lblModalidade . ' - ' . get_the_title() ); ?>' + '</title>' + '\n' + '</head>' + '\n';
+  var open_body = '<body>'
+  var email = $('#email-marketing').html();
+  var close_body = '</body>' + '\n';
+  var close_html = '</html>';
 
-var doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-var open_html = '<html xmlns="http://www.w3.org/1999/xhtml">'
-var head = '<head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><title>' + '<?= $lblModalidade ?> - <?php the_title(); ?>' + '</title></head>';
-var open_body = '<body>'
-var email = $('#email-marketing').html();
-var close_body = '</body>'
-var close_html = '</html>'
+  var email_final = doc_type + open_html + head + open_body + email + close_body + close_html;
+  var email_encoded = he.encode(email_final, {
+    'useNamedReferences': true,
+    'allowUnsafeSymbols': true
+  });
 
-var html = $('#email-marketing').clone();
-var htmlString = html.html();
+  var filename = '99999999_XXX_nome_do_curso';
 
-var email_download = doc_type + open_html + head + open_body + email + close_body + close_html;
+  $('#baixar-email').show().attr('download', filename + '.html').attr('href', 'data:text/html,' + email_encoded);
 
-var a = document.body.appendChild(
-        document.createElement("a")
-    );
-a.download = "export.html";
-a.href = "data:text/html,charset=iso-8859-1" + htmlString;
-a.innerHTML = "[Export conent]";
+  var post_id = $(this).data('id');
+  var save_imagem = $('#input-imagem').val();
+  var save_portal = $('#input-portal').val();
+  var save_fundo = $('#input-fundo').val();
+  var save_texto = $('#select-texto').val();
+  var save_assinatura = $('#select-assinatura').val();
+
+  $.ajax({
+    method: 'POST',
+    url: ajaxurl,
+    data: {
+      action: 'salvar_email',
+      post_id : post_id,
+      save_imagem : save_imagem,
+      save_portal : save_portal,
+      save_fundo : save_fundo,
+      save_texto : save_texto,
+      save_assinatura : save_assinatura
+    },
+    beforeSend: function() {
+      // $('.participar').html('Saindo...');
+    },
+    success: function() {
+      // $('.participar').html('Você saiu').removeClass('blue').addClass('grey').unbind("click");
+    }
+  });
+
+});
+
+$('#criar-email').click(function(){
+  $(this).hide();
+  $('#section-email').show();
+  $('html, body').animate({
+      scrollTop: $("#email-marketing").offset().top
+  }, 2000);
+});
 
 </script>
+
+
 
 <?php get_footer(); ?>
