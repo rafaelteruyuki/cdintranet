@@ -56,7 +56,7 @@
     <div class="ten wide column">
 
       <div class="ui disabled sub header"><?= $lblModalidade; ?></div>
-      <div style="margin-bottom:15px;"><h1><?php the_title(); ?></h1></div>
+      <div style="margin-bottom:15px;"><h1 class="main-title"><?php the_title(); ?></h1></div>
       <div>
         <h3>
           <?php echo $lblArea; if($lblSubarea): ?>&nbsp;&nbsp;|&nbsp;&nbsp;<?php echo $lblSubarea; endif; ?>
@@ -64,7 +64,10 @@
       </div>
       <br>
       <?php edit_post_link('Editar', '', '', '', 'ui button'); ?>
-      <div id="criar-email" class="ui secondary button">Criar e-mail marketing</div>
+
+      <?php if (current_user_can('edit_pages')) : ?>
+        <div id="criar-email" class="ui secondary button">Criar e-mail marketing</div>
+      <?php endif; ?>
 
       <div class="ui divider"></div>
 
@@ -135,7 +138,7 @@
 
     <div id="form-email-marketing">
 
-      <h3>Criar e-mail marketing</h3>
+      <h2>Criar e-mail marketing</h2>
 
       <div class="ui form">
 
@@ -184,11 +187,29 @@
       <!-- CORPO -->
       <div class="fields">
 
-        <div class="four wide field">
-          <label>Cor de fundo <i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
-          <input id="input-fundo" type="text" value="#FFFFFF" class="eyedropper-color">
+        <!-- FUNDO -->
+        <div class="four wide field emk-fundo">
+          <label>Cor de fundo<br><i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+          <input id="input-fundo" type="text" value="#F6F6F6" class="eyedropper-color">
         </div>
 
+        <!-- BOTAO -->
+        <div class="four wide field emk-cta">
+          <label>Cor do botão<br><i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+          <input id="input-botao" type="text" value="#000001" class="eyedropper-color">
+        </div>
+
+        <!-- LINHA -->
+        <div class="four wide field emk-linha">
+          <label>Cor da borda<br><i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+          <input id="input-linha" type="text" value="#CCCCCC" class="eyedropper-color">
+        </div>
+
+      </div>
+
+      <div class="fields">
+
+        <!-- TEXTO -->
         <div class="four wide field">
           <label>Cor do texto</label>
           <select id="select-texto">
@@ -197,6 +218,7 @@
           </select>
         </div>
 
+        <!-- ASSINATURA -->
         <div class="four wide field">
           <label>Assinatura</label>
           <select id="select-assinatura">
@@ -208,12 +230,29 @@
 
       </div>
 
+      <!-- <div class="ui form">
+        <div class="grouped fields">
+          <label>Cor do texto</label>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="cor-do-texto" checked="checked" id="texto-preto">
+              <label style="cursor:pointer" for="texto-preto">Preto</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="cor-do-texto" id="texto-branco">
+              <label style="cursor:pointer" for="texto-branco">Branco</label>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
       <!-- <h4 class="ui dividing header">Assinatura</h4> -->
 
       <div class="ui hidden divider"></div>
 
-      <div class="ui secondary button" id="salvar-email" data-id=<?php the_ID(); ?>>Salvar</div>
-      <a class="ui secondary button" id="baixar-email" style="display:none;">Baixar e-mail</a>
+      <a class="ui secondary large button" id="salvar-email" data-id=<?php the_ID(); ?>>Baixar</a>
 
     </div>
 
@@ -230,7 +269,7 @@
     <div id="email-marketing">
 
     <div align="center">
-      <table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+      <table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#F6F6F6" style="border: 1px solid #CCCCCC">
         <tr>
           <td>
             <img id="imagem" alt="<?php echo $lblModalidade . ' - ' . get_the_title(); ?>" width="600" style="display:block; border:0;" src="http://placehold.it/640x480" />
@@ -263,7 +302,7 @@
               </tr>
               <tr>
                 <td width="50">&nbsp;</td>
-                <td width="500" align="center" id="cta-bg">
+                <td width="500" align="center" id="cta-bg" bgcolor="#000001">
                     <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block; text-decoration:none;"><br /><span>Inscreva-se.</span><br /><br /></a>
                 </td>
                 <td width="50">&nbsp;</td>
@@ -411,6 +450,21 @@ $(function() {
     $('#imagem').attr('src', $(this).val());
   });
 
+  // Fundo
+  $('#input-fundo').keyup(function() {
+    $('#container').attr('bgcolor', $(this).val());
+  });
+
+  // Botão
+  $('#input-botao').keyup(function() {
+    $('#cta-bg').attr('bgcolor', $(this).val());
+  });
+
+  // Botão
+  $('#input-linha').keyup(function() {
+    $('#container').attr('style', 'border: 1px solid ' + $(this).val() + '; border-collapse: collapse;');
+  });
+
   // Unidade
   $('#select-unidade').change(function() {
 
@@ -454,11 +508,9 @@ $(function() {
     var portal = $('#portal').attr('style');
     $('#select-texto').change(function() {
       if ( $(this).val() == 'preto' ) {
-        $('#cta-bg').attr('bgcolor', '#000001');
         $('#portal span').attr('style', 'color: ' + $('#input-fundo').val()); // cta-texto
         $('#texto').attr('style', texto + ' color: #000001;');
       } else if ( $(this).val() == 'branco' ) {
-        $('#cta-bg').attr('bgcolor', '#FFFFFF');
         $('#portal span').attr('style', 'color: ' + $('#input-fundo').val()); // cta-texto
         $('#texto').attr('style', texto + ' color: #FFFFFF;');
       }
@@ -489,7 +541,7 @@ $(function() {
 
       } else if ( $(this).val() == 'colorido' ) {
         $('#link-unidade').attr('style', 'color: #000001');
-        $('#assinatura').attr('bgcolor', '#EFEFEF');
+        $('#assinatura').attr('bgcolor', '#F6F6F6');
         $('#assinatura').attr('style', 'color: #000001');
         $('#tel-icon').attr('src', url_img + 'tel_preto.png');
         $('#pin-icon img').attr('src', url_img + 'pin_preto.png');
@@ -508,13 +560,16 @@ $(function() {
 
 });
 
-
 $(".ui.black.empty.circular.label").click(function(){
-  $(this).parent().nextAll('input').val('#000001');
+  $(this).parent().nextAll('input').val('#000001').trigger('keyup');
+  var color = $('#input-fundo').val();
+  $('#portal span').attr('style', 'color: ' + color);
 })
 
 $(".ui.grey.empty.circular.label").click(function(){
-  $(this).parent().nextAll('input').val('#FFFFFF');
+  $(this).parent().nextAll('input').val('#FFFFFF').trigger('keyup');
+  var color = $('#input-fundo').val();
+  $('#portal span').attr('style', 'color: ' + color);
 })
 
 $(".ui.eyedropper.icon").css('cursor', 'pointer');
@@ -547,8 +602,10 @@ $( ".ui.eyedropper.icon" ).click(function() {
       $('.eyedropper-color:focus').val(hex);
 
       $('#container').attr('bgcolor', $('#input-fundo').val());
-      $('#container').attr('style', 'border: 1px solid ' + $('#input-fundo').val() + '; border-collapse: collapse;');
+      // $('#container').attr('style', 'border: 1px solid ' + $('#input-fundo').val() + '; border-collapse: collapse;');
       $('#portal span').attr('style', 'color: ' + $('#input-fundo').val());
+      $('#cta-bg').attr('bgcolor', $('#input-botao').val());
+      $('#container').attr('style', 'border: 1px solid ' + $('#input-linha').val() + '; border-collapse: collapse;');
 
   });
 
@@ -562,8 +619,9 @@ $( ".ui.eyedropper.icon" ).click(function() {
 //   });
 // });
 
-$('#salvar-email').click(function(){
+$('#salvar-email').click(function(e){
 
+  // Email marketing
   var doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' + '\n';
   var open_html = '<html xmlns="http://www.w3.org/1999/xhtml">' + '\n';
   var head = '<head>' + '\n' + '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />' + '\n' + '<title>' + '<?php convert_string_to_html( $lblModalidade . ' - ' . get_the_title() ); ?>' + '</title>' + '\n' + '</head>' + '\n';
@@ -578,9 +636,47 @@ $('#salvar-email').click(function(){
     'allowUnsafeSymbols': true
   });
 
-  var filename = '99999999_XXX_nome_do_curso';
+  // Data
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
 
-  $('#baixar-email').show().attr('download', filename + '.html').attr('href', 'data:text/html,' + email_encoded);
+  var yyyy = today.getFullYear();
+  if(dd<10){
+      dd='0'+dd;
+  }
+  if(mm<10){
+      mm='0'+mm;
+  }
+
+  // Substituir caracteres acentuados
+  function removeDiacritics(input)
+  {
+      var output = "";
+
+      var normalized = input.normalize("NFD");
+      var i=0;
+      var j=0;
+
+      while (i<input.length)
+      {
+          output += normalized[j];
+
+          j += (input[i] == normalized[j]) ? 1 : 2;
+          i++;
+      }
+
+      return output;
+  }
+
+  var data_hoje = yyyy + mm + dd;
+  var sigla = $('#select-unidade').val();
+  var titulo = removeDiacritics($('.main-title').html()).replace(/[_\W]+/g, "_").toLowerCase();
+
+  var filename = data_hoje + '_' + sigla + '_' + titulo;
+
+  e.originalEvent.currentTarget.href = 'data:text/html,' + email_encoded;
+  e.originalEvent.currentTarget.download = filename;
 
   var post_id = $(this).data('id');
   var save_imagem = $('#input-imagem').val();
@@ -615,12 +711,12 @@ $('#criar-email').click(function(){
   $(this).hide();
   $('#section-email').show();
   $('html, body').animate({
-      scrollTop: $("#email-marketing").offset().top
-  }, 2000);
+      scrollTop: $("#section-email").offset().top
+  }, 500);
 });
 
+$('.ui.checkbox').checkbox();
+
 </script>
-
-
 
 <?php get_footer(); ?>
