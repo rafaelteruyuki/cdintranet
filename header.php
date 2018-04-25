@@ -90,6 +90,7 @@
     </div>
     <a href="<?php bloginfo( 'url' ); ?>/solicitacao/" class="item"><i class="edit icon"></i>Nova solicitação</a>
     <a href="<?php bloginfo( 'url' ); ?>/redes-sociais/" class="item"><i class="globe icon"></i> Redes Sociais</a>
+    <a href="https://datastudio.google.com/u/0/reporting/0B9hh3lIugd49bnRLbTdSSmlrZTQ/page/2QpF" class="item" target="_blank"><i class="chart line icon"></i> Métricas</a>
 
     <div class="right menu">
 
