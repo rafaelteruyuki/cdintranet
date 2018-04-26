@@ -2371,6 +2371,32 @@ function convert_string_to_html($string = 0) {
 	echo htmlspecialchars_decode(htmlentities($string, ENT_NOQUOTES, 'UTF-8', false), ENT_NOQUOTES);
 }
 
+/* --------------------------
+
+SALVAR EMAIL CRIADO
+
+---------------------------- */
+
+function salvar_email() {
+
+	$post_id = $_REQUEST['post_id'];
+
+	update_post_meta( $post_id, 'save_imagem', $_REQUEST['save_imagem'] );
+	update_post_meta( $post_id, 'save_fundo', $_REQUEST['save_fundo'] );
+	update_post_meta( $post_id, 'save_botao', $_REQUEST['save_botao'] );
+	update_post_meta( $post_id, 'save_linha', $_REQUEST['save_linha'] );
+	update_post_meta( $post_id, 'save_texto', $_REQUEST['save_texto'] );
+	update_post_meta( $post_id, 'save_assinatura', $_REQUEST['save_assinatura'] );
+
+	// echo $response;
+
+	wp_die();
+
+}
+
+add_action('wp_ajax_salvar_email', 'salvar_email');
+add_action('wp_ajax_nopriv_salvar_email', 'salvar_email');
+
 // /* --------------------------
 //
 // LOGIN OBRIGATORIO PARA TODOS OS USUARIOS

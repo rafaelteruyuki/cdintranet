@@ -130,7 +130,17 @@
   </div>
 </div>
 
-<div class="ui grid container" id="section-email" style="display:none;">
+<?php
+
+$save_imagem = get_post_meta( get_the_ID(), 'save_imagem', true );
+$save_fundo = get_post_meta( get_the_ID(), 'save_fundo', true );
+$save_botao = get_post_meta( get_the_ID(), 'save_botao', true );
+$save_linha = get_post_meta( get_the_ID(), 'save_linha', true );
+$save_texto = get_post_meta( get_the_ID(), 'save_texto', true );
+$save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
+?>
+
+<div class="ui grid container" id="section-email" style="display:none">
 
   <div class="six wide column">
 
@@ -142,15 +152,10 @@
 
       <div class="ui form">
 
-      <!-- CURSO -->
-      <input type="hidden" name="modalidade" value="<?= $lblModalidade ?>">
-      <input type="hidden" name="titulo" value="<?php the_title(); ?>">
-      <input type="hidden" name="texto" value="<?php the_field('texto-curso'); ?>">
-
       <!-- IMAGEM -->
       <div class="field">
         <label>Link da imagem</label>
-        <input type="text" value="<?php if (get_post_meta('save_imagem')) echo 'Oi'; ?> http://www1.sp.senac.br/hotsites/msg/" id="input-imagem">
+        <input type="text" value="<?php if($save_imagem) : echo $save_imagem; else : echo 'http://www1.sp.senac.br/hotsites/msg/'; endif; ?>" id="input-imagem">
       </div>
 
       <!-- PORTAL -->
@@ -184,25 +189,27 @@
         ?>
       </div>
 
+      <div class="ui hidden divider"></div>
+
       <!-- CORPO -->
       <div class="fields">
 
         <!-- FUNDO -->
-        <div class="four wide field emk-fundo">
+        <div class="six wide field emk-fundo">
           <label>Cor de fundo<br><i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
-          <input id="input-fundo" type="text" value="#F6F6F6" class="eyedropper-color">
+          <input id="input-fundo" type="text" value="<?php if ($save_fundo) : echo $save_fundo; else : echo '#F6F6F6'; endif; ?>" class="eyedropper-color">
         </div>
 
         <!-- BOTAO -->
-        <div class="four wide field emk-cta">
+        <div class="six wide field emk-cta">
           <label>Cor do botão<br><i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
-          <input id="input-botao" type="text" value="#000001" class="eyedropper-color">
+          <input id="input-botao" type="text" value="<?php if ($save_botao) : echo $save_botao; else : echo '#000001'; endif; ?>" class="eyedropper-color">
         </div>
 
         <!-- LINHA -->
-        <div class="four wide field emk-linha">
+        <div class="six wide field emk-linha">
           <label>Cor da borda<br><i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
-          <input id="input-linha" type="text" value="#CCCCCC" class="eyedropper-color">
+          <input id="input-linha" type="text" value="<?php if ($save_linha) : echo $save_linha; else : echo '#CCCCCC'; endif; ?>" class="eyedropper-color">
         </div>
 
       </div>
@@ -210,18 +217,18 @@
       <div class="fields">
 
         <!-- TEXTO -->
-        <div class="four wide field">
+        <div class="eight wide field">
           <label>Cor do texto</label>
-          <select id="select-texto">
+          <select id="select-texto" data-texto="<?php echo $save_texto; ?>">
             <option value="preto">Preto</option>
             <option value="branco">Branco</option>
           </select>
         </div>
 
         <!-- ASSINATURA -->
-        <div class="four wide field">
+        <div class="eight wide field">
           <label>Assinatura</label>
-          <select id="select-assinatura">
+          <select id="select-assinatura" data-assinatura="<?php echo $save_assinatura; ?>">
             <option value="preto">Preto</option>
             <option value="branco">Branco</option>
             <option value="colorido">Colorida</option>
@@ -272,7 +279,7 @@
       <table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#F6F6F6" style="border: 1px solid #CCCCCC">
         <tr>
           <td>
-            <img id="imagem" alt="<?php echo $lblModalidade . ' - ' . get_the_title(); ?>" width="600" style="display:block; border:0;" src="http://placehold.it/640x480" />
+            <img id="imagem" alt="<?php echo $lblModalidade . ' - ' . get_the_title(); ?>" width="600" style="display:block; border:0;" src="<?php bloginfo('template_url') ?>/images/placeholder.png" crossorigin="anonymous"/>
           </td>
         </tr>
         <tr>
@@ -340,11 +347,10 @@
                 <td align="right" valign="bottom" style="font-family: Arial, Helvetica, sans-serif; font-size:16px;">
                   <strong>APRENDIZADO E CONHECIMENTO PARA SEMPRE.</strong><br /><br />
                   Acesse <a id="link-unidade" target="_blank"><strong></strong></a> e conhe&ccedil;a a programa&ccedil;&atilde;o completa da unidade.<br /><br />
-                  <img id="tel-icon" width="20" style="border:0;" /><span id="tel-text" style="margin-left: 5px;"></span><br />
-                  <a id="pin-icon" target="_blank">
-                    <img height="20" style="border:0;" />
-                    <span id="pin-text" style="text-decoration: underline; margin-left: 5px;"></span>
-                  </a>
+                  <img id="tel-icon" width="20" style="border:0;" />
+                  <span id="tel-text" style="margin-left: 5px;"></span><br />
+                  <img id="pin-icon" height="20" style="border:0;" />
+                  <a id="pin-text" target="_blank" style="text-decoration: underline; margin-left: 5px;"></a>
                 </td>
                 <td width="20" valign="middle">&nbsp;</td>
                 <td width="121" valign="middle">
@@ -428,7 +434,7 @@ var unidades = {
     'CEP'         : '16050-400',
     'telefone'    : '(18) 3117-1000',
     'url'         : 'http://www.sp.senac.br/jsp/default.jsp?newsID=a529.htm&testeira=352&unit=A%C7A&sub=1',
-    'google_maps' : 'https://www.google.com.br/maps/place/Senac+Ara%C3%A7atuba/@-21.201429,-50.4467907,17z/data=!3m1!4b1!4m5!3m4!1s0x949643f3d8a31887:0xec4d448031b7e3fd!8m2!3d-21.201429!4d-50.444602',
+    'google_maps' : 'https://www.google.com.br/maps/place/Senac+Ara%C3%A7atuba/@-21.2011865,-50.4459439,17z/data=!3m1!4b1!4m2!3m1!1s0x949643f3d8a31887:0xec4d448031b7e3fd?shorturl=1',
   },
   'ACL': {
     'sigla'       : 'ACL',
@@ -493,8 +499,7 @@ $(function() {
 
     $('#link-unidade strong').html('www.sp.senac.br/' + nome_url);
     $('#link-unidade').attr('href', url + tagueamento);
-    $('#pin-text').html(endereco);
-    $('#pin-icon').attr('href', google_maps);
+    $('#pin-text').html(endereco).attr('href', google_maps);
     $('#tel-text').html('&nbsp;' + telefone);
 
     // Portal
@@ -516,6 +521,7 @@ $(function() {
       }
     });
 
+    var pin_text = $('#pin-text').attr('style');
     // Assinatura
     $('#select-assinatura').change(function() {
 
@@ -526,8 +532,8 @@ $(function() {
         $('#assinatura').attr('bgcolor', '');
         $('#assinatura').attr('style', 'color: #000001');
         $('#tel-icon').attr('src', url_img + 'tel_preto.png');
-        $('#pin-icon img').attr('src', url_img + 'pin_preto.png');
-        $('#pin-icon').attr('style', 'color: #000001');
+        $('#pin-icon').attr('src', url_img + 'pin_preto.png');
+        $('#pin-text').attr('style', pin_text +  ' color: #000001');
         $('#logo-senac').attr('src', url_img + 'senac70_preto.png');
 
       } else if ( $(this).val() == 'branco' ) {
@@ -535,8 +541,8 @@ $(function() {
         $('#assinatura').attr('bgcolor', '');
         $('#assinatura').attr('style', 'color: #FFFFFF');
         $('#tel-icon').attr('src', url_img + 'tel_branco.png');
-        $('#pin-icon img').attr('src', url_img + 'pin_branco.png');
-        $('#pin-icon').attr('style', 'color: #FFFFFF');
+        $('#pin-icon').attr('src', url_img + 'pin_branco.png');
+        $('#pin-text').attr('style', pin_text +  ' color: #FFFFFF');
         $('#logo-senac').attr('src', url_img + 'senac70_branco.png');
 
       } else if ( $(this).val() == 'colorido' ) {
@@ -544,8 +550,8 @@ $(function() {
         $('#assinatura').attr('bgcolor', '#F6F6F6');
         $('#assinatura').attr('style', 'color: #000001');
         $('#tel-icon').attr('src', url_img + 'tel_preto.png');
-        $('#pin-icon img').attr('src', url_img + 'pin_preto.png');
-        $('#pin-icon').attr('style', 'color: #000001');
+        $('#pin-icon').attr('src', url_img + 'pin_preto.png');
+        $('#pin-text').attr('style', pin_text +  ' color: #000001');
         $('#logo-senac').attr('src', url_img + 'senac70_cor.png');
 
       }
@@ -554,9 +560,32 @@ $(function() {
   });
 
   $('#select-unidade').trigger('change');
+  if ($('#input-imagem').val() != 'http://www1.sp.senac.br/hotsites/msg/') $('#input-imagem').trigger('keyup');
+  $('#input-fundo').trigger('keyup');
+  $('#input-botao').trigger('keyup');
+  $('#input-linha').trigger('keyup');
+
+  var data_texto = $('#select-texto').data('texto');
+  if (data_texto == 'preto') {
+    $('#select-texto').val('preto');
+  }
+  else if (data_texto == 'branco') {
+    $('#select-texto').val('branco');
+  }
   $('#select-texto').trigger('change');
+
+  var data_assinatura = $('#select-assinatura').data('assinatura');
+  if (data_assinatura == 'preto') {
+    $('#select-assinatura').val('preto');
+  }
+  else if (data_assinatura == 'branco') {
+    $('#select-assinatura').val('branco');
+  }
+  else if (data_assinatura == 'colorido') {
+    $('#select-assinatura').val('colorido');
+  }
   $('#select-assinatura').trigger('change');
-  $('#select-assinatura').trigger('keyup');
+
 
 });
 
@@ -572,20 +601,18 @@ $(".ui.grey.empty.circular.label").click(function(){
   $('#portal span').attr('style', 'color: ' + color);
 })
 
-$(".ui.eyedropper.icon").css('cursor', 'pointer');
+// Eyedropper
 
-$( ".ui.eyedropper.icon" ).click(function() {
-
-  var cta_style = $('#portal').attr('style');
+function eyedropper() {
 
   $('.imagem-single-curso, #imagem').mousemove(function(e) {
 
-      if(!this.canvas) {
+      // if(!this.canvas) {
           this.canvas = $('<canvas />')[0];
           this.canvas.width = this.width;
           this.canvas.height = this.height;
           this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
-      }
+      // }
 
       var pixelData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
 
@@ -609,7 +636,26 @@ $( ".ui.eyedropper.icon" ).click(function() {
 
   });
 
+}
+
+$( ".ui.eyedropper.icon" ).css('cursor', 'pointer').click(function() {
+
+  eyedropper();
+
+  $('body').css('cursor', 'crosshair');
+
   $(this).parent().nextAll('input').focus();
+
+  $('.imagem-single-curso, #imagem').click(function(){
+    $('body').css('cursor', 'default');
+    $(this).off('mousemove');
+  });
+  $(document).keyup(function(e) {
+      if (e.keyCode == 27) { // escape key maps to keycode `27`
+        $('body').css('cursor', 'default');
+        $('.imagem-single-curso, #imagem').off('mousemove');
+      }
+  });
 
 });
 
@@ -620,6 +666,8 @@ $( ".ui.eyedropper.icon" ).click(function() {
 // });
 
 $('#salvar-email').click(function(e){
+
+  $('#imagem').removeAttr('crossorigin', 'anonymous'); // Remove o atributo para salvar. Este atributo serve para permitir capturar os pixel de imagem de URL externo.
 
   // Email marketing
   var doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' + '\n';
@@ -635,6 +683,17 @@ $('#salvar-email').click(function(e){
     'useNamedReferences': true,
     'allowUnsafeSymbols': true
   });
+
+  var found = $(email_encoded).find("#pin-text").attr('href');
+  console.log(found);
+
+  var unidade = $('#select-unidade').val();
+  var google_maps = unidades[unidade]['google_maps'];
+  console.log(google_maps);
+
+  var pin_text = $(email_encoded).find("#pin-text");
+  pin_text.attr('href', 'http://teste.com');
+  console.log(pin_text.attr('href'));
 
   // Data
   var today = new Date();
@@ -680,8 +739,9 @@ $('#salvar-email').click(function(e){
 
   var post_id = $(this).data('id');
   var save_imagem = $('#input-imagem').val();
-  var save_portal = $('#input-portal').val();
   var save_fundo = $('#input-fundo').val();
+  var save_botao = $('#input-botao').val();
+  var save_linha = $('#input-linha').val();
   var save_texto = $('#select-texto').val();
   var save_assinatura = $('#select-assinatura').val();
 
@@ -692,8 +752,9 @@ $('#salvar-email').click(function(e){
       action: 'salvar_email',
       post_id : post_id,
       save_imagem : save_imagem,
-      save_portal : save_portal,
       save_fundo : save_fundo,
+      save_botao : save_botao,
+      save_linha : save_linha,
       save_texto : save_texto,
       save_assinatura : save_assinatura
     },
