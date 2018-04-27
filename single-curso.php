@@ -22,6 +22,19 @@
 
 ?>
 
+<style media="screen">
+  .cd-label-branco {
+    border: 1px solid !important;
+    border-color: #dadada !important;
+    background-color: #ffffff !important;
+  }
+  .cd-label-preto {
+    border: 1px solid !important;
+    border-color: #000000 !important;
+    background-color: #000000 !important;
+  }
+</style>
+
 <div class="ui vertical basic segment cd-margem">
 
   <div class="ui grid container stackable">
@@ -65,7 +78,7 @@
       <br>
       <?php edit_post_link('Editar', '', '', '', 'ui button'); ?>
 
-      <?php if (current_user_can('edit_pages')) : ?>
+      <?php if (current_user_can('edit_pages') && ($lblModalidade == 'Curso Livre' || $lblModalidade == 'Extensão Universitária')) : ?>
         <div id="criar-email" class="ui secondary button">Criar e-mail marketing</div>
       <?php endif; ?>
 
@@ -138,9 +151,12 @@ $save_botao = get_post_meta( get_the_ID(), 'save_botao', true );
 $save_linha = get_post_meta( get_the_ID(), 'save_linha', true );
 $save_texto = get_post_meta( get_the_ID(), 'save_texto', true );
 $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
+
 ?>
 
-<div class="ui grid container" id="section-email" style="display:none">
+<div class="ui basic segment cd-padding" style="background-color:#F6F6F6; display:none" id="section-email">
+
+<div class="ui grid container">
 
   <div class="six wide column">
 
@@ -196,19 +212,19 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
         <!-- FUNDO -->
         <div class="six wide field emk-fundo">
-          <label>Cor de fundo<br><i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+          <label>Cor de fundo<br><i class="ui eyedropper icon eyedropper-tip" data-content="Coloque o mouse sobre uma imagem para capturar a cor" data-variation="very wide mini inverted"></i><a class="ui empty circular label cd-label-preto"></a><a class="ui empty circular label cd-label-branco"></a></label>
           <input id="input-fundo" type="text" value="<?php if ($save_fundo) : echo $save_fundo; else : echo '#F6F6F6'; endif; ?>" class="eyedropper-color">
         </div>
 
         <!-- BOTAO -->
         <div class="six wide field emk-cta">
-          <label>Cor do botão<br><i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+          <label>Cor do botão<br><i class="ui eyedropper icon eyedropper-tip" data-content="Coloque o mouse sobre uma imagem para capturar a cor" data-variation="very wide mini inverted"></i><a class="ui empty circular label cd-label-preto"></a><a class="ui empty circular label cd-label-branco"></a></label>
           <input id="input-botao" type="text" value="<?php if ($save_botao) : echo $save_botao; else : echo '#000001'; endif; ?>" class="eyedropper-color">
         </div>
 
         <!-- LINHA -->
         <div class="six wide field emk-linha">
-          <label>Cor da borda<br><i class="ui eyedropper icon"></i><a class="ui black empty circular label"></a><a class="ui grey empty circular label"></a></label>
+          <label>Cor da borda<br><i class="ui eyedropper icon eyedropper-tip" data-content="Coloque o mouse sobre uma imagem para capturar a cor" data-variation="very wide mini inverted"></i><a class="ui empty circular label cd-label-preto"></a><a class="ui empty circular label cd-label-branco"></a></label>
           <input id="input-linha" type="text" value="<?php if ($save_linha) : echo $save_linha; else : echo '#CCCCCC'; endif; ?>" class="eyedropper-color">
         </div>
 
@@ -218,7 +234,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
         <!-- TEXTO -->
         <div class="eight wide field">
-          <label>Cor do texto</label>
+          <label>Texto</label>
           <select id="select-texto" data-texto="<?php echo $save_texto; ?>">
             <option value="preto">Preto</option>
             <option value="branco">Branco</option>
@@ -259,7 +275,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
       <div class="ui hidden divider"></div>
 
-      <a class="ui secondary large button" id="salvar-email" data-id=<?php the_ID(); ?>>Baixar</a>
+      <a class="ui labeled icon primary fluid button" id="salvar-email" data-id=<?php the_ID(); ?>><i class="download icon"></i>Baixar</a>
 
     </div>
 
@@ -405,6 +421,20 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
       </table>
       </div>
 
+      <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-513261-14']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+      </script>
+
     </div>
 
     <!-- // EMAIL MARKETING -->
@@ -413,12 +443,9 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
 </div>
 
-<span class="ui horizontal divider header cd-margem">
-  <a href="javascript:history.back()">
-    <i class="left arrow icon"></i>
-    Voltar
-  </a>
-</span>
+</div>
+
+<div class="ui hidden divider"></div>
 
 <script src="<?php bloginfo('template_url') ?>/js/he.js"></script>
 
@@ -459,17 +486,25 @@ $(function() {
   // Fundo
   $('#input-fundo').keyup(function() {
     $('#container').attr('bgcolor', $(this).val());
+  }).val(function () {
+      return this.value.toUpperCase();
   });
 
   // Botão
   $('#input-botao').keyup(function() {
     $('#cta-bg').attr('bgcolor', $(this).val());
+  }).val(function () {
+      return this.value.toUpperCase();
   });
 
-  // Botão
+  // Borda
   $('#input-linha').keyup(function() {
     $('#container').attr('style', 'border: 1px solid ' + $(this).val() + '; border-collapse: collapse;');
+  }).val(function () {
+      return this.value.toUpperCase();
   });
+
+  var pin_text = $('#pin-text').attr('style');
 
   // Unidade
   $('#select-unidade').change(function() {
@@ -488,7 +523,7 @@ $(function() {
 
     if (parametro2 == 'Curso Livre') {
       parametro2 = '_Livres';
-    } else if (parametro2 == 'Extensão') {
+    } else if (parametro2 == 'Extensão Universitária') {
       parametro2 = '_Extensao';
     }
 
@@ -521,7 +556,6 @@ $(function() {
       }
     });
 
-    var pin_text = $('#pin-text').attr('style');
     // Assinatura
     $('#select-assinatura').change(function() {
 
@@ -589,16 +623,20 @@ $(function() {
 
 });
 
-$(".ui.black.empty.circular.label").click(function(){
+$(".cd-label-preto").click(function(){
   $(this).parent().nextAll('input').val('#000001').trigger('keyup');
   var color = $('#input-fundo').val();
   $('#portal span').attr('style', 'color: ' + color);
+  // Cancela o eyedropper
+  $('.imagem-single-curso, #imagem').css('cursor', 'default').off('mousemove');
 })
 
-$(".ui.grey.empty.circular.label").click(function(){
+$(".cd-label-branco").click(function(){
   $(this).parent().nextAll('input').val('#FFFFFF').trigger('keyup');
   var color = $('#input-fundo').val();
   $('#portal span').attr('style', 'color: ' + color);
+  // Cancela o eyedropper
+  $('.imagem-single-curso, #imagem').css('cursor', 'default').off('mousemove');
 })
 
 // Eyedropper
@@ -626,7 +664,10 @@ function eyedropper() {
 
       var hex = rgb2hex( 'rgba(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ', ' + pixelData[3] + ')' );
 
-      $('.eyedropper-color:focus').val(hex);
+      $('.eyedropper-color:focus').val(hex).val(function () {
+          return this.value.toUpperCase();
+      });
+
 
       $('#container').attr('bgcolor', $('#input-fundo').val());
       // $('#container').attr('style', 'border: 1px solid ' + $('#input-fundo').val() + '; border-collapse: collapse;');
@@ -642,18 +683,16 @@ $( ".ui.eyedropper.icon" ).css('cursor', 'pointer').click(function() {
 
   eyedropper();
 
-  $('body').css('cursor', 'crosshair');
+  $('.imagem-single-curso, #imagem').css('cursor', 'crosshair');
 
   $(this).parent().nextAll('input').focus();
 
   $('.imagem-single-curso, #imagem').click(function(){
-    $('body').css('cursor', 'default');
-    $(this).off('mousemove');
+    $(this).css('cursor', 'default').off('mousemove');
   });
   $(document).keyup(function(e) {
       if (e.keyCode == 27) { // escape key maps to keycode `27`
-        $('body').css('cursor', 'default');
-        $('.imagem-single-curso, #imagem').off('mousemove');
+        $('.imagem-single-curso, #imagem').css('cursor', 'default').off('mousemove');
       }
   });
 
@@ -665,7 +704,13 @@ $( ".ui.eyedropper.icon" ).css('cursor', 'pointer').click(function() {
 //   });
 // });
 
-$('#salvar-email').click(function(e){
+
+$('#salvar-email').click(function(e) {
+
+  if( !$('#input-portal').val() ) {
+    alert('Preencha o campo "Link do portal"');
+    return false;
+  }
 
   $('#imagem').removeAttr('crossorigin', 'anonymous'); // Remove o atributo para salvar. Este atributo serve para permitir capturar os pixel de imagem de URL externo.
 
@@ -674,7 +719,7 @@ $('#salvar-email').click(function(e){
   var open_html = '<html xmlns="http://www.w3.org/1999/xhtml">' + '\n';
   var head = '<head>' + '\n' + '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />' + '\n' + '<title>' + '<?php convert_string_to_html( $lblModalidade . ' - ' . get_the_title() ); ?>' + '</title>' + '\n' + '</head>' + '\n';
   var open_body = '<body>'
-  var email = $('#email-marketing').html();
+  var email = $('#email-marketing')[0].innerHTML;
   var close_body = '</body>' + '\n';
   var close_html = '</html>';
 
