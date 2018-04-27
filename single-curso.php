@@ -78,7 +78,7 @@
       <br>
       <?php edit_post_link('Editar', '', '', '', 'ui button'); ?>
 
-      <?php if (current_user_can('edit_pages') && ($lblModalidade == 'Curso Livre' || $lblModalidade == 'Extensão Universitária')) : ?>
+      <?php if (current_user_can('edit_pages') && ($value == 'curso-livre' || $value == 'extensao-universitaria')) : ?>
         <div id="criar-email" class="ui secondary button">Criar e-mail marketing</div>
       <?php endif; ?>
 
@@ -777,7 +777,7 @@ $('#salvar-email').click(function(e) {
   var sigla = $('#select-unidade').val();
   var titulo = removeDiacritics($('.main-title').html()).replace(/[_\W]+/g, "_").toLowerCase();
 
-  var filename = data_hoje + '_' + sigla + '_' + titulo;
+  var filename = data_hoje + '_' + sigla + '_' + titulo + '.html';
 
   e.originalEvent.currentTarget.href = 'data:text/html,' + email_encoded;
   e.originalEvent.currentTarget.download = filename;
