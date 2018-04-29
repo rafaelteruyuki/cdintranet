@@ -154,7 +154,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
 ?>
 
-<div class="ui basic segment cd-padding" style="background-color:#F6F6F6; display:none" id="section-email">
+<div class="ui basic segment cd-padding" style="background-color:#F6F6F6;" id="section-email">
 
 <div class="ui grid container">
 
@@ -448,6 +448,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 <div class="ui hidden divider"></div>
 
 <script src="<?php bloginfo('template_url') ?>/js/he.js"></script>
+<script src="<?php bloginfo('template_url') ?>/js/download.js"></script>
 
 <script type="text/javascript">
 
@@ -651,8 +652,13 @@ function eyedropper() {
           this.canvas.height = this.height;
           this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
       // }
+      // var offX  = (e.offsetX || e.clientX - $(e.target).offset().left);
+      // var offY  = (e.offsetY || e.clientY - $(e.target).offset().top);
 
-      var pixelData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
+      var offX = (e.offsetX || e.clientX - $(e.target).offset().left + window.pageXOffset );
+      var offY = (e.offsetY || e.clientY - $(e.target).offset().top + window.pageYOffset );
+
+      var pixelData = this.canvas.getContext('2d').getImageData(offX, offY, 1, 1).data;
 
       function rgb2hex(rgb){
        rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
@@ -715,9 +721,12 @@ $('#salvar-email').click(function(e) {
   $('#imagem').removeAttr('crossorigin', 'anonymous'); // Remove o atributo para salvar. Este atributo serve para permitir capturar os pixel de imagem de URL externo.
 
   // Email marketing
+  var title = $('#imagem').attr('alt');
+  var unidade = $('#select-unidade').val();
+
   var doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' + '\n';
   var open_html = '<html xmlns="http://www.w3.org/1999/xhtml">' + '\n';
-  var head = '<head>' + '\n' + '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />' + '\n' + '<title>' + '<?php convert_string_to_html( $lblModalidade . ' - ' . get_the_title() ); ?>' + '</title>' + '\n' + '</head>' + '\n';
+  var head = '<head>' + '\n' + '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />' + '\n' + '<title>' + 'Senac ' + unidades[unidade]['nome'] + ' - ' + title + '</title>' + '\n' + '</head>' + '\n';
   var open_body = '<body>'
   var email = $('#email-marketing')[0].innerHTML;
   var close_body = '</body>' + '\n';
@@ -729,16 +738,15 @@ $('#salvar-email').click(function(e) {
     'allowUnsafeSymbols': true
   });
 
-  var found = $(email_encoded).find("#pin-text").attr('href');
-  console.log(found);
-
-  var unidade = $('#select-unidade').val();
-  var google_maps = unidades[unidade]['google_maps'];
-  console.log(google_maps);
-
-  var pin_text = $(email_encoded).find("#pin-text");
-  pin_text.attr('href', 'http://teste.com');
-  console.log(pin_text.attr('href'));
+  // var found = $(email_encoded).find("#pin-text").attr('href');
+  // console.log(found);
+  //
+  // var google_maps = unidades[unidade]['google_maps'];
+  // console.log(google_maps);
+  //
+  // var pin_text = $(email_encoded).find("#pin-text");
+  // pin_text.attr('href', 'http://teste.com');
+  // console.log(pin_text.attr('href'));
 
   // Data
   var today = new Date();
@@ -779,8 +787,10 @@ $('#salvar-email').click(function(e) {
 
   var filename = data_hoje + '_' + sigla + '_' + titulo + '.html';
 
-  e.originalEvent.currentTarget.href = 'data:text/html,' + email_encoded;
-  e.originalEvent.currentTarget.download = filename;
+  // e.originalEvent.currentTarget.href = 'data:text/html;charset=utf-8,' + email_encoded;
+  // e.originalEvent.currentTarget.download = filename;
+
+  download(email_encoded, filename, "text/html");
 
   var post_id = $(this).data('id');
   var save_imagem = $('#input-imagem').val();
