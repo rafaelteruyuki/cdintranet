@@ -291,7 +291,6 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
     <div id="email-marketing">
 
-    <div align="center">
       <table id="container" width="600" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#F6F6F6" style="border: 1px solid #CCCCCC">
         <tr>
           <td>
@@ -303,18 +302,18 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
             <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
               <tr>
                 <td width="50">&nbsp;</td>
-                <td width="500" align="left">&nbsp;</td>
+                <td width="500">&nbsp;</td>
                 <td width="50">&nbsp;</td>
               </tr>
               <tr>
                 <td width="50">&nbsp;</td>
-                <td width="500" align="left">&nbsp;</td>
+                <td width="500">&nbsp;</td>
                 <td width="50">&nbsp;</td>
               </tr>
               <tr>
                 <td width="50">&nbsp;</td>
-                <td width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;" id="texto">
-                  <?php if(get_field('texto-curso')) echo get_field('texto-curso'); ?>
+                <td id="texto" width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;">
+                  <?php if (get_field('texto-curso')) echo get_field('texto-curso'); ?>
                 </td>
                 <td width="50">&nbsp;</td>
               </tr>
@@ -325,8 +324,8 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
               </tr>
               <tr>
                 <td width="50">&nbsp;</td>
-                <td width="500" align="center" id="cta-bg" bgcolor="#000001">
-                    <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block; text-decoration:none;"><br /><span>Inscreva-se.</span><br /><br /></a>
+                <td id="cta-bg" width="500" align="center" bgcolor="#000001">
+                  <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block; text-decoration:none;"><br /><span>Inscreva-se.</span><br /><br /></a>
                 </td>
                 <td width="50">&nbsp;</td>
               </tr>
@@ -337,7 +336,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
               </tr>
               <tr>
                 <td width="50">&nbsp;</td>
-                <td width="500"><img title="Senac S&atilde;o Paulo" src="http://www1.sp.senac.br/hotsites/msg/gcr/2017_Desconto_30_500px_01.gif" alt="Descontos 30% - Em todos os cursos presenciais - livres, t&eacute;cnicos e idiomas. - Veja o percentual que seu curso oferece."  border="0" /></td>
+                <td width="500"><img title="Senac S&atilde;o Paulo" src="http://www1.sp.senac.br/hotsites/msg/gcr/2017_Desconto_30_500px_01.gif" alt="Descontos 30% - Em todos os cursos presenciais - livres, t&eacute;cnicos e idiomas. - Veja o percentual que seu curso oferece."  border="0" style="display:block; border:0;" /></td>
                 <td width="50">&nbsp;</td>
               </tr>
               <tr>
@@ -354,13 +353,13 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
               <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td valign="middle">&nbsp;</td>
-                <td valign="middle">&nbsp;</td>
-                <td valign="middle">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
               </tr>
               <tr>
-                <td width="20" >&nbsp;</td>
-                <td align="right" valign="bottom" style="font-family: Arial, Helvetica, sans-serif; font-size:16px;">
+                <td width="20">&nbsp;</td>
+                <td width="419" align="right" valign="bottom" style="font-family: Arial, Helvetica, sans-serif; font-size:16px;">
                   <strong>APRENDIZADO E CONHECIMENTO PARA SEMPRE.</strong><br /><br />
                   Acesse <a id="link-unidade" target="_blank"><strong></strong></a> e conhe&ccedil;a a programa&ccedil;&atilde;o completa da unidade.<br /><br />
                   <img id="tel-icon" width="20" style="border:0;" />
@@ -369,17 +368,17 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
                   <a id="pin-text" target="_blank" style="text-decoration: underline; margin-left: 5px;"></a>
                 </td>
                 <td width="20" valign="middle">&nbsp;</td>
-                <td width="121" valign="middle">
+                <td width="121" valign="bottom">
                   <img id="logo-senac" title="Senac S&atilde;o Paulo" alt="Senac S&atilde;o Paulo"  border="0" width="121" height="135" />
                 </td>
-                <td width="20" valign="middle">&nbsp;</td>
+                <td width="20">&nbsp;</td>
               </tr>
               <tr>
-                <td >&nbsp;</td>
-                <td >&nbsp;</td>
-                <td valign="middle">&nbsp;</td>
-                <td valign="middle">&nbsp;</td>
-                <td valign="middle">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
               </tr>
             </table>
           </td>
@@ -419,7 +418,6 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
           <td>&nbsp;</td>
         </tr>
       </table>
-      </div>
 
       <script type="text/javascript">
 

@@ -1,25 +1,25 @@
 // Imagem
 $('#input-imagem').keyup(function() {
-  $('#imagem').attr('src', $(this).val());
+  $('#imagem').attr('src', this.value);
 });
 
 // Fundo
 $('#input-fundo').keyup(function() {
-  $('#container').attr('bgcolor', $(this).val());
+  $('#container').attr('bgcolor', this.value);
 }).val(function () {
     return this.value.toUpperCase();
 });
 
 // Botão
 $('#input-botao').keyup(function() {
-  $('#cta-bg').attr('bgcolor', $(this).val());
+  $('#cta-bg').attr('bgcolor', this.value);
 }).val(function () {
     return this.value.toUpperCase();
 });
 
 // Borda
 $('#input-linha').keyup(function() {
-  $('#container').attr('style', 'border: 1px solid ' + $(this).val() + '; border-collapse: collapse;');
+  $('#container').attr('style', 'border: 1px solid ' + this.value + '; border-collapse: collapse;');
 }).val(function () {
     return this.value.toUpperCase();
 });
@@ -27,10 +27,10 @@ $('#input-linha').keyup(function() {
 // Texto e CTA
 var texto = $('#texto').attr('style');
 $('#select-texto').change(function() {
-  if ( $(this).val() == 'preto' ) {
+  if ( this.value == 'preto' ) {
     $('#portal span').attr('style', 'color: ' + $('#input-fundo').val()); // cta-texto
     $('#texto').attr('style', texto + ' color: #000001;');
-  } else if ( $(this).val() == 'branco' ) {
+  } else if ( this.value == 'branco' ) {
     $('#portal span').attr('style', 'color: ' + $('#input-fundo').val()); // cta-texto
     $('#texto').attr('style', texto + ' color: #FFFFFF;');
   }
@@ -40,7 +40,7 @@ $('#select-texto').change(function() {
 var pin_text = $('#pin-text').attr('style');
 $('#select-unidade').change(function() {
 
-  var unidade = $(this).val();
+  var unidade = this.value;
   var sigla = unidades[unidade]['sigla'];
   var nome = unidades[unidade]['nome'];
   var nome_url = unidades[unidade]['nome_url'];
@@ -70,8 +70,7 @@ $('#select-unidade').change(function() {
 
   // Portal
   $('#input-portal').keyup(function() {
-    var portal = $(this).val();
-    $('#portal').attr('href', portal + tagueamento);
+    $('#portal').attr('href', this.value + tagueamento);
   });
 
   // Assinatura
@@ -79,8 +78,8 @@ $('#select-unidade').change(function() {
 
     var url_img = 'http://www1.sp.senac.br/hotsites/msg/gcr/';
 
-    if ( $(this).val() == 'preto' ) {
-      $('#link-unidade').attr('style', 'color: #000001');
+    if ( this.value == 'preto' ) {
+      $('#link-unidade').attr('style', 'color: #000001; text-decoration: underline;');
       $('#assinatura').attr('bgcolor', '');
       $('#assinatura').attr('style', 'color: #000001');
       $('#tel-icon').attr('src', url_img + 'tel_preto.png');
@@ -88,8 +87,8 @@ $('#select-unidade').change(function() {
       $('#pin-text').attr('style', pin_text +  ' color: #000001');
       $('#logo-senac').attr('src', url_img + 'senac70_preto.png');
 
-    } else if ( $(this).val() == 'branco' ) {
-      $('#link-unidade').attr('style', 'color: #FFFFFF');
+    } else if ( this.value == 'branco' ) {
+      $('#link-unidade').attr('style', 'color: #FFFFFF; text-decoration: underline;');
       $('#assinatura').attr('bgcolor', '');
       $('#assinatura').attr('style', 'color: #FFFFFF');
       $('#tel-icon').attr('src', url_img + 'tel_branco.png');
@@ -97,8 +96,8 @@ $('#select-unidade').change(function() {
       $('#pin-text').attr('style', pin_text +  ' color: #FFFFFF');
       $('#logo-senac').attr('src', url_img + 'senac70_branco.png');
 
-    } else if ( $(this).val() == 'colorido' ) {
-      $('#link-unidade').attr('style', 'color: #000001');
+    } else if ( this.value == 'colorido' ) {
+      $('#link-unidade').attr('style', 'color: #000001; text-decoration: underline;');
       $('#assinatura').attr('bgcolor', '#F6F6F6');
       $('#assinatura').attr('style', 'color: #000001');
       $('#tel-icon').attr('src', url_img + 'tel_preto.png');
@@ -163,17 +162,15 @@ EYEDROPPER
 
 $( ".ui.eyedropper.icon" ).css('cursor', 'pointer').click(function() {
 
-  var get_imgs = true; // Pega novas imagens, caso o usuário troque.
+  $('.imagem-single-curso, #imagem').each(function(){
+    this.canvas = $('<canvas />')[0];
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+    this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
+  });
 
   $('.imagem-single-curso, #imagem').mousemove(function(e) {
 
-      if (get_imgs == true) {
-          this.canvas = $('<canvas />')[0];
-          this.canvas.width = this.width;
-          this.canvas.height = this.height;
-          this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
-          get_imgs = false;
-      }
       // var offX  = (e.offsetX || e.clientX - $(e.target).offset().left);
       // var offY  = (e.offsetY || e.clientY - $(e.target).offset().top);
 
@@ -238,6 +235,11 @@ $('#salvar-email').click(function(e) {
     return false;
   }
 
+  if (!isUrlValid($('#input-portal').val())) {
+    alert('Preencha o campo "Link do portal" com uma URL válida');
+    return false;
+  }
+
   $('#imagem').removeAttr('crossorigin', 'anonymous'); // Remove o atributo para salvar. Este atributo serve para permitir capturar os pixel de imagem de URL externo.
 
   // Email marketing
@@ -247,7 +249,7 @@ $('#salvar-email').click(function(e) {
   var doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' + '\n';
   var open_html = '<html xmlns="http://www.w3.org/1999/xhtml">' + '\n';
   var head = '<head>' + '\n' + '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />' + '\n' + '<title>' + 'Senac ' + unidades[unidade]['nome'] + ' - ' + title + '</title>' + '\n' + '</head>' + '\n';
-  var open_body = '<body>'
+  var open_body = '<body style="margin:0px; padding:10px 0;" bgcolor="#FFFFFF">'
   var email = $('#email-marketing')[0].innerHTML;
   var close_body = '</body>' + '\n';
   var close_html = '</html>';
@@ -358,3 +360,13 @@ $('#criar-email').click(function(){
       scrollTop: $("#section-email").offset().top
   }, 500);
 });
+
+/* -----------------------------
+
+CHECA SE A URL É VÁLIDA
+
+----------------------------- */
+
+function isUrlValid(url) {
+    return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+}
