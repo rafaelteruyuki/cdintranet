@@ -277,6 +277,16 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
       <a class="ui labeled icon primary fluid button" id="salvar-email" data-id=<?php the_ID(); ?>><i class="download icon"></i>Baixar</a>
 
+      <div class="ui hidden divider"></div>
+
+      <div class="ui action input email" style="display:none;">
+        <input id="input-email" type="text">
+        <button class="ui green right labeled icon button" id="copiar-email">
+          <i class="copy icon"></i>
+          Copiar
+        </button>
+      </div>
+
     </div>
 
     </div>
