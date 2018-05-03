@@ -185,20 +185,16 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
         <label>Unidade</label>
         <?php
         $field_key = "field_58d1a32b9f77e";
+        $excluir = array('GAC', 'GCR', 'GD1', 'GD2', 'GD3', 'GD4', 'GEP', 'GHJ', 'GHP', 'GMS', 'GPG', 'EDS', 'JUL');
         $field = get_field_object($field_key);
+        $field_final = array_diff($field['choices'], $excluir);
 
-        if( $field ) {
+        if( $field_final ) {
 
           echo '<select id="select-unidade">';
-
-          foreach( $field['choices'] as $k => $v ) {
-            if (isset($_GET['unidade']) && $v == $_GET['unidade']) {
-              echo '<option value="' . $k . '" selected>' . $v . '</option>';
-            } else {
-              echo '<option value="' . $k . '">' . $v . '</option>';
-            }
+          foreach( $field_final as $k => $v ) {
+            echo '<option value="' . $k . '">' . $v . '</option>';
           }
-
           echo '</select>';
         }
 

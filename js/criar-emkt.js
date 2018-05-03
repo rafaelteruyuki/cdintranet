@@ -248,7 +248,7 @@ $('#salvar-email').click(function(e) {
 
   var doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' + '\n';
   var open_html = '<html xmlns="http://www.w3.org/1999/xhtml">' + '\n';
-  var head = '<head>' + '\n' + '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />' + '\n' + '<title>' + 'Senac ' + unidades[unidade]['nome'] + ' - ' + title + '</title>' + '\n' + '</head>' + '\n';
+  var head = '<head>' + '\n' + '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />' + '\n' + '<title>' + unidades[unidade]['nome'] + ' - ' + title + '</title>' + '\n' + '</head>' + '\n';
   var open_body = '<body style="margin:0px; padding:10px 0;" bgcolor="#FFFFFF">'
   var email = $('#email-marketing')[0].innerHTML;
   var close_body = '</body>' + '\n';
@@ -315,7 +315,7 @@ $('#salvar-email').click(function(e) {
   download(email_encoded, filename, "text/html");
 
   // Copiar link do email
-  
+
   $('.email').show();
   $('#input-email').val('http://www.sp.senac.br/msg/' + sigla.toLowerCase() + '/' + filename ).select();
   $('#copiar-email').click(function(){
