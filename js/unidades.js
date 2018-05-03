@@ -311,7 +311,7 @@ var unidades = {
     'sigla'       : 'ITU',
     'nome'        : 'Senac Itu',
     'nome_url'    : 'itu',
-    'endereco'    : 'Rua Maestro José Victório, 137 (Sede do Sincomercio)',
+    'endereco'    : 'Rua Maestro José Victório, 137<br>(Sede do Sincomercio)',
     'bairro'      : 'Centro',
     'CEP'         : '13300-075',
     'telefone'    : '(11) 4022-9800',

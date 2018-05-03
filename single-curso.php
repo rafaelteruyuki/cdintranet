@@ -154,7 +154,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
 ?>
 
-<div class="ui basic segment cd-padding" style="background-color:#F6F6F6;" id="section-email">
+<div class="ui basic segment cd-padding" style="background-color:#F6F6F6; display:none;" id="section-email">
 
 <div class="ui grid container">
 
@@ -176,7 +176,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
       <!-- PORTAL -->
       <div class="field">
-        <label>Link do portal</label>
+        <label>Link do curso</label>
         <input type="text" id="input-portal">
       </div>
 
@@ -319,7 +319,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
               <tr>
                 <td width="50">&nbsp;</td>
                 <td id="texto" width="500" align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;">
-                  <?php if (get_field('texto-curso')) echo get_field('texto-curso'); ?>
+                  <?php if (get_field('texto-curso')) : the_field('texto-curso'); else : echo 'Atenção! Não há texto cadastrado.'; endif; ?>
                 </td>
                 <td width="50">&nbsp;</td>
               </tr>
