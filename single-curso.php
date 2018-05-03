@@ -410,9 +410,9 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
           <td style="font-family: Verdana, Geneva, sans-serif; font-size:12px; color: #666666;">
             Este e-mail est&aacute; sendo enviado porque voc&ecirc; teve algum contato conosco.  <br />
             <br />
-            <strong>Atendimento corporativo</strong>, solu&ccedil;&otilde;es para empresas: 0800 707 1027 ou <a href="http://www.sp.senac.br/jsp/default.jsp?newsID=a20605.htm&amp;testeira=696&amp;sub=0&amp;utm_source=Portal&amp;utm_medium=email&amp;utm_campaign=CRM" target="_blank" style="color:#666666">www.sp.senac.br/corporativo</a>. <br />
+            <strong>Atendimento corporativo</strong>, solu&ccedil;&otilde;es para empresas: 0800 707 1027 ou <a id="atendimento" target="_blank" style="color:#666666">www.sp.senac.br/corporativo</a>. <br />
             <br />
-            <strong>Educa&ccedil;&atilde;o a Dist&acirc;ncia Senac:</strong> conhe&ccedil;a a programa&ccedil;&atilde;o no site <a href="http://www.ead.senac.br?utm_source=Portal&amp;utm_medium=email&amp;utm_campaign=CRM" target="_blank" style="color:#666666">www.ead.senac.br</a>. <br />
+            <strong>Educa&ccedil;&atilde;o a Dist&acirc;ncia Senac:</strong> conhe&ccedil;a a programa&ccedil;&atilde;o no site <a id="ead" target="_blank" style="color:#666666">www.ead.senac.br</a>. <br />
             <br />
             A pol&iacute;tica de descontos pode ser alterada a qualquer momento, sem aviso pr&eacute;vio. Para mais informa&ccedil;&otilde;es sobre nossa pol&iacute;tica de descontos, entre em contato com uma unidade.  <br />
             <br />

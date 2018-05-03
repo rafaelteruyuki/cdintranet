@@ -73,6 +73,12 @@ $('#select-unidade').change(function() {
     $('#portal').attr('href', this.value + tagueamento);
   });
 
+  // Atendimento corporativo e EAD
+  var atendimento = 'http://www.sp.senac.br/jsp/default.jsp?newsID=a20605.htm&testeira=696&sub=0&utm_source=Portal&utm_medium=email&utm_campaign=' + sigla + parametro2;
+  var ead = 'http://www.ead.senac.br?utm_source=Portal&utm_medium=email&utm_campaign=' + sigla + parametro2;
+  $('#atendimento').attr('href', atendimento);
+  $('#ead').attr('href', ead);
+
   // Assinatura
   $('#select-assinatura').change(function() {
 
