@@ -331,7 +331,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
               <tr>
                 <td width="50">&nbsp;</td>
                 <td id="cta-bg" width="500" align="center" bgcolor="#000001">
-                  <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block; text-decoration:none;"><br /><span>Inscreva-se.</span><br /><br /></a>
+                  <a id="portal" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; line-height:18px; font-weight:bold; display:block; text-decoration:none;"><br />Inscreva-se.<br /><br /></a>
                 </td>
                 <td width="50">&nbsp;</td>
               </tr>
@@ -454,6 +454,6 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 <script src="<?php bloginfo('template_url') ?>/js/he.js"></script>
 <script src="<?php bloginfo('template_url') ?>/js/download.js"></script>
 <script src="<?php bloginfo('template_url') ?>/js/unidades.js"></script>
-<script src="<?php bloginfo('template_url') ?>/js/criar-emkt.js"></script>
+<script src="<?php bloginfo('template_url') ?>/js/criar-emkt.js?ver=1.1"></script>
 
 <?php get_footer(); ?>

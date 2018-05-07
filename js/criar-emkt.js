@@ -26,12 +26,13 @@ $('#input-linha').keyup(function() {
 
 // Texto e CTA
 var texto = $('#texto').attr('style');
+var portal_style = $('#portal').attr('style');
 $('#select-texto').change(function() {
   if ( this.value == 'preto' ) {
-    $('#portal span').attr('style', 'color: ' + $('#input-fundo').val()); // cta-texto
+    $('#portal').attr('style', portal_style + ' color: ' + $('#input-fundo').val()); // cta-texto
     $('#texto').attr('style', texto + ' color: #000001;');
   } else if ( this.value == 'branco' ) {
-    $('#portal span').attr('style', 'color: ' + $('#input-fundo').val()); // cta-texto
+    $('#portal').attr('style', portal_style + ' color: ' + $('#input-fundo').val()); // cta-texto
     $('#texto').attr('style', texto + ' color: #FFFFFF;');
   }
 });
@@ -147,7 +148,7 @@ $('#select-unidade').change(function() {
 $(".cd-label-preto").click(function(){
   $(this).parent().nextAll('input').val('#000001').trigger('keyup');
   var color = $('#input-fundo').val();
-  $('#portal span').attr('style', 'color: ' + color);
+  $('#portal').attr('style', portal_style + ' color: ' + color);
   // Cancela o eyedropper
   eyedropper_cancel();
 })
@@ -155,7 +156,7 @@ $(".cd-label-preto").click(function(){
 $(".cd-label-branco").click(function(){
   $(this).parent().nextAll('input').val('#FFFFFF').trigger('keyup');
   var color = $('#input-fundo').val();
-  $('#portal span').attr('style', 'color: ' + color);
+  $('#portal').attr('style', portal_style + ' color: ' + color);
   // Cancela o eyedropper
   eyedropper_cancel();
 })
@@ -200,7 +201,7 @@ $( ".ui.eyedropper.icon" ).css('cursor', 'pointer').click(function() {
       });
 
       $('#container').attr('bgcolor', $('#input-fundo').val());
-      $('#portal span').attr('style', 'color: ' + $('#input-fundo').val());
+      $('#portal').attr('style', portal_style + ' color: ' + $('#input-fundo').val());
       $('#cta-bg').attr('bgcolor', $('#input-botao').val());
       $('#container').attr('style', 'border: 1px solid ' + $('#input-linha').val() + '; border-collapse: collapse;');
 
