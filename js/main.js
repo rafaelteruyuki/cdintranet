@@ -57,6 +57,19 @@ $('.cd-popup')
   })
 ;
 
+$('.eyedropper-tip')
+  .popup({
+    inline     : false,
+    hoverable  : false,
+    position   : 'top center',
+		on    : 'click',
+    // delay: {
+    //   show: 800,
+		// 	hide: 800,
+    // }
+  })
+;
+
 // TABS
 $('.menu .item')
   .tab()

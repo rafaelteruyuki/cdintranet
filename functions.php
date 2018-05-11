@@ -32,7 +32,7 @@ function carrega_scripts() {
 	wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '1.0', true );
 	wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '1.0', true );
 	wp_enqueue_script( 'jquery-mask', get_template_directory_uri() . '/js/jquery.mask.min.js', array('jquery'), '1.0', false );
-	wp_enqueue_script( 'main', get_template_directory_uri()."/js/main.js", array('jquery'), '1.0', true);
+	wp_enqueue_script( 'main', get_template_directory_uri()."/js/main.js", array('jquery'), '1.1', true);
 	wp_enqueue_script( 'custom-js', get_template_directory_uri()."/js/scripts.js", array('jquery'), '1.0', true);
 
 	wp_localize_script('custom-js', 'ajax_object',
@@ -2356,6 +2356,46 @@ function tsm_acf_profile_avatar( $avatar, $id_or_email, $size, $default, $alt ) 
     // Return our new avatar
     return $avatar;
 }
+
+/* --------------------------
+
+CONVERTER STRING EM HTML, IGNORANDO AS TAGS HTML
+
+---------------------------- */
+
+/**
+ * @link https://stackoverflow.com/questions/1364933/htmlentities-in-php-but-preserving-html-tags
+ */
+
+function convert_string_to_html($string = 0) {
+	echo htmlspecialchars_decode(htmlentities($string, ENT_NOQUOTES, 'UTF-8', false), ENT_NOQUOTES);
+}
+
+/* --------------------------
+
+SALVAR EMAIL CRIADO
+
+---------------------------- */
+
+function salvar_email() {
+
+	$post_id = $_REQUEST['post_id'];
+
+	update_post_meta( $post_id, 'save_imagem', $_REQUEST['save_imagem'] );
+	update_post_meta( $post_id, 'save_fundo', $_REQUEST['save_fundo'] );
+	update_post_meta( $post_id, 'save_botao', $_REQUEST['save_botao'] );
+	update_post_meta( $post_id, 'save_linha', $_REQUEST['save_linha'] );
+	update_post_meta( $post_id, 'save_texto', $_REQUEST['save_texto'] );
+	update_post_meta( $post_id, 'save_assinatura', $_REQUEST['save_assinatura'] );
+
+	// echo $response;
+
+	wp_die();
+
+}
+
+add_action('wp_ajax_salvar_email', 'salvar_email');
+add_action('wp_ajax_nopriv_salvar_email', 'salvar_email');
 
 // /* --------------------------
 //
