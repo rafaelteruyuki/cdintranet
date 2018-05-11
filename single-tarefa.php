@@ -25,6 +25,26 @@ display: none;
 /*.acf-field-59b05a664b6c2 {
   display: none;
 }*/
+
+.topo {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 10;
+}
+
+.highlight {
+  background-color: #e2f2ff !important;
+  -webkit-transition:background-color 1s;
+  -moz-transition:background-color 1s;
+  -o-transition:background-color 1s;
+  transition:background-color 1s
+}
+
+.no-highlight {
+  background-color: #ffffff !important;
+}
+
 </style>
 
 <?php if( current_user_can('edit_pages') ) : ?>
@@ -744,6 +764,8 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
 <?php endwhile; ?>
 
+<a class="ui large blue button icon topo" style="display:none;"><i class="up arrow icon"></i></a>
+
 <?php
 
 // // Atualizar usuários
@@ -920,7 +942,48 @@ $('.participar').click(function (){
 
       }
   });
-})
+});
+
+// Smooth scroll to comment and highlight
+
+// store the hash (DON'T put this code inside the $() function, it has to be executed
+// right away before the browser can start scrolling!
+var target = window.location.hash,
+    target = target.replace('#', '');
+
+// delete hash so the page won't scroll to it
+window.location.hash = "";
+
+// now whenever you are ready do whatever you want
+// (in this case I use jQuery to scroll to the tag after the page has loaded)
+$(window).on('load', function() {
+    if (target) {
+        $('html, body').animate({
+            scrollTop: $("#" + target).offset().top - 300
+        }, 700, 'swing');
+        $("#" + target).addClass('highlight');
+        setTimeout(function() {
+          $("#" + target).addClass('no-highlight');
+      }, 2000);
+    }
+});
+
+// Scroll to top button
+
+$('.topo').on('click', function() {
+    $('html, body').animate({
+        scrollTop: $("#header").offset().top
+    }, 700, 'swing');
+
+});
+
+$(window).scroll(function() {
+  if ($(window).scrollTop() > 300) {
+    $('.topo').fadeIn();
+  } else {
+    $('.topo').fadeOut();
+  }
+});
 
 </script>
 

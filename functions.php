@@ -1903,7 +1903,7 @@ function my_save_post( $post_id ) {
 	'<strong>' . '> Para visualizar, acesse: </strong>' . get_post_permalink($post_id) .
 	'<br><br><br>' .
 	'<hr>' .
-	'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
+	'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/meu-perfil/">aqui</a>.';
 
 	// send email
 	wp_mail($to, $subject, $body, $headers );
@@ -1994,7 +1994,7 @@ function check_status_change($value, $post_id, $field) {
 		'<strong>' . '> Para visualizar, acesse: </strong>' . $post_url .
 		'<br><br><br>' .
 		'<hr>' .
-		'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
+		'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/meu-perfil/">aqui</a>.';
 
 		wp_mail( $to , $subject, $message, $headers );
 
@@ -2051,7 +2051,7 @@ NOTIFICAÇÃO EMAIL POST NOVO/UPDATE - GERAL (TAREFAS)
 // 				'<strong>Título: </strong>' . $post_title . '<br>' .
 // 				'<strong>Visualizar: </strong>' . $post_url . '<br><br><br>' .
 // 				'<hr>' .
-// 				'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
+// 				'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/meu-perfil/">aqui</a>.';
 //
 // 				wp_mail( $to , $subject, $message, $headers );
 // 		}
@@ -2240,7 +2240,7 @@ function comment_notification_email( $comment_id ) {
 		'<strong>' . '> Para responder, acesse: </strong>' . $post_url .
 		'<br><br><br>' .
 		'<hr>' .
-		'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/notificacoes-por-e-mail/">aqui</a>.';
+		'Para ativar ou desativar as notificações por e-mail, clique <a href="http://cd.intranet.sp.senac.br/meu-perfil/">aqui</a>.';
 
 		$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
 
