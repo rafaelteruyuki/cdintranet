@@ -944,35 +944,11 @@ $('.participar').click(function (){
   });
 });
 
-// Smooth scroll to comment and highlight
-
-// store the hash (DON'T put this code inside the $() function, it has to be executed
-// right away before the browser can start scrolling!
-var target = window.location.hash,
-    target = target.replace('#', '');
-
-// delete hash so the page won't scroll to it
-window.location.hash = "";
-
-// now whenever you are ready do whatever you want
-// (in this case I use jQuery to scroll to the tag after the page has loaded)
-$(window).on('load', function() {
-    if (target) {
-        $('html, body').animate({
-            scrollTop: $("#" + target).offset().top - 300
-        }, 700, 'swing');
-        $("#" + target).addClass('highlight');
-        setTimeout(function() {
-          $("#" + target).addClass('no-highlight');
-      }, 2000);
-    }
-});
-
 // Scroll to top button
 
 $('.topo').on('click', function() {
     $('html, body').animate({
-        scrollTop: $("#header").offset().top
+        scrollTop: $("#cd-header").offset().top
     }, 700, 'swing');
 
 });
@@ -983,6 +959,30 @@ $(window).scroll(function() {
   } else {
     $('.topo').fadeOut();
   }
+});
+
+// // Smooth scroll to comment and highlight
+
+$(function(){
+
+  if ($('.comment.clicked').html()) {
+
+    $('html, body').animate({
+        scrollTop: $('.comment.clicked').offset().top - 300
+    }, 700, 'swing');
+
+    $('.comment.clicked').addClass('highlight');
+    setTimeout(function() {
+      $('.comment.clicked').addClass('no-highlight');
+    }, 2000);
+
+    // Limpa o parametro da URL
+    var url = window.location.href;
+    var url_no_parameter = url.split('?')[0];
+    window.history.replaceState({}, document.title, url_no_parameter);
+
+  }
+
 });
 
 </script>

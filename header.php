@@ -59,7 +59,7 @@
 
 <!-- HEADER -->
 
-<div class="ui inverted vertical segment" id="header">
+<div class="ui inverted vertical segment" id="cd-header">
   <div class="ui two column grid container stackable" style="margin:2em 0">
     <div class="middle aligned column">
       <a href="<?php bloginfo("url");?>">

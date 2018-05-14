@@ -52,7 +52,7 @@ $comments = get_comments($comment_list_args); ?>
 
 <?php foreach ( $comments as $comment ) : ?>
 
-	<div id="comment-<?php comment_ID() ?>" class="comment">
+	<div id="comment-<?php comment_ID() ?>" class="comment<?php if ($_GET['comment_id'] == get_comment_ID()) echo ' clicked'; ?>">
 	  <a class="avatar">
 			<span class="ui mini circular image">
 	    <?php echo get_avatar( $comment, 100 ); ?>

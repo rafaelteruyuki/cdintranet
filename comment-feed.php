@@ -108,7 +108,7 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
     foreach ( $comments as $comment ) : ?>
 
-      <a href="<?php the_permalink($comment->comment_post_ID); ?>/#comment-<?php comment_ID() ?>" class="item <?php echo lido_nao_lido('feed-lido', 'feed-nao-lido'); ?>" style="border-top: 1px solid #dedede !important;">
+      <a href="<?php the_permalink($comment->comment_post_ID); ?>?comment_id=<?php comment_ID() ?>" class="item <?php echo lido_nao_lido('feed-lido', 'feed-nao-lido'); ?>" style="border-top: 1px solid #dedede !important;">
 
   			<span style="line-height:1.5;">
           <strong><?= $comment->comment_author ?></strong> disse:
