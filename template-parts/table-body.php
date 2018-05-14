@@ -24,10 +24,10 @@ include ( locate_template('template-parts/var-tarefas.php') );
     ?>
 
   </td>
-  <td class="left aligned" style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:200px; font-weight:bold;">
+  <td class="left aligned" style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:200px; font-weight:bold; position: relative; <?php if ( current_user_can('edit_dashboard') ) : ?> padding-right: 55px; <?php endif; ?>">
     <?php new_task(); echo ' '; the_title(); ?>
     <?php if ( current_user_can('edit_dashboard') ) : ?>
-    <span style="float:right;">
+    <span style="position:absolute; right:5px;">
       <?php if (!$texto_luares) : ?><i class="file text icon" style="color: #CCC;"></i><?php endif; ?>
       <?php if ($texto_luares['value'] == 'solicitar-texto') : ?><i class="red file text icon cd-popup" title="Solicitar texto"></i><?php endif; ?>
       <?php if ($texto_luares['value'] == 'texto-solicitado') : ?><i class="green file text icon cd-popup" title="Texto solicitado"></i><?php endif; ?>
