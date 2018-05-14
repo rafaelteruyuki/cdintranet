@@ -21,26 +21,10 @@ $.post(
 );
 
 $(window).bind('storage', function(e) {
-  if (localStorage.getItem("newtask") == false) {
-    alert(localStorage.getItem("newtask"));
+  if (localStorage.getItem("newtask") == 'hide') {
+    $(".cd-push").animate({right: '-400px'});
   }
 });
-
-localStorage.setItem("newtask", true);
-
-$(".cd-push").hide();
-$(".cd-push").html( '<div class="ui blue message"><i class="close icon"></i><div class="header"><i class="blue info circle icon"></i> <a href="http://cd.intranet.sp.senac.br/minhas-tarefas/">Você tem novas tarefas</a></div></div>' );
-$(".cd-push").show();
-$(".cd-push").animate({right: '20px'});
-$(".close").click(function(){
-    $(".cd-push").animate({right: '-400px'});
-    localStorage.setItem("newtask", false);
-});
-$(".cd-push a").click(function(){
-    $(".cd-push").animate({right: '-400px'});
-    localStorage.setItem("newtask", false);
-});
-
 
 // NEW TASK PUSH
 
@@ -61,11 +45,13 @@ function notificacao_new_task_push_ajax() {
 
     if (naoLido_old < naoLido) {
       $(".cd-push").hide();
-    	$(".cd-push").html( '<div class="ui blue message"><i class="close icon"></i><div class="header"><i class="blue info circle icon"></i> <a href="http://cd.intranet.sp.senac.br/minhas-tarefas/">Você tem novas tarefas</a></div></div>' );
+      $(".cd-push").html( '<div class="ui blue message"><i class="close icon"></i><div class="header"><i class="blue info circle icon"></i> <a href="http://cd.intranet.sp.senac.br/minhas-tarefas/">Você tem novas tarefas</a></div></div>' );
       $(".cd-push").show();
+      localStorage.setItem("newtask", 'show');
       $(".cd-push").animate({right: '20px'});
-      $(".close").click(function(){
+      $(".close, .cd-push a").click(function(){
           $(".cd-push").animate({right: '-400px'});
+          localStorage.setItem("newtask", 'hide');
       });
     }
 
