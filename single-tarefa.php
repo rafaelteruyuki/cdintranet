@@ -47,7 +47,7 @@ display: none;
 
 </style>
 
-<?php if( current_user_can('edit_pages') ) : ?>
+<?php if( current_user_can('edit_dashboard') || current_user_can('portal') ) : ?>
 
   <!-- MENU EDICAO DESIGNERS -->
 
