@@ -184,4 +184,4 @@ $('#calculadora-prazos').click(function() {
 });
 
 </script>
-<script id="script-refresh" type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=6.2'></script>
+<script id="script-refresh" type='text/javascript' src='<?php echo get_template_directory_uri() ?>/js/feed-refresh.js?ver=6.3'></script>
