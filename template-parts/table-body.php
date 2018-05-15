@@ -1,6 +1,6 @@
 <?php
 
-// VARIAVEIS TAREFAS commit teste
+// VARIAVEIS TAREFAS
 include ( locate_template('template-parts/var-tarefas.php') );
 
 ?>
