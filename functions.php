@@ -2397,6 +2397,18 @@ function salvar_email() {
 add_action('wp_ajax_salvar_email', 'salvar_email');
 add_action('wp_ajax_nopriv_salvar_email', 'salvar_email');
 
+/* --------------------------
+
+REDIRECT AO POSTAR COMENTARIO
+
+---------------------------- */
+
+add_action( 'comment_post', 'cd_comment_post_redirect', 10, 2 );
+function cd_comment_post_redirect( $comment_ID ) {
+	wp_safe_redirect( $_SERVER["HTTP_REFERER"] . '/?comment_id=' . $comment_ID );
+	exit;
+}
+
 // /* --------------------------
 //
 // LOGIN OBRIGATORIO PARA TODOS OS USUARIOS
