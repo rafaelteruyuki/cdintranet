@@ -20,22 +20,10 @@ $.post(
 
 );
 
-// LOCAL STORAGE CHANGE EVENT
-
 $(window).bind('storage', function(e) {
-
-  // Esconde a notificação new task em todas as abas
   if (localStorage.getItem("newtask") == 'hide') {
     $(".cd-push").animate({right: '-400px'});
   }
-
-  // Atualiza o feed de comentários em todas as abas se houver mudança no número de notificações
-  var local_contador = localStorage.getItem("contador");
-  if (local_contador != local_contador_old) {
-    feed_refresh();
-  }
-  var local_contador_old = local_contador;
-
 });
 
 // NEW TASK PUSH
@@ -102,7 +90,6 @@ function feed_refresh() {
 function contador() {
   var naoLido = 0;
   naoLido = $('#num_nao_lidas').html(); // Valor de num_nao_lidas vem da contagem do comment-feed.php
-  localStorage.setItem("contador", naoLido);
   if (naoLido <= 30 && naoLido  >= 1){
     $('.contador').html(naoLido);
     $('.contador').addClass("red");
