@@ -24,7 +24,8 @@ include ( locate_template('template-parts/var-tarefas.php') );
     ?>
 
   </td>
-  <td class="left aligned" style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:200px; font-weight:bold; position: relative; <?php if ( current_user_can('edit_dashboard') ) : ?> padding-right: 55px; <?php endif; ?>">
+  <td class="left aligned" style="white-space:nowrap;  max-width:200px; font-weight:bold; position:relative;<?php if ( current_user_can('edit_dashboard') ) : ?> padding-right: 55px; <?php endif; ?>">
+    <div style="overflow:hidden; text-overflow:ellipsis;">
     <?php new_task(); echo ' '; the_title(); ?>
     <?php if ( current_user_can('edit_dashboard') ) : ?>
     <span style="position:absolute; right:5px;">
@@ -36,6 +37,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
       <?php if ($imagem_gd['value'] == 'imagem-solicitada') : ?><i class="green file image outline icon cd-popup" title="Imagem solicitada"></i><?php endif; ?>
     </span>
     <?php endif; ?>
+    </div>
   </td>
   <td class="collapsing"><?php $area = get_field('area_divulgacao_tarefa'); if ($area) { echo $area['label']; } ?></td>
   <td class="collapsing"><?php $data = get_the_date('d/m/y'); echo $data; ?></td>
