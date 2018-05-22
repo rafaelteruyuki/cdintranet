@@ -1,209 +1,150 @@
-/*
-  A simple, lightweight jQuery plugin for creating sortable tables.
-  https://github.com/kylefox/jquery-tablesort
-  Version 0.0.1
-*/
+// Stupid jQuery table plugin.
+// https://github.com/joequery/Stupid-Table-Plugin
+// Correção tabela duplicando: https://github.com/joequery/Stupid-Table-Plugin/issues/138
 
-;(function($) {
+(function($) {
+  $.fn.stupidtable = function(sortFns) {
+    return this.each(function() {
+      var $table = $(this);
+      sortFns = sortFns || {};
+      sortFns = $.extend({}, $.fn.stupidtable.default_sort_fns, sortFns);
+      $table.data('sortFns', sortFns);
 
-  $.tablesort = function ($table, settings) {
-    var self = this;
-    this.$table = $table;
-    this.settings = $.extend({}, $.tablesort.defaults, settings);
-    this.$table.find('thead th').bind('click.tablesort', function() {
-      if( !$(this).hasClass('disabled') ) {
-        self.sort($(this));
-      }
+      $table.on("click.stupidtable", "thead th", function() {
+          $(this).stupidsort();
+      });
     });
-    this.index = null;
-    this.$th = null;
-    this.direction = [];
   };
 
-  $.tablesort.prototype = {
 
-    sort: function(th, direction) {
-      var start = new Date(),
-        self        = this,
-        table       = this.$table,
-        rows        = table.find('tbody tr'),
-        index       = th.index(),
-        cache       = [],
-        fragment    = $('<div/>'),
-        sortValueForCell = function(th, td, sorter) {
-          var
-            sortBy
-          ;
-          if(th.data().sortBy) {
-            sortBy = th.data().sortBy;
-            return (typeof sortBy === 'function')
-              ? sortBy(th, td, sorter)
-              : sortBy
-            ;
-          }
-          return ( td.data('sort') )
-            ? td.data('sort')
-            : td.text()
-          ;
-        },
-        naturalSort =  function naturalSort (a, b) {
-          var
-            chunkRegExp    = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi,
-            stripRegExp    = /(^[ ]*|[ ]*$)/g,
-            dateRegExp     = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
-            numericRegExp  = /^0x[0-9a-f]+$/i,
-            oRegExp        = /^0/,
-            cLoc           = 0,
-            useInsensitive = function(string) {
-              return ('' + string).toLowerCase().replace(',', '');
-            },
-            // convert all to strings strip whitespace
-            x              = useInsensitive(a).replace(stripRegExp, '') || '',
-            y              = useInsensitive(b).replace(stripRegExp, '') || '',
-            // chunk/tokenize
-            xChunked       = x.replace(chunkRegExp, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
-            yChunked       = y.replace(chunkRegExp, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
-            chunkLength    = Math.max(xChunked.length, yChunked.length),
-            // numeric, hex or date detection
-            xDate          = parseInt(x.match(numericRegExp), 10) || (xChunked.length != 1 && x.match(dateRegExp) && Date.parse(x)),
-            yDate          = parseInt(y.match(numericRegExp), 10) || xDate && y.match(dateRegExp) && Date.parse(y) || null,
-            xHexValue,
-            yHexValue,
-            index
-          ;
-          // first try and sort Hex codes or Dates
-          if (yDate) {
-            if( xDate < yDate ) {
-              return -1;
-            }
-            else if ( xDate > yDate ) {
-              return 1;
-            }
-          }
-          // natural sorting through split numeric strings and default strings
-          for(index = 0; index < chunkLength; index++) {
-              // find floats not starting with '0', string or 0 if not defined (Clint Priest)
-              xHexValue = !(xChunked[index] || '').match(oRegExp) && parseFloat(xChunked[index]) || xChunked[index] || 0;
-              yHexValue = !(yChunked[index] || '').match(oRegExp) && parseFloat(yChunked[index]) || yChunked[index] || 0;
-              // handle numeric vs string comparison - number < string - (Kyle Adams)
-              if (isNaN(xHexValue) !== isNaN(yHexValue)) {
-                return ( isNaN(xHexValue) )
-                  ? 1
-                  : -1
-                ;
-              }
-              // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
-              else if (typeof xHexValue !== typeof yHexValue) {
-                xHexValue += '';
-                yHexValue += '';
-              }
-              if (xHexValue < yHexValue) {
-                return -1;
-              }
-              if (xHexValue > yHexValue) {
-                return 1;
-              }
-          }
-          return 0;
-        }
-      ;
+  // Expects $("#mytable").stupidtable() to have already been called.
+  // Call on a table header.
+  $.fn.stupidsort = function(force_direction){
+    var $this_th = $(this);
+    var th_index = 0; // we'll increment this soon
+    var dir = $.fn.stupidtable.dir;
+    var $table = $this_th.closest("table");
+    var datatype = $this_th.data("sort") || null;
 
-      if(rows.length === 0) {
-        return;
-      }
-
-      self.$table.find('thead th').removeClass(self.settings.asc + ' ' + self.settings.desc);
-
-      this.$th = th;
-      if(this.index != index) {
-        this.direction[index] = 'desc';
-      }
-      else if(direction !== 'asc' && direction !== 'desc') {
-        this.direction[index] = this.direction[index] === 'desc' ? 'asc' : 'desc';
-      }
-      else {
-        this.direction[index] = direction;
-      }
-      this.index = index;
-      direction = this.direction[index] == 'asc' ? 1 : -1;
-
-      self.$table.trigger('tablesort:start', [self]);
-      self.log("Sorting by " + this.index + ' ' + this.direction[index]);
-
-      rows.sort(function(a, b) {
-        var aRow = $(a);
-        var bRow = $(b);
-        var aIndex = aRow.index();
-        var bIndex = bRow.index();
-
-        // Sort value A
-        if(cache[aIndex]) {
-          a = cache[aIndex];
-        }
-        else {
-          a = sortValueForCell(th, self.cellToSort(a), self);
-          cache[aIndex] = a;
-        }
-        // Sort Value B
-        if(cache[bIndex]) {
-          b = cache[bIndex];
-        }
-        else {
-          b = sortValueForCell(th, self.cellToSort(b), self);
-          cache[bIndex]= b;
-        }
-        return (naturalSort(a, b) * direction);
-      });
-
-      rows.each(function(i, tr) {
-        fragment.append(tr);
-      });
-      table.append(fragment.html());
-
-      th.addClass(self.settings[self.direction[index]]);
-
-      self.log('Sort finished in ' + ((new Date()).getTime() - start.getTime()) + 'ms');
-      self.$table.trigger('tablesort:complete', [self]);
-
-    },
-
-    cellToSort: function(row) {
-      return $($(row).find('td').get(this.index));
-    },
-
-
-    log: function(msg) {
-      if(($.tablesort.DEBUG || this.settings.debug) && console && console.log) {
-        console.log('[tablesort] ' + msg);
-      }
-    },
-
-    destroy: function() {
-      this.$table.find('thead th').unbind('click.tablesort');
-      this.$table.data('tablesort', null);
-      return null;
+    // No datatype? Nothing to do.
+    if (datatype === null) {
+      return;
     }
 
-  };
-
-  $.tablesort.DEBUG = false;
-
-  $.tablesort.defaults = {
-    debug: $.tablesort.DEBUG,
-    asc: 'sorted ascending',
-    desc: 'sorted descending'
-  };
-
-  $.fn.tablesort = function(settings) {
-    var table, sortable, previous;
-    return this.each(function() {
-      table = $(this);
-      previous = table.data('tablesort');
-      if(previous) {
-        previous.destroy();
-      }
-      table.data('tablesort', new $.tablesort(table, settings));
+    // Account for colspans
+    $this_th.parents("tr").find("th").slice(0, $(this).index()).each(function() {
+      var cols = $(this).attr("colspan") || 1;
+      th_index += parseInt(cols,10);
     });
+
+    var sort_dir;
+    if(arguments.length == 1){
+        sort_dir = force_direction;
+    }
+    else{
+        sort_dir = force_direction || $this_th.data("sort-default") || dir.ASC;
+        if ($this_th.data("sort-dir"))
+           sort_dir = $this_th.data("sort-dir") === dir.ASC ? dir.DESC : dir.ASC;
+    }
+
+    // Bail if already sorted in this direction
+    if ($this_th.data("sort-dir") === sort_dir) {
+      return;
+    }
+    // Go ahead and set sort-dir.  If immediately subsequent calls have same sort-dir they will bail
+    $this_th.data("sort-dir", sort_dir);
+
+    $table.trigger("beforetablesort", {column: th_index, direction: sort_dir});
+
+    // More reliable method of forcing a redraw
+    $table.css("display");
+
+    // Run sorting asynchronously on a timout to force browser redraw after
+    // `beforetablesort` callback. Also avoids locking up the browser too much.
+    setTimeout(function() {
+      // Gather the elements for this column
+      var column = [];
+      var sortFns = $table.data('sortFns');
+      var sortMethod = sortFns[datatype];
+
+      $table.children("tbody").each(function() {
+      var trs = "";
+      trs = $(this).children("tr");
+
+      // Extract the data for the column that needs to be sorted and pair it up
+      // with the TR itself into a tuple. This way sorting the values will
+      // incidentally sort the trs.
+      trs.each(function(index,tr) {
+        var $e = $(tr).children().eq(th_index);
+        var sort_val = $e.data("sort-value");
+
+        // Store and read from the .data cache for display text only sorts
+        // instead of looking through the DOM every time
+        if(typeof(sort_val) === "undefined"){
+          var txt = $e.text();
+          $e.data('sort-value', txt);
+          sort_val = txt;
+        }
+column.push([sort_val, tr]);
+      });
+
+      // Sort by the data-order-by value
+      column.sort(function(a, b) { return sortMethod(a[0], b[0]); });
+      if (sort_dir != dir.ASC)
+        column.reverse();
+
+      // Replace the content of tbody with the sorted rows. Strangely
+      // enough, .append accomplishes this for us.
+      trs = $.map(column, function(kv) { return kv[1]; });
+      console.log(trs);
+      $(this).append(trs);
+
+      // Reset siblings
+      $table.find("th").data("sort-dir", null).removeClass("sorting-desc sorting-asc");
+      $this_th.data("sort-dir", sort_dir).addClass("sorting-"+sort_dir);
+
+      $table.trigger("aftertablesort", {column: th_index, direction: sort_dir});
+      $table.css("display");
+
+        });
+
+    }, 10);
+
+    return $this_th;
   };
 
+  // Call on a sortable td to update its value in the sort. This should be the
+  // only mechanism used to update a cell's sort value. If your display value is
+  // different from your sort value, use jQuery's .text() or .html() to update
+  // the td contents, Assumes stupidtable has already been called for the table.
+  $.fn.updateSortVal = function(new_sort_val){
+  var $this_td = $(this);
+    if($this_td.is('[data-sort-value]')){
+      // For visual consistency with the .data cache
+      $this_td.attr('data-sort-value', new_sort_val);
+    }
+    $this_td.data("sort-value", new_sort_val);
+    return $this_td;
+  };
+
+  // ------------------------------------------------------------------
+  // Default settings
+  // ------------------------------------------------------------------
+  $.fn.stupidtable.dir = {ASC: "asc", DESC: "desc"};
+  $.fn.stupidtable.default_sort_fns = {
+    "int": function(a, b) {
+      return parseInt(a, 10) - parseInt(b, 10);
+    },
+    "float": function(a, b) {
+      return parseFloat(a) - parseFloat(b);
+    },
+    "string": function(a, b) {
+      return a.toString().localeCompare(b.toString());
+    },
+    "string-ins": function(a, b) {
+      a = a.toString().toLocaleLowerCase();
+      b = b.toString().toLocaleLowerCase();
+      return a.localeCompare(b);
+    }
+  };
 })(jQuery);

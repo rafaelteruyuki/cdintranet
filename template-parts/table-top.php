@@ -1,15 +1,15 @@
 <thead>
 <tr class="center aligned">
-  <th>Unidade</th>
-  <th>Finalidade</th>
-  <th class="left aligned">Título</th>
-  <th>Área</th>
-  <th>Data solicitação</th>
-  <th>Data início</th>
-  <th>Previsão publicação</th>
-  <th>Previsão peças</th>
-  <th>Responsáveis</th>
-  <th><i class="comment icon"></i></th>
-  <th>Status</th>
+  <th data-sort="string">Unidade</th>
+  <th data-sort="string">Finalidade</th>
+  <th data-sort="string" class="left aligned">Título</th>
+  <th data-sort="string">Área</th>
+  <th data-sort="int">Data solicitação</th>
+  <th data-sort="int">Data início</th>
+  <th data-sort="int">Previsão publicação</th>
+  <th data-sort="int">Previsão peças</th>
+  <th data-sort="string">Responsáveis</th>
+  <th data-sort="int"><i class="comment icon"></i></th>
+  <th data-sort="string">Status</th>
 </tr>
 </thead>

@@ -12,7 +12,43 @@ $('.ui.dropdown.item')
 $('#example1').progress();
 
 // Tabela classificação
-$('table').tablesort();
+
+var table = $("table").stupidtable();
+
+function change_date_format(classe) {
+  $(classe).each(function( index, element ) {
+    var date = $(element).html();
+    if ( date.match(/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]/) ) {
+      var newdate = date.split("/").reverse().join("");
+      $(element).updateSortVal(newdate); // update cache stupid table
+    } else if (!date) {
+      $(element).updateSortVal('111' + index); // update cache stupid table
+    } else {
+			$(element).updateSortVal('112' + index); // update cache stupid table
+		}
+  });
+}
+change_date_format('.data-solicitacao');
+change_date_format('.data-inicio');
+change_date_format('.data-publicacao');
+change_date_format('.data-previsao');
+
+// table.on("beforetablesort", function (event, data) {
+//   // Apply a "disabled" look to the table while sorting.
+//   $("tr").addClass("disabled");
+// });
+
+table.on("aftertablesort", function (event, data) {
+  // Reset loading message.
+  // $("tr").removeClass("disabled");
+
+  var th = $(this).find("th");
+  th.find(".arrow").remove();
+  var dir = $.fn.stupidtable.dir;
+
+  var arrow = data.direction === dir.ASC ? "&uarr;" : "&darr;";
+  th.eq(data.column).append('<span class="arrow"> ' + arrow +'</span>');
+});
 
 // Botões Filtro Catálogo
 $('.combo.dropdown')
