@@ -21,6 +21,9 @@ include ( locate_template('template-parts/var-tarefas.php') );
     elseif($finalidade['value'] === "pauta"){
       echo 'Pauta';
     }
+    elseif($finalidade['value'] === "patrocinio-rs"){
+      echo 'Patrocínio';
+    }
     ?>
 
   </td>
@@ -41,7 +44,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
   </td>
   <td class="collapsing"><?php $area = get_field('area_divulgacao_tarefa'); if ($area) { echo $area['label']; } ?></td>
   <td class="collapsing data-solicitacao"><?php $data = get_the_date('d/m/y'); echo $data; ?></td>
-  <td class="collapsing data-inicio"><?php if ( get_field('data_de_inicio_do_evento') ) { the_field('data_de_inicio_do_evento'); } elseif ( get_field('data_de_inicio_do_curso') ) { the_field('data_de_inicio_do_curso'); } else { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } ?></td>
+  <td class="collapsing data-inicio"><?php if ( get_field('data_de_inicio_do_evento') ) { the_field('data_de_inicio_do_evento'); } elseif ( get_field('data_de_inicio_do_curso') ) { the_field('data_de_inicio_do_curso'); } elseif ( get_field('data_inicial') ) { the_field('data_inicial'); } else { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } ?></td>
   <td class="collapsing data-publicacao"><?php if ( $publicacao && in_array('publicacao', $publicacao) ) the_field('previsao_de_publicacao'); elseif ($finalidade['value'] === "pauta") the_field('previsao_de_publicacao'); else echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Sem publicação</span>'; ?></td>
   <td class="collapsing data-previsao"><?php if ( $finalidade['value'] === "pauta" ) { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } else { the_field('previsao_conclusao'); } ?></td>
   <td class="left aligned collapsing" data-sort-value="<?php if ($responsavel1) echo $responsavel1['display_name'] . ' '; if ($responsavel2) echo $responsavel2['display_name'] . ' '; if ($responsavel3) echo $responsavel3['display_name'] . ' '; if ($responsavel4) echo $responsavel4['display_name'] . ' ';?>">

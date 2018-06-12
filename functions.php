@@ -2411,6 +2411,40 @@ function cd_comment_post_redirect( $comment_ID ) {
 	exit;
 }
 
+/* --------------------------
+
+TITULO PATROCINIO POSTS
+
+---------------------------- */
+
+function titulo_patrocinio( $post_id ) {
+
+	if ( 'tarefa' === get_post_type($post_id) ) {
+
+		if (get_the_title($post_id) == '') {
+
+			// get_field('area_divulgacao_tarefa', $post_id)
+
+	    $new_title = 'Patrocínio #' . $post_id;
+	    $new_slug = sanitize_title( $new_title );
+	    $my_post = array(
+	    	'ID'         => $post_id,
+	        'post_title' => $new_title,
+	        'post_name'  => $new_slug
+			);
+			wp_update_post( $my_post );
+
+		}
+
+		if (get_field('area_divulgacao_tarefa', $post_id) == '') {
+			update_field('area_divulgacao_tarefa', 'campanhas', $post_id);
+		}
+
+	}
+
+}
+add_action('acf/save_post', 'titulo_patrocinio', 20);
+
 // /* --------------------------
 //
 // LOGIN OBRIGATORIO PARA TODOS OS USUARIOS
