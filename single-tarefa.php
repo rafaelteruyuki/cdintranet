@@ -47,7 +47,7 @@ display: none;
 
 </style>
 
-<?php if( current_user_can('edit_dashboard') || current_user_can('portal') ) : ?>
+<?php if( current_user_can('edit_pages') ) : ?>
 
   <!-- MENU EDICAO DESIGNERS -->
 
@@ -110,13 +110,13 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
     <!-- COLUNA SOLICITAÇÃO -->
 
-    <div class="column">
+    <div class="column" id="solicitacao">
       <h3 class="ui dividing header"><i class="blue file text icon"></i>SOLICITAÇÃO</h3><br>
 
       <div class="ui list">
 
         <!-- DADOS SOLICITANTE -->
-        <div class="item">
+        <div class="item download-txt">
           <i class="right triangle icon"></i>
           <div class="content">
             <div class="header">Solicitante</div>
@@ -159,13 +159,128 @@ include ( locate_template('template-parts/var-tarefas.php') );
         </div>
 
         <!-- DATA DA SOLICITACAO -->
-        <div class="item">
+        <div class="item download-txt">
           <i class="right triangle icon"></i>
           <div class="content">
             <div class="header">Data da solicitação</div>
             <div class="description"><?php echo get_the_date('d/m/y') . ', às ' . get_the_date('G:i'); ?></div>
           </div>
         </div>
+
+        <?php if ( get_field('formato_da_postagem') ) : ?>
+
+        <!-- FORMATO DA POSTAGEM -->
+        <div class="item download-txt">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Formato da postagem</div>
+            <div class="description">
+              <?php the_field('formato_da_postagem'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('link_da_postagem') ) : ?>
+
+        <!-- LINK DA POSTAGEM -->
+        <div class="item download-txt">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Link da postagem</div>
+            <div class="description">
+              <?php if ( get_field('link_da_postagem') ) {
+                the_field('link_da_postagem');
+              } ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('link_do_portal') ) : ?>
+
+        <!-- LINK DA POSTAGEM -->
+        <div class="item download-txt">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Link do portal</div>
+            <div class="description">
+              <?php if ( get_field('link_do_portal') ) {
+                the_field('link_do_portal');
+              } ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('publico') ) : ?>
+
+        <!-- PUBLICO -->
+        <div class="item download-txt">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Público</div>
+            <div class="description">
+              <?php if ( get_field('publico') ) {
+                the_field('publico');
+              } ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('interesses_do_publico') ) : ?>
+
+        <!-- INTERESSES DO PUBLICO -->
+        <div class="item download-txt">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Interesses do público</div>
+            <div class="description">
+              <?php if ( get_field('interesses_do_publico') ) {
+                the_field('interesses_do_publico');
+              } ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('praca') ) : ?>
+
+        <!-- PRACA -->
+        <div class="item download-txt">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Praça</div>
+            <div class="description">
+              <?php if ( get_field('praca') ) {
+                the_field('praca');
+              } ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('data_inicial') || get_field('data_final') ) : ?>
+
+        <!-- PERIODO DO PATROCINIO -->
+        <div class="item download-txt">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Período do patrocínio</div>
+            <div class="description">
+              <?php the_field('data_inicial'); echo ' a '; the_field('data_final') ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
 
         <?php if ( get_field('data_de_inicio_do_curso') ) : ?>
 
@@ -418,6 +533,19 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
         <?php if( current_user_can('edit_pages') ) : ?>
 
+        <?php if( $finalidade['value'] == 'patrocinio-rs' ) : ?>
+        <!-- DOWNLOAD PATROCINIO -->
+        <div class="item">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Download</div>
+            <div class="description">
+                <a href="#" class="ui blue mini button" id="downloadLink" style="margin-top:10px;">Baixar solicitação</a>
+            </div>
+          </div>
+        </div>
+        <?php endif; ?>
+
         <!-- DELETAR -->
         <div class="item">
           <i class="right triangle icon"></i>
@@ -466,7 +594,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
           <div class="content">
             <div class="header">Responsáveis</div>
             <div class="description">
-              <?php if ($responsavel1 || $responsavel2 || $responsavel3 || $responsavel4) : ?>
+              <?php if ($responsavel1 || $responsavel2 || $responsavel3 || $responsavel4 || $responsavel5) : ?>
 
                 <div style="margin-top:10px;">
                   <?php if ($responsavel1) : ?>
@@ -493,6 +621,12 @@ include ( locate_template('template-parts/var-tarefas.php') );
                     </span>
                     &nbsp;
                   <?php endif; ?>
+                  <?php if ($responsavel5) : ?>
+                    <span class="ui mini circular image cd-popup" title="<?php echo $responsavel5['display_name'] ?>">
+                      <?php echo $responsavel5['user_avatar'];?>
+                    </span>
+                    &nbsp;
+                  <?php endif; ?>
                 </div>
 
             <?php else : ?>
@@ -501,6 +635,38 @@ include ( locate_template('template-parts/var-tarefas.php') );
             </div>
           </div>
         </div>
+
+        <?php if ( get_field('campanha') ) : ?>
+
+        <!-- CAMPANHA -->
+        <div class="item download-txt">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Campanha</div>
+            <div class="description">
+              <?php if ( get_field('campanha') ) {
+                the_field('campanha');
+              } ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('investimento') ) : ?>
+
+        <!-- INVESTIMENTO -->
+        <div class="item download-txt">
+          <i class="right triangle icon"></i>
+          <div class="content">
+            <div class="header">Investimento</div>
+            <div class="description">
+              R$ <?php the_field('investimento'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
 
         <?php // if ( $publicacao && in_array('publicacao', $publicacao) ): ?>
 
@@ -983,6 +1149,40 @@ $(function(){
 
   }
 
+});
+
+
+
+$('#investimento input').mask("#.##0,00", {reverse: true});
+
+
+function downloadInnerHtml(filename, elClass, mimeType) {
+
+    var elHtml = document.querySelectorAll(elClass);
+
+        var newHTML = '';
+
+        elHtml.forEach(function(element, index) {
+
+            newHTML = newHTML + element.innerText + '\n';
+
+        });
+
+    var link = document.createElement('a');
+    mimeType = mimeType || 'text/plain';
+
+    console.log(newHTML);
+
+    document.body.append(link)
+    link.setAttribute('download', filename);
+    link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(newHTML));
+    link.click();
+}
+
+var fileName =  'patrocinio.txt';
+
+$('#downloadLink').click(function(){
+    downloadInnerHtml(fileName, '.download-txt','text/plain');
 });
 
 </script>

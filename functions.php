@@ -2419,7 +2419,9 @@ TITULO PATROCINIO POSTS
 
 function titulo_patrocinio( $post_id ) {
 
-	if ( 'tarefa' === get_post_type($post_id) ) {
+	$finalidade = get_field('finalidade', $post_id);
+
+	if ( $finalidade['value'] == 'patrocinio-rs'  ) {
 
 		if (get_the_title($post_id) == '') {
 

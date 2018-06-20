@@ -7,6 +7,7 @@ $responsavel1 = get_field('responsavel_1');
 $responsavel2 = get_field('responsavel_2');
 $responsavel3 = get_field('responsavel_portal');
 $responsavel4 = get_field('responsavel_portal_2');
+$responsavel5 = get_field('responsavel_rs');
 
 $finalidade = get_field('finalidade');
 $modalidade = get_field('modalidade_curso');

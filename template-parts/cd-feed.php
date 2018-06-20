@@ -42,6 +42,14 @@ if ( current_user_can( 'portal' ) ) {
   );
 }
 
+if ( current_user_can( 'redes_sociais' ) ) {
+  $segmentacao = array(
+    'key'		=> 'segmentacao',
+    'value'		=> 'redes_sociais',
+    'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
+  );
+}
+
 // PARTICIPANTE
 
 $participante = array(
