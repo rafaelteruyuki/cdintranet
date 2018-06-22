@@ -1,6 +1,6 @@
 <!--Footer-->
 
-<div class="ui inverted vertical segment" style="font-size:0.9em; background-image:url(<?php bloginfo('template_url'); ?>/images/bg.png); background-attachment:fixed;">
+<div class="ui inverted vertical segment" style="font-size:0.9em; background-image:url(<?php bloginfo('template_url'); ?>/images/bg.png);">
     <div class="ui four column grid container stackable cd-margem">
 
       <div class="column">
