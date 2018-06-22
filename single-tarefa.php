@@ -51,7 +51,7 @@
     </h3>
     <!-- BARRA PORCENTAGEM -->
     <div class="ui hidden divider"></div>
-    <div class="label" style="margin-bottom: 10px;"><i class="power <?= $corStatus ?> icon"></i><strong>Status: <?= $status['label'] ?></strong></div>
+    <div class="label" style="margin-bottom: 10px;"><i class="power <?= $corStatus ?> icon"></i><strong>Status: <?= $status['label'] ?></strong> <?php $bg_icon = cd_date_diff(); echo $bg_icon['icon']; ?></div>
     <div class="ui small indicating progress" data-percent="<?= $percent ?>" id="example1" style="margin:0;">
       <div class="bar"></div>
     </div>
