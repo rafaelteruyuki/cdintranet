@@ -66,26 +66,21 @@ function url_check() {
 
   </div>
 
-  <?php
-  // $count_naoiniciado = get_post_count_by_meta('status', 'naoiniciado', 'tarefa');
-  // $count_cancelado = get_post_count_by_meta('status', 'cancelado', 'tarefa');
-  // $count_incompleto = get_post_count_by_meta('status', 'incompleto', 'tarefa');
-  // $count_aguardando = get_post_count_by_meta('status', 'aguardandoinformacao', 'tarefa');
-  // $count_emproducao = get_post_count_by_meta('status', 'emproducao', 'tarefa');
-  // $count_publicado = get_post_count_by_meta('status', 'publicado', 'tarefa');
-  // $count_finalizado = get_post_count_by_meta('status', 'finalizado', 'tarefa');
-  ?>
-
   <div class="middle aligned right aligned column" style="padding-right:0;">
 
-  <!-- <a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=naoiniciado" class="ui circular label cd-popup" title="Não iniciados"><?// = $count_naoiniciado; ?></a>
-  <a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=cancelado" class="ui grey circular label cd-popup" title="Cancelados"><?// = $count_cancelado; ?></a>
-  <a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=incompleto" class="ui red circular label cd-popup" title="Incompletos"><?// = $count_incompleto; ?></a>
-	<a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=aguardandoinformacao" class="ui orange circular label cd-popup" title="Aguardando informação"><?// = $count_aguardando; ?></a>
-	<a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=emproducao" class="ui yellow circular label cd-popup" title="Em produção"><?// = $count_emproducao; ?></a>
-  <a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=publicado" class="ui olive circular label cd-popup" title="Publicados"><?// = $count_publicado; ?></a>
-	<a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=finalizado" class="ui green circular label cd-popup" title="Finalizados"><?// = $count_finalizado; ?></a>
+  <!-- <a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=naoiniciado" class="ui circular label cd-popup" title="Não iniciados"><?//= $count_naoiniciado; ?></a>
+  <a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=cancelado" class="ui grey circular label cd-popup" title="Cancelados"><?//= $count_cancelado; ?></a>
+  <a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=incompleto" class="ui red circular label cd-popup" title="Incompletos"><?//= $count_incompleto; ?></a>
+	<a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=aguardandoinformacao" class="ui orange circular label cd-popup" title="Aguardando informação"><?//= $count_aguardando; ?></a>
+	<a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=emproducao" class="ui yellow circular label cd-popup" title="Em produção"><?//= $count_emproducao; ?></a>
+  <a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=publicado" class="ui olive circular label cd-popup" title="Publicados"><?//= $count_publicado; ?></a>
+	<a href="<?php // bloginfo('url')?>/index.php/tarefa/?_sfm_status=finalizado" class="ui green circular label cd-popup" title="Finalizados"><?//= $count_finalizado; ?></a>
   <a href="<?php // bloginfo('url')?>/index.php/tarefa" class="ui black circular label cd-popup" title="Todos"><?php // $count_posts = wp_count_posts('tarefa'); $published_posts = $count_posts->publish; echo $published_posts; ?></a> -->
+
+    <!--<div class="ui grey circular label" title="Não iniciadas" id="totalNaoIniciado"></div>-->
+    <!--<div class="ui orange circular label" title="Aguardando" id="totalAguardando"></div>-->
+    <!--<div class="ui yellow circular label" title="Em produção" id="totalEmProducao"></div>-->
+    <!--<div class="ui green circular label" title="Finalizadas" id="totalConcluido"></div>-->
 
     <div class="ui large buttons" style="margin: 0 10px">
       <a data-tooltip="Filtros" class="ui icon cd-filtro button tarefas cd-filter-on">
