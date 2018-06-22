@@ -2447,6 +2447,36 @@ function titulo_patrocinio( $post_id ) {
 }
 add_action('acf/save_post', 'titulo_patrocinio', 20);
 
+/* --------------------------
+
+POSTS EM ANALISE POR MAIS DE 2 DIAS
+
+---------------------------- */
+
+function cd_date_diff($date_1 , $date_2) {
+
+	$status = get_field('status');
+
+	if (current_user_can('edit_pages') && $status['value'] == 'naoiniciado') :
+
+		$date_1 = date('Y-m-d', strtotime(get_the_date('Y-m-d'))); // post date
+		$date_2 = date('Y-m-d', time()); // current date
+
+    $datetime1 = date_create($date_1);
+    $datetime2 = date_create($date_2);
+
+    $interval = date_diff($datetime1, $datetime2);
+
+    $days = $interval->format('%a');
+
+		if ($days > 2) {
+			return array('bg' => 'background: #fffceb;', 'icon' => '<i class="yellow warning sign icon cd-popup" title="Mais de 2 dias em análise" data-variation="very wide mini inverted"></i>' );
+		}
+
+	endif;
+
+}
+
 // /* --------------------------
 //
 // LOGIN OBRIGATORIO PARA TODOS OS USUARIOS
