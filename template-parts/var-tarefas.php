@@ -16,6 +16,7 @@ $status = get_field('status');
 $publicacao = get_field('publicacao_pecas');
 $texto_luares = get_field('texto_luares');
 $imagem_gd = get_field('imagem_gd');
+$participantes = get_field('participante');
 
 $imagem_capa = get_field('imagem_capa');
 $imagem_miniatura = get_field('imagem_miniatura');
