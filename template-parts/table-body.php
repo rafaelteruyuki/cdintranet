@@ -5,7 +5,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
 ?>
 
-<tr class="center aligned cd-tarefa" style="cursor:pointer; <?php new_task('background:#ebf7ff;'); ?><?= comment_nao_lido(); ?>" onclick="window.open('<?php the_permalink(); ?>');" >
+<tr class="center aligned cd-tarefa" style="cursor:pointer; <?php new_task('background:#ebf7ff;'); ?><?= comment_nao_lido(); ?><?php $bg_icon = cd_date_diff(); echo $bg_icon['bg']; ?>" onclick="window.open('<?php the_permalink(); ?>');" >
   <td class="collapsing"><?php the_field('unidade'); ?></td>
   <td class="collapsing">
 
@@ -29,7 +29,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
   </td>
   <td class="left aligned" style="white-space:nowrap;  max-width:200px; font-weight:bold; position:relative;<?php if ( current_user_can('edit_dashboard') ) : ?> padding-right: 55px; <?php endif; ?>">
     <div style="overflow:hidden; text-overflow:ellipsis;">
-    <?php $bg_icon = cd_date_diff(); echo $bg_icon['icon']; new_task(); echo ' '; the_title(); ?><?php if ( get_field('formato_da_postagem') ) { echo ' - '; the_field('formato_da_postagem'); } if ( get_field('campanha') ) { echo ' - '; the_field('campanha'); } ?>
+    <?php echo $bg_icon['icon']; new_task(); echo ' '; the_title(); ?><?php if ( get_field('formato_da_postagem') ) { echo ' - '; the_field('formato_da_postagem'); } if ( get_field('campanha') ) { echo ' - '; the_field('campanha'); } ?>
     <?php if ( current_user_can('edit_dashboard') ) : ?>
       <?php if (!$texto_luares) : ?><i class="file text icon" style="color: #CCC; position:absolute; right:25px;"></i><?php endif; ?>
       <?php if ($texto_luares['value'] == 'solicitar-texto') : ?><i style="position:absolute; right:25px;" class="red file text icon cd-popup" title="Solicitar texto" data-variation="very wide mini inverted"></i><?php endif; ?>
