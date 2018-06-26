@@ -189,10 +189,10 @@ display: none;
   background-color: #ffffff !important;
 }
 
-.comment {
+.ui.threaded.comments .comment {
 	margin: 1.5em 0 0 !important;
 }
 
-.comment .text p {
+.ui.threaded.comments .comment .text p {
 	margin: 0 0 0.7em !important;
 }
