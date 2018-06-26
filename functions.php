@@ -2470,7 +2470,7 @@ function cd_date_diff($date_1 , $date_2) {
     $days = $interval->format('%a');
 
 		if ($days >= 2) {
-			return array('bg' => 'background: #fffdf1;', 'icon' => '<i class="yellow warning sign icon cd-popup" title="Mais de 2 dias em análise" data-variation="very wide mini inverted"></i>' );
+			return array('bg' => 'background: #fffbe2;', 'icon' => '<i class="yellow warning sign icon cd-popup" title="Mais de 2 dias em análise" data-variation="very wide mini inverted"></i>' );
 		}
 
 	endif;
