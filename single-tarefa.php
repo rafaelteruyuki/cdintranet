@@ -1,7 +1,7 @@
 <?php acf_form_head(); ?>
 <?php get_header(); ?>
 
-<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css?ver=1.1">
+<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css?ver=1.2">
 
 <?php if( current_user_can('edit_pages') ) : ?>
 <!-- MENU EDICAO -->
