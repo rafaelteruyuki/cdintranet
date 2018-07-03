@@ -931,6 +931,6 @@
 
 ?>
 
-<script src="<?php bloginfo('template_url'); ?>/js/tarefa.js?ver=1.0"></script>
+<script src="<?php bloginfo('template_url'); ?>/js/tarefa.js?ver=1.1"></script>
 
 <?php get_footer(); ?>

@@ -115,7 +115,7 @@ function downloadInnerHtml(filename, elClass, mimeType) {
 
         elHtml.forEach(function(element, index) {
 
-            newHTML = newHTML + element.innerText + '\n';
+            newHTML = newHTML + element.innerText + "\r\n";
 
         });
 
