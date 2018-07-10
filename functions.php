@@ -1880,6 +1880,24 @@ function my_save_post( $post_id ) {
 
 			}
 
+			//REDES SOCIAIS
+			if( in_array('redes_sociais', $segmentacao) || $segmentacao == 'redes_sociais' ) {
+
+			$designers = get_users('role=redes_sociais');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
+
+						}
+
+			}
+
+			}
+
 		}
 
 	// $destinos = array_merge($destinos, $array_designers);
@@ -2181,6 +2199,24 @@ function comment_notification_email( $comment_id ) {
 				}
 
 	  		}
+
+				//REDES SOCIAIS
+				if( in_array('redes_sociais', $segmentacao) || $segmentacao == 'redes_sociais' ) {
+
+				$designers = get_users('role=redes_sociais');
+
+				foreach ( $designers as $designer ) {
+
+							if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+								// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
+
+							}
+
+				}
+
+				}
 
   		}
 
