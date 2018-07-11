@@ -196,3 +196,14 @@ display: none;
 .ui.threaded.comments .comment .text p {
 	margin: 0 0 0.7em !important;
 }
+
+.ui-timepicker-div.ui-timepicker-oneLine {
+    padding-right: 2px;
+    background-color: #3974d7;
+    padding: 2px 8px;
+    color: white;
+}
+
+.ui.list .item .content .description {
+	word-wrap: break-word;
+}

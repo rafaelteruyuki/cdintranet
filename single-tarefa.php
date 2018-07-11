@@ -1,7 +1,7 @@
 <?php acf_form_head(); ?>
 <?php get_header(); ?>
 
-<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css?ver=1.3">
+<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css?ver=1.4">
 
 <?php if( current_user_can('edit_pages') ) : ?>
 <!-- MENU EDICAO -->
@@ -562,7 +562,7 @@
 
         <?php endif; ?>
 
-        <?php if ( get_field('investimento') ) : ?>
+        <?php if ( get_field('investimento') && current_user_can('edit_pages') ) : ?>
 
         <!-- INVESTIMENTO -->
         <div class="item download-txt">

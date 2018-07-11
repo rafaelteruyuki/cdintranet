@@ -6,12 +6,12 @@ Template Name: Formulário Solicitação
 
 get_header(); ?>
 
-<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css">
+<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css?ver=1.1">
 
 <?php
 $current_user = wp_get_current_user();
 $current_user_id = get_current_user_id();
-$test_users = array(1, 114, 77, 57, 151, 113, 132, 55, 47, 51, 50, 49, 48, 53, 97, 37, 99, 76, 67, 146, 143, 220);
+$test_users = array(1, 114, 77, 57, 151, 113, 132, 55, 47, 51, 50, 49, 48, 53, 97, 37, 99, 76, 67, 146, 143, 220, 239);
 $test_users_rs = array(1, 47, 37, 99, 52, 97, 172, 145, 55, 196, 222, 75, 76);
 ?>
 
