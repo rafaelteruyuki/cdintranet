@@ -116,7 +116,7 @@
           <!-- <i class="right triangle icon"></i> -->
           <div class="content">
             <div class="header">Data da solicitação</div>
-            <div class="description"><?php echo get_the_date('d/m/y') . ', às ' . get_the_date('G:i'); ?></div>
+            <div class="description"><?php echo get_the_date('d/m/y') . ' - ' . get_the_date('G:i'); ?></div>
           </div>
         </div>
 
@@ -246,14 +246,44 @@
           <div class="item">
             <!-- <i class="right triangle icon"></i> -->
             <div class="content">
-              <div class="header">Data de início do evento</div>
+              <div class="header">Data e horário inicial</div>
               <div class="description">
                 <?php the_field('data_de_inicio_do_evento'); ?>
               </div>
             </div>
           </div>
 
-          <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if ( get_field('data_e_horario_final') ) : ?>
+
+          <!-- DATA FINAL DO EVENTO -->
+          <div class="item">
+            <!-- <i class="right triangle icon"></i> -->
+            <div class="content">
+              <div class="header">Data e horário final</div>
+              <div class="description">
+                <?php the_field('data_e_horario_final'); ?>
+              </div>
+            </div>
+          </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('numero_de_atividades') ) : ?>
+
+        <!-- NUMERO DE ATIVIDADES -->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Número de atividades</div>
+            <div class="description">
+              <?php the_field('numero_de_atividades'); echo ' atividade(s)'; ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
 
           <?php if ( get_field('publicacao_pecas') ) : ?>
 
@@ -261,7 +291,7 @@
           <div class="item">
             <!-- <i class="right triangle icon"></i> -->
             <div class="content">
-              <div class="header">Publicação no portal / peças</div>
+              <div class="header">Publicação / Peças</div>
               <div class="description">
                 <?php the_field('publicacao_pecas'); ?>
               </div>
@@ -270,18 +300,18 @@
 
           <?php endif; ?>
 
-          <?php if ( get_field('numero_de_atividades') ) : ?>
+          <?php if ( get_field('tipo_de_evento') ) : ?>
 
-          <!-- NUMERO DE ATIVIDADES -->
-          <div class="item">
-            <!-- <i class="right triangle icon"></i> -->
-            <div class="content">
-              <div class="header">Número de atividades</div>
-              <div class="description">
-                <?php the_field('numero_de_atividades'); echo ' atividade(s)'; ?>
+            <!-- TIPO DE EVENTO -->
+            <div class="item">
+              <!-- <i class="right triangle icon"></i> -->
+              <div class="content">
+                <div class="header">Tipo de evento</div>
+                <div class="description">
+                  <?php the_field('tipo_de_evento'); ?>
+                </div>
               </div>
             </div>
-          </div>
 
           <?php endif; ?>
 
@@ -302,6 +332,101 @@
           </div>
 
         <?php endif; ?>
+
+        <?php
+
+        // EVENTO LOCAL (SIMPLES)
+
+        $evento_simples = acf_get_fields('3005');
+
+        if ( get_field('tipo_de_evento') == 'Evento Local (simples)' && $evento_simples ) {
+
+          foreach( $evento_simples as $field ) {
+
+            $value = get_field( $field['name'] );
+
+            if ( $value ) {
+
+              echo '<div class="item">';
+              echo '<div class="content">';
+              echo '<div class="header">' . $field['label'] . '</div>';
+              echo '<div class="description">';
+
+              if ( $field['type'] == 'radio' ) {
+
+                echo $value['label'];
+
+              } elseif ( $field['type'] == 'repeater' ) {
+
+                if (have_rows($field['name'])) {
+
+                  while ( have_rows($field['name']) ) : the_row();
+
+                    echo '<p>';
+
+                      $foto = get_sub_field($field['sub_fields'][0]['name']);
+
+                      if ($foto) {
+                        echo '<a href="' . $foto . '" class="ui primary icon button" target="_blank" style="margin: 1em 1em 1em 0;"><i class="user icon"></i></a>';
+                      } else {
+                        echo '<a class="ui icon button" style="margin: 1em 1em 1em 0;"><i class="user icon"></i></a>';
+                      }
+
+                      the_sub_field($field['sub_fields'][1]['name']); echo '<br>';
+                      the_sub_field($field['sub_fields'][2]['name']); echo '<br>';
+
+                    echo '</p>';
+
+                  endwhile;
+
+                }
+
+              } else {
+
+                echo $value;
+
+              }
+
+              echo '</div>';
+              echo '</div>';
+              echo '</div>';
+
+            }
+
+          }
+
+        }
+
+        // EVENTO LOCAL (PLUS)
+
+        $evento_plus = acf_get_fields('23575');
+
+        if ( get_field('tipo_de_evento') == 'Evento Local (mais de uma atividade)' && $evento_plus ) {
+
+          foreach( $evento_plus as $field ) {
+
+            $value = get_field( $field['name'] );
+
+            if ( $value ) {
+
+              echo '<div class="item">';
+              echo '<div class="content">';
+              echo '<div class="header">' . $field['label'] . '</div>';
+              echo '<div class="description">';
+
+              echo $value;
+
+              echo '</div>';
+              echo '</div>';
+              echo '</div>';
+
+            }
+
+          }
+
+        }
+
+        ?>
 
         <?php if ( get_field('tipo_de_criacao') ) : ?>
 
@@ -741,7 +866,7 @@
           <div class="content">
             <div class="header">Última atualização</div>
             <div class="description">
-              <?php the_modified_date('d/m/y'); echo ', às '; the_modified_time('G:i');?>
+              <?php the_modified_date('d/m/y'); echo ' - '; the_modified_time('G:i');?>
               <?php if ( get_post_meta(get_post()->ID, '_edit_last') ) { echo '<br>por '; the_modified_author(); } ?>
             </div>
           </div>
@@ -793,7 +918,7 @@
 
   <div class="ui vertical basic segment" style="background:rgba(0,0,0,.05);">
     <div class="ui center aligned container" style="margin-top: 20px;">
-      <strong>Data da solicitação: </strong><?= get_the_date('d/m/Y') . ', às ' . get_the_date('G:i'); ?>
+      <strong>Data da solicitação: </strong><?= get_the_date('d/m/y') . ' - ' . get_the_date('G:i'); ?>
     </div>
     <div class="ui grid container stackable">
 
@@ -815,6 +940,8 @@
 </div>
 
 <?php endwhile; ?>
+
+<?php get_template_part('template-parts/prazos') ?>
 
 <a class="ui large blue button icon topo" style="display:none;"><i class="up arrow icon"></i></a>
 

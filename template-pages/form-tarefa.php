@@ -90,6 +90,8 @@ $test_users_rs = array(1, 47, 37, 99, 52, 97, 172, 145, 55, 196, 222, 75, 76);
 <span id="cd-user-telefone" style="display:none"><?= $telefone ?></span>
 <?php endif;?>
 
+<?php get_template_part('template-parts/prazos') ?>
+
 <script type="text/javascript" src="<?php bloginfo('template_url') ?>/js/get-curso-form-tarefa.js?ver=1.2"></script>
 
 <?php get_footer(); ?>

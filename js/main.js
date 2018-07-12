@@ -156,4 +156,7 @@ $('#acf-form .acf-field-5787b4caf1816 input').on('change', function() {
 	 }
 });
 
+// Modal Prazos
+$('.ui.modal.prazos').modal('attach events', '.modal-prazos-btn', 'show');
+
 // });
