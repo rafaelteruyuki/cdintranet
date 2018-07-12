@@ -207,3 +207,18 @@ display: none;
 .ui.list .item .content .description {
 	word-wrap: break-word;
 }
+
+.select2-container.-acf .select2-choices {
+    background: #fff;
+    border-color: #ddd;
+    box-shadow: unset;
+    min-height: 40px;
+    padding-top: 4px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fafafa;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}

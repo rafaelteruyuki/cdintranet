@@ -145,4 +145,15 @@ $('.cd-delete.modal')
   .modal('attach events', '.cd-cancel-btn', 'hide')
 ;
 
+// Se for divulgação de evento, limita o título a 70 caracteres com espaços
+$('#acf-form .acf-field-5787b4caf1816 input').on('change', function() {
+	 var radio = $('input:checked', '#acf-form').val();
+	 if (radio == 'devento') {
+		 // alert('Evento!');
+		 $('#acf-_post_title').attr('maxlength', '70').attr('placeholder', 'Até 70 caracteres com espaços');
+	 } else {
+		 $('#acf-_post_title').removeAttr('maxlength').removeAttr('placeholder');
+	 }
+});
+
 // });

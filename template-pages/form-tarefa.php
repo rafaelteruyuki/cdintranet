@@ -6,7 +6,7 @@ Template Name: Formulário Solicitação
 
 get_header(); ?>
 
-<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css?ver=1.1">
+<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css?ver=1.2">
 
 <?php
 $current_user = wp_get_current_user();
