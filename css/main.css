@@ -172,3 +172,9 @@
 	margin-top: 60px;
 	z-index: 10;
 }
+
+/* Remove os segundos do Datepicker*/
+.ui_tpicker_second,
+.ui_tpicker_second::before {
+  display: none !important;
+}

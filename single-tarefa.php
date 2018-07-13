@@ -399,7 +399,7 @@
 
         // EVENTO LOCAL (PLUS)
 
-        $evento_plus = acf_get_fields('23575');
+        $evento_plus = acf_get_fields('27830');
 
         if ( get_field('tipo_de_evento') == 'Evento Local (mais de uma atividade)' && $evento_plus ) {
 
@@ -430,11 +430,11 @@
 
         <?php if ( get_field('tipo_de_criacao') ) : ?>
 
-        <!-- TIPO DE CRIACAO -->
+        <!-- CRIACAO DE PECAS-->
         <div class="item">
           <!-- <i class="right triangle icon"></i> -->
           <div class="content">
-            <div class="header">Tipo de criação</div>
+            <div class="header">Criação de peças</div>
             <div class="description">
               <?php the_field('tipo_de_criacao'); ?>
             </div>

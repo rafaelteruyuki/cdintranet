@@ -21,7 +21,7 @@ function carrega_scripts() {
 	}
 	wp_enqueue_style( 'jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css',false,'1.1','all');
 	wp_enqueue_style( 'form-solicitacao', get_template_directory_uri() . '/css/form-solicitacao.css',false,'1.1','all');
-	wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.4','all');
+	wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.5','all');
 	wp_enqueue_style( 'popup', get_template_directory_uri() . '/components/popup.css',false,'1.1','all');
 
 	// Javascript
