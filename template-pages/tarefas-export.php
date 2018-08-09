@@ -72,17 +72,22 @@ include ( locate_template('template-parts/cd-feed.php') );
 
 $args = array(
   'post_type'              => 'tarefa',
-  'posts_per_page'         => -1,
+  'posts_per_page'         => 500,
   'order'                  => 'DESC',
-  // 'orderby'                => 'modified',
-  // 'author'                 => $feed_rc,
-  // 'meta_query'             => array( $feed_cd ),
-  // 'meta_query'             => array(
-  //   array(
-  //     'key'		=> 'publicacao_pecas',
-  //     'value'		=> '"publicacao"',
-  //     'compare' => 'LIKE'
-  //   ),
+  // 'orderby'                 => 'meta_value',
+  // 'meta_query' => array(
+  //     'relation' => 'AND',
+  //     array(
+  //         'key' => 'previsao_de_publicacao',
+  //         'value' => array('2018-07-01', '2018-08-01'),
+  //         'compare' => 'BETWEEN',
+  //         'type' => 'DATE'
+  //     ),
+  //     array(
+  //         'key' => 'finalidade',
+  //         'value' => 'devento',
+  //
+  //     ),
   // ),
 );
 
