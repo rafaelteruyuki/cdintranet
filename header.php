@@ -137,6 +137,7 @@
             <!-- REDES SOCIAIS -->
             <?php if ( current_user_can( 'redes_sociais' ) ) : ?>
               <a href="<?php bloginfo( 'url' ); ?>/minhas-solicitacoes/" class="item"><i class="list layout icon"></i>Minhas solicitações</a>
+              <a href="<?php bloginfo( 'url' ); ?>/minhas-tarefas/" class="item"><i class="list layout icon"></i>Minhas tarefas</a>
               <a href="<?php bloginfo( 'url' ); ?>/tarefa/" class="item"><i class="list icon"></i>Todas as tarefas</a>
               <a class="item" id="calculadora-prazos"><i class="checked calendar icon"></i>Calculadora de prazos</a>
             <?php endif; ?>

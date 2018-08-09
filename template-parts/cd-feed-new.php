@@ -133,6 +133,12 @@ if ( $finalidade && in_array('pauta', $finalidade) ) {
 
 }
 
+if ( $finalidade && in_array('patrocinio-rs', $finalidade) ) {
+
+  update_field( 'segmentacao', 'redes_sociais', $post_id);
+
+}
+
 // PORTAL
 
 // if ( ($publicacao_pecas && in_array('publicacao', $publicacao_pecas)) || ($finalidade && in_array('pauta', $finalidade))  ) {

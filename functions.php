@@ -21,7 +21,7 @@ function carrega_scripts() {
 	}
 	wp_enqueue_style( 'jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css',false,'1.1','all');
 	wp_enqueue_style( 'form-solicitacao', get_template_directory_uri() . '/css/form-solicitacao.css',false,'1.1','all');
-	wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.4','all');
+	wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.5','all');
 	wp_enqueue_style( 'popup', get_template_directory_uri() . '/components/popup.css',false,'1.1','all');
 
 	// Javascript
@@ -32,7 +32,7 @@ function carrega_scripts() {
 	wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '1.1', true );
 	wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '1.0', true );
 	wp_enqueue_script( 'jquery-mask', get_template_directory_uri() . '/js/jquery.mask.min.js', array('jquery'), '1.0', false );
-	wp_enqueue_script( 'main', get_template_directory_uri()."/js/main.js", array('jquery'), '1.2', true);
+	wp_enqueue_script( 'main', get_template_directory_uri()."/js/main.js", array('jquery'), '1.4', true);
 	wp_enqueue_script( 'custom-js', get_template_directory_uri()."/js/scripts.js", array('jquery'), '1.0', true);
 
 	wp_localize_script('custom-js', 'ajax_object',
@@ -1880,6 +1880,24 @@ function my_save_post( $post_id ) {
 
 			}
 
+			//REDES SOCIAIS
+			if( in_array('redes_sociais', $segmentacao) || $segmentacao == 'redes_sociais' ) {
+
+			$designers = get_users('role=redes_sociais');
+
+			foreach ( $designers as $designer ) {
+
+						if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+							// $array_designers[] = $designer->user_email;
+							array_push($destinos, $designer->user_email);
+
+						}
+
+			}
+
+			}
+
 		}
 
 	// $destinos = array_merge($destinos, $array_designers);
@@ -2182,6 +2200,24 @@ function comment_notification_email( $comment_id ) {
 
 	  		}
 
+				//REDES SOCIAIS
+				if( in_array('redes_sociais', $segmentacao) || $segmentacao == 'redes_sociais' ) {
+
+				$designers = get_users('role=redes_sociais');
+
+				foreach ( $designers as $designer ) {
+
+							if ( get_field('receber_notificacoes_por_email', 'user_' . $designer->ID) ) {
+
+								// $array_designers[] = $designer->user_email;
+								array_push($destinos, $designer->user_email);
+
+							}
+
+				}
+
+				}
+
   		}
 
 		//PARTICIPANTES
@@ -2409,6 +2445,72 @@ add_action( 'comment_post', 'cd_comment_post_redirect', 10, 2 );
 function cd_comment_post_redirect( $comment_ID ) {
 	wp_safe_redirect( $_SERVER["HTTP_REFERER"] . '/?comment_id=' . $comment_ID );
 	exit;
+}
+
+/* --------------------------
+
+TITULO PATROCINIO POSTS
+
+---------------------------- */
+
+function titulo_patrocinio( $post_id ) {
+
+	$finalidade = get_field('finalidade', $post_id);
+
+	if ( $finalidade['value'] == 'patrocinio-rs'  ) {
+
+		if (get_the_title($post_id) == '') {
+
+			// get_field('area_divulgacao_tarefa', $post_id)
+
+	    $new_title = 'Patrocínio #' . $post_id;
+	    $new_slug = sanitize_title( $new_title );
+	    $my_post = array(
+	    	'ID'         => $post_id,
+	        'post_title' => $new_title,
+	        'post_name'  => $new_slug
+			);
+			wp_update_post( $my_post );
+
+		}
+
+		if (get_field('area_divulgacao_tarefa', $post_id) == '') {
+			update_field('area_divulgacao_tarefa', 'campanhas', $post_id);
+		}
+
+	}
+
+}
+add_action('acf/save_post', 'titulo_patrocinio', 20);
+
+/* --------------------------
+
+POSTS EM ANALISE POR MAIS DE 2 DIAS
+
+---------------------------- */
+
+function cd_date_diff($date_1 , $date_2) {
+
+	$status = get_field('status');
+
+	if (current_user_can('edit_pages') && $status['value'] == 'naoiniciado') :
+
+		$date_1 = date('Y-m-d', strtotime(get_the_date('Y-m-d'))); // post date
+		$date_2 = date('Y-m-d', time()); // current date
+
+    $datetime1 = date_create($date_1);
+    $datetime2 = date_create($date_2);
+
+    $interval = date_diff($datetime1, $datetime2);
+
+    $days = $interval->format('%a');
+
+		if ($days >= 2) {
+			return array('bg' => 'background: #fffbe2;', 'icon' => '<i class="yellow warning sign icon cd-popup" title="Mais de 2 dias em análise" data-variation="very wide mini inverted"></i>' );
+		}
+
+	endif;
+
 }
 
 // /* --------------------------

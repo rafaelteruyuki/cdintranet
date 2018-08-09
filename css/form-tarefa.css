@@ -143,10 +143,82 @@ input[type=text]:focus {
 /*.acf-fields > .acf-field:first-child {
 	display: none;
 }*/
+
 .acf-field--post-title {
   display: none;
 }
 .acf-repeater ul li {
   float: left;
   margin-left: 0;
+}
+
+.cd-nd {
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+}
+.cd-nd:before {
+  content: "Não disponível";
+}
+.ui.list>.item {
+  padding: .9em 0;
+}
+.acf-field--post-title {
+display: none;
+}
+.acf-repeater ul li {
+  float: left;
+  margin-left: 0;
+}
+
+.topo {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 10;
+}
+
+.highlight {
+  background-color: #e2f2ff !important;
+  -webkit-transition:background-color 1s;
+  -moz-transition:background-color 1s;
+  -o-transition:background-color 1s;
+  transition:background-color 1s
+}
+
+.no-highlight {
+  background-color: #ffffff !important;
+}
+
+.ui.threaded.comments .comment {
+	margin: 1.5em 0 0 !important;
+}
+
+.ui.threaded.comments .comment .text p {
+	margin: 0 0 0.7em !important;
+}
+
+.ui-timepicker-div.ui-timepicker-oneLine {
+    padding-right: 2px;
+    background-color: #3974d7;
+    padding: 2px 8px;
+    color: white;
+}
+
+.ui.list .item .content .description {
+	word-wrap: break-word;
+}
+
+.select2-container.-acf .select2-choices {
+    background: #fff;
+    border-color: #ddd;
+    box-shadow: unset;
+    min-height: 40px;
+    padding-top: 4px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fafafa;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
 }

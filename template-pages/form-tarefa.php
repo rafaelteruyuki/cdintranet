@@ -6,15 +6,25 @@ Template Name: Formulário Solicitação
 
 get_header(); ?>
 
-<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css">
+<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/form-tarefa.css?ver=1.2">
 
 <?php
 $current_user = wp_get_current_user();
 $current_user_id = get_current_user_id();
-$test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 97, 37, 99, 76, 67, 146, 143, 220);
+$test_users = array(1, 114, 77, 57, 151, 113, 132, 55, 47, 51, 50, 49, 48, 53, 97, 37, 99, 76, 67, 146, 143, 220, 239);
+$test_users_rs = array(1, 47, 37, 99, 52, 97, 172, 145, 55, 196, 222, 75, 76, 144, 237, 108, 68, 69, 201);
 ?>
 
 <?php if ( !in_array($current_user_id, $test_users) ) : ?>
+
+<style media="screen">
+  .acf-field-5787b4caf1816 ul li:nth-child(4){ display:none; }
+  .cd-hidden { display: none; }
+</style>
+
+<?php endif; ?>
+
+<?php if ( !in_array($current_user_id, $test_users_rs) ) : ?>
 
 <style media="screen">
   .acf-field-5787b4caf1816 ul li:nth-child(3){ display:none; }
@@ -79,6 +89,8 @@ $test_users = array(114, 77, 57, 151, 113, 132, 55, 1, 47, 51, 50, 49, 48, 53, 9
 <?php $telefone = get_field('telefone', 'user_' . $current_user->ID); if ($telefone) : ?>
 <span id="cd-user-telefone" style="display:none"><?= $telefone ?></span>
 <?php endif;?>
+
+<?php get_template_part('template-parts/prazos') ?>
 
 <script type="text/javascript" src="<?php bloginfo('template_url') ?>/js/get-curso-form-tarefa.js?ver=1.2"></script>
 
