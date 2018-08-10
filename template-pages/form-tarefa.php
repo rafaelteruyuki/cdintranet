@@ -12,7 +12,7 @@ get_header(); ?>
 $current_user = wp_get_current_user();
 $current_user_id = get_current_user_id();
 $test_users = array(1, 114, 77, 57, 151, 113, 132, 55, 47, 51, 50, 49, 48, 53, 97, 37, 99, 76, 67, 146, 143, 220, 239);
-$test_users_rs = array(1, 47, 37, 99, 52, 97, 172, 145, 55, 196, 222, 75, 76, 144, 237, 108, 68, 69, 201);
+// $test_users_rs = array(1, 47, 37, 99, 52, 97, 172, 145, 55, 196, 222, 75, 76, 144, 237, 108, 68, 69, 201);
 ?>
 
 <?php if ( !in_array($current_user_id, $test_users) ) : ?>
@@ -24,14 +24,14 @@ $test_users_rs = array(1, 47, 37, 99, 52, 97, 172, 145, 55, 196, 222, 75, 76, 14
 
 <?php endif; ?>
 
-<?php if ( !in_array($current_user_id, $test_users_rs) ) : ?>
+<?php // if ( !in_array($current_user_id, $test_users_rs) ) : ?>
 
-<style media="screen">
+<!-- <style media="screen">
   .acf-field-5787b4caf1816 ul li:nth-child(3){ display:none; }
   .cd-hidden { display: none; }
-</style>
+</style> -->
 
-<?php endif; ?>
+<?php // endif; ?>
 
 <?php if ( is_user_logged_in() ) :
 
