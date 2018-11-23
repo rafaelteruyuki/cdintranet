@@ -8,7 +8,7 @@ include ( locate_template('template-parts/var-tarefas.php') );
 
 ?>
 
-<?php if ( current_user_can( 'edit_pages' ) ) : ?>
+<?php // if ( current_user_can( 'edit_pages' ) ) : ?>
 
 <!-- Archive-tarefa -->
 
@@ -208,9 +208,9 @@ $('#totalConcluido').text(somaTotal('finalizado'));
 
 </script>
 
-<?php else : ?>
+<?php // else : ?>
 
-  <h2 class="ui horizontal divider header" style="margin: 3em 0em 2em;">
+  <!-- <h2 class="ui horizontal divider header" style="margin: 3em 0em 2em;">
     <i class="list layout icon"></i>
     Todas as tarefas
   </h2>
@@ -218,13 +218,13 @@ $('#totalConcluido').text(somaTotal('finalizado'));
   <div class="ui container center aligned cd-margem">
 
     <h3 class="ui center aligned icon header">
-      <a href="<?php echo wp_login_url('http://cd.intranet.sp.senac.br/index.php/tarefa/'); ?>"><i class="yellow sign in icon"></i></a>
+      <a href="<?php // echo wp_login_url('http://cd.intranet.sp.senac.br/index.php/tarefa/'); ?>"><i class="yellow sign in icon"></i></a>
       Você não tem permissão para acessar essa página.
     </h3>
-    <p>Faça <a href="<?php echo wp_login_url('http://cd.intranet.sp.senac.br/index.php/tarefa/'); ?>"><strong>login</strong></a> com um usuário específico para continuar.</p>
+    <p>Faça <a href="<?php // echo wp_login_url('http://cd.intranet.sp.senac.br/index.php/tarefa/'); ?>"><strong>login</strong></a> com um usuário específico para continuar.</p>
 
-  </div>
+  </div> -->
 
-<?php endif; ?>
+<?php // endif; ?>
 
 <?php get_footer(); ?>
