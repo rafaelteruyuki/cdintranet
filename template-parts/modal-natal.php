@@ -3,7 +3,7 @@
 <div class="ui tiny modal cd-natal" style="width: 580px; margin: 0 0 0 -290px">
   <i class="close icon"></i>
   <div class="image content">
-    <img src="<?php bloginfo('template_url'); ?>/images/natal2.gif">
+    <img src="<?php bloginfo('template_url'); ?>/images/natal3.gif" style="border:1px solid #EAEAEA;">
   </div>
   <div class="actions">
     <a class="ui cd-natal-obrigado button" href="javascript:dontShow()">Não mostrar novamente</a>
