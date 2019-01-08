@@ -58,7 +58,7 @@
 
 <?php wp_footer();?>
 
-<?php get_template_part('template-parts/modal-natal') ?>
+<?php // get_template_part('template-parts/modal-natal') ?>
 
 <!-- Analytics -->
 
