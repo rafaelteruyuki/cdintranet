@@ -547,6 +547,18 @@ var unidades = {
     'google_maps' : 'https://www.google.com.br/maps/place/Senac+Santo+Andr%C3%A9/@-23.6612332,-46.5323691,17z/data=!3m1!4b1!4m5!3m4!1s0x94ce428969d35a6d:0x3db0c1884d864c21!8m2!3d-23.6612332!4d-46.5301804',
   },
 
+  'SAL': {
+    'sigla'       : 'SAL',
+    'nome'        : 'Senac Salto',
+    'nome_url'    : 'salto',
+    'endereco'    : 'Rua Estrada Municipal SLT-170, 1245',
+    'bairro'      : 'Buru',
+    'CEP'         : '13328-330',
+    'telefone'    : '0800 883 2000',
+    'url'         : 'https://www.sp.senac.br/jsp/default.jsp?newsID=a25060.htm&testeira=2414&unit=SAL&sub=1',
+    'google_maps' : 'https://www.google.com.br/maps/place/Senac+Salto/@-23.1441864,-47.3296618,17.55z/data=!4m5!3m4!1s0x94cf537d413faabd:0x1ed2ce3520480ca4!8m2!3d-23.1441846!4d-47.3275066',
+  },
+
   'SAN': {
     'sigla'       : 'SAN',
     'nome'        : 'Senac Santos',
