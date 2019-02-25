@@ -554,7 +554,7 @@ var unidades = {
     'endereco'    : 'Rua Estrada Municipal SLT-170, 1245',
     'bairro'      : 'Buru',
     'CEP'         : '13328-330',
-    'telefone'    : '0800 883 2000',
+    'telefone'    : 'Capitais e regiões metropolitanas: 4090-1030<br>Demais regiões: 0800 883 2000',
     'url'         : 'https://www.sp.senac.br/jsp/default.jsp?newsID=a25060.htm&testeira=2414&unit=SAL&sub=1',
     'google_maps' : 'https://www.google.com.br/maps/place/Senac+Salto/@-23.1441864,-47.3296618,17.55z/data=!4m5!3m4!1s0x94cf537d413faabd:0x1ed2ce3520480ca4!8m2!3d-23.1441846!4d-47.3275066',
   },
