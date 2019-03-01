@@ -149,6 +149,9 @@ CONTA O NUMERO DE INTERACORES NAO LIDAS PELO USUARIO LOGADO
 
 ---------------------------- */
 
+// Verifica se há posts para os args
+if ($posts_array) :
+
 $nao_lidas_args = array(
     'post__in'       => $posts_array,
     'count' => true,
@@ -165,6 +168,13 @@ $nao_lidas_args = array(
 
 $comments_query = new WP_Comment_Query;
 $comments = $comments_query->query( $nao_lidas_args );
+
+else :
+
+  $comments = 0;
+
+endif;
+
 wp_reset_postdata();
 ?>
 
