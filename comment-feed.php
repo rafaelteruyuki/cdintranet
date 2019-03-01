@@ -100,7 +100,8 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
   ?>
 
-  <a href="<?php bloginfo('url')?>/interacoes/" class="item" id="interacoes-nao-lidas" style="display: none; text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><i class="ui yellow info circle icon"></i>Veja todas as solicitações com interações não lidas</strong></a>
+  <a href="<?php bloginfo('url')?>/interacoes/" class="item" id="interacoes-nao-lidas" style="display: none; text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><div class="ui red horizontal label contador"></div>Ver todas as interações não lidas</strong></a>
+  <a href="#" class="item" id="marcar-lidas" style="display: none; text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><div class="ui green horizontal label"><i class="check icon" style="margin:0;"></i></div>Marcar todas as interações como lidas</strong></a>
 
   <?php
 

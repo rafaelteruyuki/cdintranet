@@ -95,6 +95,7 @@ function contador() {
     $('.contador').addClass("red");
     $('.title-contador').html('(' + naoLido + ') ' + cd_title);
     $('#interacoes-nao-lidas').show();
+    $('#marcar-lidas').show();
   } else if (naoLido == 0) {
     $('.contador').html('<i class="check icon" style="margin:0;"></i>');
     $('.contador').addClass("green");
@@ -104,6 +105,7 @@ function contador() {
     $('.contador').addClass("red");
     $('.title-contador').html('(30+) ' + cd_title);
     $('#interacoes-nao-lidas').show();
+    $('#marcar-lidas').show();
   }
 }
 

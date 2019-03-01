@@ -1,6 +1,3 @@
-
-// jQuery( document ).ready( function( $ ) {
-
 // Menu
 $('.ui.dropdown.item')
 	.dropdown({
@@ -159,4 +156,11 @@ $('#acf-form .acf-field-5787b4caf1816 input').on('change', function() {
 // Modal Prazos
 $('.ui.modal.prazos').modal('attach events', '.modal-prazos-btn', 'show');
 
-// });
+// // Limpa o parametro da URL para a função marcar lidas
+if (window.location.search.indexOf('marcar-lidas=true') > -1) {
+	var url = window.location.href;
+	var url_no_parameter = url.split('?')[0];
+	window.history.replaceState({}, document.title, url_no_parameter);
+}
+
+$('.ui.mini.modal.marcar-lidas').modal('attach events', '#marcar-lidas', 'show');

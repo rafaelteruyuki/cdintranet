@@ -56,6 +56,21 @@
     </div>
 </div>
 
+<!-- MODAL MARCAR LIDAS -->
+<div class="ui mini modal marcar-lidas">
+  <i class="close icon"></i>
+  <div class="header">
+    Marcar interações como lidas
+  </div>
+  <div class="content">
+    <p>Tem certeza que deseja marcar todas as interações como lidas?</p>
+  </div>
+  <div class="actions">
+    <div class="ui cd-cancel-btn button">Cancelar</div>
+    <a href="?marcar-lidas=true" class="ui positive button">Marcar todas</a>
+  </div>
+</div>
+
 <?php wp_footer();?>
 
 <?php // get_template_part('template-parts/modal-natal') ?>
