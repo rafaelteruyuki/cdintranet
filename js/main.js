@@ -162,5 +162,6 @@ if (window.location.search.indexOf('marcar-lidas=true') > -1) {
 	var url_no_parameter = url.split('?')[0];
 	window.history.replaceState({}, document.title, url_no_parameter);
 }
-
-$('.ui.mini.modal.marcar-lidas').modal('attach events', '#marcar-lidas', 'show');
+$(document).ajaxComplete(function () {
+	$('.ui.mini.modal.marcar-lidas').modal('attach events', '#marcar-lidas', 'show');
+});
