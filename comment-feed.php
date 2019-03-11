@@ -152,30 +152,46 @@ CONTA O NUMERO DE INTERACORES NAO LIDAS PELO USUARIO LOGADO
 // Verifica se há posts para os args
 if ($posts_array) :
 
-$nao_lidas_args = array(
-    'post__in'       => $posts_array,
-    'count' => true,
-    'meta_query'     => array(
-      'relation' => 'AND',
-      array(
-      'key' => 'interacao_lida',
-      'value' => $current_user->ID, // Não precisa de aspas pq o valor guardado é INT (numero inteiro)
-      'compare' => 'NOT LIKE',
-      ),
-      $privado
-    ),
-);
+  $nao_lidas_args = array(
+      'post__in'       => $posts_array,
+      'meta_query'     => array($privado),
+      'fields' => 'ids',
+      // 'number' => 5,
+      // 'count' => true,
+  );
 
-$comments_query = new WP_Comment_Query;
-$comments = $comments_query->query( $nao_lidas_args );
+  $comments = get_comments($nao_lidas_args);
+
+  $num_nao_lidas = 0;
+
+    foreach ($comments as $comment) {
+
+      $interacao_lida = get_comment_meta($comment, 'interacao_lida', true);
+
+      if (!in_array($current_user->ID, $interacao_lida, true)) {
+
+        // echo '<div class="teste">';
+        //
+        // echo 'Current user: ' . $current_user->ID;
+        // echo 'Não tem no array';
+        // echo 'IDs que visitaram a interação:'; var_dump($interacao_lida);
+        //
+        // echo '</div>';
+
+        $num_nao_lidas++;
+
+      }
+
+    }
 
 else :
 
-  $comments = 0;
+  $num_nao_lidas = 0;
 
 endif;
 
 wp_reset_postdata();
+
 ?>
 
-<span style="display:none;" id="num_nao_lidas"><?= $comments ?></span>
+<span style="display:none;" id="num_nao_lidas"><?= $num_nao_lidas ?></span>
