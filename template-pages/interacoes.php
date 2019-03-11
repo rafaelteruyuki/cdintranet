@@ -55,19 +55,13 @@ global $current_user;
 
     $nao_lidas_args = array(
         'post__in'       => $posts_array,
-        'meta_query'     => array(
-          'relation' => 'AND',
-          array(
-          'key' => 'interacao_lida',
-          'value' => $current_user->ID, // Não precisa de aspas pq o valor guardado é INT (numero inteiro)
-          'compare' => 'NOT LIKE',
-          ),
-          $privado
-        ),
+        'meta_query'     => array($privado),
+        // 'fields' => 'ids',
+        // 'number' => 5,
+        // 'count' => true,
     );
 
-    $comments_query = new WP_Comment_Query;
-    $comments = $comments_query->query( $nao_lidas_args );
+    $comments = get_comments($nao_lidas_args);
 
       // SE TIVER COMENTARIOS
       if ( $comments ) :
@@ -185,8 +179,8 @@ global $current_user;
 <?php endif; ?>
 
 <script type="text/javascript">
-  $( ".ui.clearing.segment" ).first().show( 400, function showNext() {
-    $( this ).next( ".ui.clearing.segment" ).show( 400, showNext );
+  $( ".ui.clearing.segment" ).first().show( 200, function showNext() {
+    $( this ).next( ".ui.clearing.segment" ).show( 200, showNext );
   });
   // if ( !$('.msg-nao-lida').length ) {
   //   $('#info').html('<h3>Não há interações não lidas.</h3>');
