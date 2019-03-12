@@ -100,8 +100,8 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
 
   ?>
 
-  <a href="<?php bloginfo('url')?>/interacoes/" class="item" id="interacoes-nao-lidas" style="display: none; text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><div class="ui red horizontal label contador"></div>Ver todas as interações não lidas</strong></a>
-  <a href="#" class="item" id="marcar-lidas" style="display: none; text-align: left; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong><div class="ui green horizontal label"><i class="check icon" style="margin:0;"></i></div>Marcar todas as interações como lidas</strong></a>
+  <a href="<?php bloginfo('url')?>/interacoes/" class="item" id="interacoes-nao-lidas" style="display: none; text-align: left; padding: 16px !important;"><i class="comment icon blue"></i><span style="color:#2185d0">Ver interações não lidas</span></a>
+  <a href="#" class="item" id="marcar-lidas" style="display: none; text-align: left; padding: 16px !important; border-top: 1px solid #dedede !important;"><i class="check icon blue"></i><span style="color:#2185d0">Marcar todas como lidas</span></a>
 
   <?php
 
@@ -129,8 +129,6 @@ if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
       </a>
 
       <?php endforeach; ?>
-
-      <a href="<?php bloginfo('url') ?>/interacoes" class="item" style="text-align: center; padding: 20px !important; border-top: 1px solid #dedede !important;"><strong>Ver todas</strong></a>
 
       <?php else : ?>
 

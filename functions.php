@@ -2515,7 +2515,7 @@ function cd_date_diff($date_1 , $date_2) {
 
 /* --------------------------
 
-MARCAR INTERACOES COMO LIDAS
+MARCAR INTERACOES E TAREFAS COMO LIDAS
 
 ---------------------------- */
 
@@ -2542,6 +2542,8 @@ function marcar_lidas() {
 	$posts_array = get_posts( $post_args );
 
 	if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
+
+		// INTERAÇÕES
 
 		$comments_args = array(
 				'order'          => 'DESC',
@@ -2582,13 +2584,38 @@ function marcar_lidas() {
 
 		endif;
 
+		// TAREFAS (funcionando, apenas desabilitado)
+
+		// foreach ($posts_array as $post_id) {
+		//
+		// 	$tarefa_lida = get_post_meta( $post_id, 'tarefa_lida', true );
+		//
+		// 	if ($tarefa_lida) {
+		// 		// Há usuário(s) que leram essa tarefa (acrescenta o usuário a esse array)
+		// 		$tarefa_lida[] = $current_user->ID;
+		// 		$tarefa_lida = array_unique($tarefa_lida);
+		// 	} else {
+		// 		// Não há usuários que leram essa tarefa (cria um array e insere o usuário)
+		// 		$tarefa_lida = array();
+		// 		$tarefa_lida[] = $current_user->ID;
+		// 	}
+		//
+		// 	$tarefa_lida = array_unique($tarefa_lida);
+		// 	$tarefa_lida = array_map('intval', $tarefa_lida);
+		// 	update_post_meta( $post_id, 'tarefa_lida', $tarefa_lida );
+		//
+		// }
+
 	endif;
 
 }
 
-if (isset($_GET['marcar-lidas'])) :
-	marcar_lidas();
-endif;
+if ($_POST['marcar-lidas']) {
+   marcar_lidas();
+   // Redirect to this page.
+   header("Location: " . $_SERVER['REQUEST_URI']);
+   exit();
+}
 
 // /* --------------------------
 //

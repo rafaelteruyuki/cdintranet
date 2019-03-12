@@ -65,10 +65,10 @@
   <div class="content">
     <p>Tem certeza que deseja marcar todas as interações como lidas?</p>
   </div>
-  <div class="actions">
+  <form class="actions" method="post">
     <div class="ui cd-cancel-btn button">Cancelar</div>
-    <a href="?marcar-lidas=true" class="ui positive button">Marcar todas</a>
-  </div>
+    <input type="submit" name="marcar-lidas" value="Marcar todas como lidas" class="ui positive button">
+  </form>
 </div>
 
 <?php wp_footer();?>
