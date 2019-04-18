@@ -1,6 +1,3 @@
-
-// jQuery( document ).ready( function( $ ) {
-
 // Menu
 $('.ui.dropdown.item')
 	.dropdown({
@@ -159,4 +156,10 @@ $('#acf-form .acf-field-5787b4caf1816 input').on('change', function() {
 // Modal Prazos
 $('.ui.modal.prazos').modal('attach events', '.modal-prazos-btn', 'show');
 
-// });
+// Marcar Lidas
+$('.ui.mini.modal.marcar-lidas').modal('attach events', '#marcar-lidas', 'show');
+$(document).ajaxComplete(function () {
+	$('.ui.mini.modal.marcar-lidas').modal('attach events', '#marcar-lidas', 'show');
+});
+
+$('.ui.mini.modal.marcar-lidas').modal('attach events', '.cd-cancel-btn', 'hide');

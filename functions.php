@@ -32,7 +32,7 @@ function carrega_scripts() {
 	wp_enqueue_script( 'tablesort', get_template_directory_uri() . '/js/tablesort.js', array('jquery'), '1.1', true );
 	wp_enqueue_script( 'mustache', get_template_directory_uri() . '/js/mustache.js', array('jquery'), '1.0', true );
 	wp_enqueue_script( 'jquery-mask', get_template_directory_uri() . '/js/jquery.mask.min.js', array('jquery'), '1.0', false );
-	wp_enqueue_script( 'main', get_template_directory_uri()."/js/main.js", array('jquery'), '1.4', true);
+	wp_enqueue_script( 'main', get_template_directory_uri()."/js/main.js", array('jquery'), '1.6', true);
 	wp_enqueue_script( 'custom-js', get_template_directory_uri()."/js/scripts.js", array('jquery'), '1.0', true);
 
 	wp_localize_script('custom-js', 'ajax_object',
@@ -2511,6 +2511,110 @@ function cd_date_diff($date_1 , $date_2) {
 
 	endif;
 
+}
+
+/* --------------------------
+
+MARCAR INTERACOES E TAREFAS COMO LIDAS
+
+---------------------------- */
+
+function marcar_lidas() {
+
+	// CD-FEED
+	include ( locate_template('template-parts/cd-feed.php') );
+
+	/* --------------------------
+
+	PEGA TODOS OS POSTS QUE TEM RELACAO COM O USUARIO LOGADO
+
+	---------------------------- */
+
+	// META_QUERY DOS POSTS IDS
+	$post_args = array(
+		'post_type'              => array( 'tarefa' ),
+		'posts_per_page'         => -1,
+		'order'                  => 'DESC',
+		'fields'                 => 'ids',
+		'meta_query'             => array( $comment_feed ),
+	);
+
+	$posts_array = get_posts( $post_args );
+
+	if (!empty($posts_array)) : // Se não tiver posts, não inicia essa query.
+
+		// INTERAÇÕES
+
+		$comments_args = array(
+				'order'          => 'DESC',
+				'orderby'        => 'comment_date',
+				'fields'         => 'ids',
+				// 'number'         => '31',
+				'post__in'       => $posts_array, //THIS IS THE ARRAY OF POST IDS WITH META QUERY
+				'meta_query'     => array( $privado ),
+		);
+
+		$comments_query = new WP_Comment_Query;
+		$comments = $comments_query->query( $comments_args );
+
+		if ( !empty( $comments ) ) :
+
+			foreach ( $comments as $comment ) :
+
+			$interacao_lida = get_comment_meta( $comment, 'interacao_lida', true );
+
+			if ($interacao_lida) {
+				// Há usuário(s) que leram essa interação (acrescenta o usuário a esse array)
+				$interacao_lida[] = $current_user->ID;
+				$interacao_lida = array_unique($interacao_lida);
+			} else {
+				// Não há usuários que leram essa interação (cria um array e insere o usuário)
+				$interacao_lida = array();
+				$interacao_lida[] = $current_user->ID;
+			}
+
+			$interacao_lida = array_unique($interacao_lida);
+			$interacao_lida = array_map('intval', $interacao_lida);
+
+			update_comment_meta( $comment, 'interacao_lida', $interacao_lida );
+
+			$interacao_lida = array();
+
+			endforeach;
+
+		endif;
+
+		// TAREFAS (funcionando, apenas desabilitado)
+
+		// foreach ($posts_array as $post_id) {
+		//
+		// 	$tarefa_lida = get_post_meta( $post_id, 'tarefa_lida', true );
+		//
+		// 	if ($tarefa_lida) {
+		// 		// Há usuário(s) que leram essa tarefa (acrescenta o usuário a esse array)
+		// 		$tarefa_lida[] = $current_user->ID;
+		// 		$tarefa_lida = array_unique($tarefa_lida);
+		// 	} else {
+		// 		// Não há usuários que leram essa tarefa (cria um array e insere o usuário)
+		// 		$tarefa_lida = array();
+		// 		$tarefa_lida[] = $current_user->ID;
+		// 	}
+		//
+		// 	$tarefa_lida = array_unique($tarefa_lida);
+		// 	$tarefa_lida = array_map('intval', $tarefa_lida);
+		// 	update_post_meta( $post_id, 'tarefa_lida', $tarefa_lida );
+		//
+		// }
+
+	endif;
+
+}
+
+if ($_POST['marcar-lidas']) {
+   marcar_lidas();
+   // Redirect to this page.
+   header("Location: " . $_SERVER['REQUEST_URI']);
+   exit();
 }
 
 // /* --------------------------
