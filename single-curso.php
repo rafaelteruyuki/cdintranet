@@ -453,7 +453,7 @@ $save_assinatura = get_post_meta( get_the_ID(), 'save_assinatura', true );
 
 <script src="<?php bloginfo('template_url') ?>/js/he.js"></script>
 <script src="<?php bloginfo('template_url') ?>/js/download.js"></script>
-<script src="<?php bloginfo('template_url') ?>/js/unidades.js?ver=1.4"></script>
+<script src="<?php bloginfo('template_url') ?>/js/unidades.js?ver=1.5"></script>
 <script src="<?php bloginfo('template_url') ?>/js/criar-emkt.js?ver=1.1"></script>
 
 <?php get_footer(); ?>
