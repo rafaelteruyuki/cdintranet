@@ -36,7 +36,7 @@ if ( in_array($area['value'], $areas_gd2_gd4) ) {
     // EVENTO
     if ( $publicacao_pecas && in_array('publicacao', $publicacao_pecas) ) {
 
-      $value = array ('gd2_gd4', 'evento');
+      $value = array ('evento');
       update_field( 'segmentacao', $value, $post_id);
 
     }
@@ -78,7 +78,7 @@ if ( in_array($area['value'], $areas_gd1_gd3) ) {
     // EVENTO
     if ( $publicacao_pecas && in_array('publicacao', $publicacao_pecas) ) {
 
-      $value = array ('gd1_gd3', 'evento');
+      $value = array ('evento');
       update_field( 'segmentacao', $value, $post_id);
 
     }
@@ -118,7 +118,7 @@ if ( in_array($modalidade['value'], $modalidade_institucional) || ( in_array($ar
     // EVENTO
     if ( $publicacao_pecas && in_array('publicacao', $publicacao_pecas) ) {
 
-      $value = array ('institucional', 'evento');
+      $value = array ('evento');
       update_field( 'segmentacao', $value, $post_id);
 
     }
