@@ -34,7 +34,7 @@ if ( current_user_can( 'designer_institucional' ) ) {
 
 //FEED PORTAL
 
-if ( current_user_can( 'portal' ) ) {
+if ( current_user_can( 'portal' ) && current_user_can( 'redacao' ) ) {
   $segmentacao = array(
     'key'		=> 'segmentacao',
     'value'		=> 'evento',
