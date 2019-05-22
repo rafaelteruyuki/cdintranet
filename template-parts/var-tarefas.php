@@ -47,6 +47,14 @@ switch ($status['value']) {
         $percent = 50;
         $corStatus = 'yellow';
         break;
+    case "producaogcr":
+        $percent = 50;
+        $corStatus = 'yellow';
+        break;
+    case "producaounidade":
+        $percent = 50;
+        $corStatus = 'yellow';
+        break;
     case "fluxors":
         $percent = 50;
         $corStatus = 'yellow';
