@@ -426,6 +426,70 @@
 
         }
 
+        // CONTEUDO
+
+        $conteudo = acf_get_fields('48224');
+
+        if ( $conteudo ) {
+
+          foreach( $conteudo as $field ) {
+
+            $value = get_field( $field['name'] );
+
+            if ( $value ) {
+
+              echo '<div class="item">';
+              echo '<div class="content">';
+              echo '<div class="header">' . $field['label'] . '</div>';
+              echo '<div class="description">';
+
+              // if ( $field['type'] == 'radio' ) {
+
+              //   echo $value['label'];
+
+              // } elseif ( $field['type'] == 'repeater' ) {
+
+              //   if (have_rows($field['name'])) {
+
+              //     while ( have_rows($field['name']) ) : the_row();
+
+              //       echo '<p>';
+
+              //         $foto = get_sub_field($field['sub_fields'][0]['name']);
+
+              //         if ($foto) {
+              //           echo '<a href="' . $foto . '" class="ui primary icon button" target="_blank" style="margin: 1em 1em 1em 0;"><i class="user icon"></i></a>';
+              //         } else {
+              //           echo '<a class="ui icon button" style="margin: 1em 1em 1em 0;"><i class="user icon"></i></a>';
+              //         }
+
+              //         the_sub_field($field['sub_fields'][1]['name']); echo '<br>';
+              //         the_sub_field($field['sub_fields'][2]['name']); echo '<br>';
+
+              //       echo '</p>';
+
+              //     endwhile;
+
+              //   }
+
+              // } else {
+
+              //   echo $value;
+
+              // }
+
+              echo $value;
+
+              echo '</div>';
+              echo '</div>';
+              echo '</div>';
+
+            }
+
+          }
+
+        }
+
         ?>
 
         <?php if ( get_field('tipo_de_criacao') ) : ?>
@@ -630,7 +694,7 @@
           <div class="content">
             <div class="header">Responsáveis</div>
             <div class="description">
-              <?php if ($responsavel1 || $responsavel2 || $responsavel3 || $responsavel4 || $responsavel5) : ?>
+              <?php if ($responsavel1 || $responsavel2 || $responsavel3 || $responsavel4 || $responsavel5 || $responsaveis_atendimento || $responsaveis_design || $responsaveis_aimprensa || $responsaveis_curadoria || $responsaveis_redacao || $responsaveis_imagem_institucional || $responsaveis_tecnologia_e_bi || $responsaveis_redes_sociais) : ?>
 
                 <div style="margin-top:10px;">
                   <?php if ($responsavel1) : ?>
@@ -662,6 +726,46 @@
                       <?php echo $responsavel5['user_avatar'];?>
                     </span>
                     &nbsp;
+                  <?php endif; ?>
+                  <?php if( $responsaveis_atendimento ): ?>
+                    <?php foreach( $responsaveis_atendimento as $responsavel ): ?>
+                      <?php echo $responsavel['display_name']; ?><br>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                  <?php if( $responsaveis_design ): ?>
+                    <?php foreach( $responsaveis_design as $responsavel ): ?>
+                      <?php echo $responsavel['display_name']; ?><br>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                  <?php if( $responsaveis_imprensa ): ?>
+                    <?php foreach( $responsaveis_imprensa as $responsavel ): ?>
+                      <?php echo $responsavel['display_name']; ?><br>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                  <?php if( $responsaveis_curadoria ): ?>
+                    <?php foreach( $responsaveis_curadoria as $responsavel ): ?>
+                      <?php echo $responsavel['display_name']; ?><br>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                  <?php if( $responsaveis_redacao ): ?>
+                    <?php foreach( $responsaveis_redacao as $responsavel ): ?>
+                      <?php echo $responsavel['display_name']; ?><br>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                  <?php if( $responsaveis_imagem_institucional ): ?>
+                    <?php foreach( $responsaveis_imagem_institucional as $responsavel ): ?>
+                      <?php echo $responsavel['display_name']; ?><br>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                  <?php if( $responsaveis_tecnologia_e_bi ): ?>
+                    <?php foreach( $responsaveis_tecnologia_e_bi as $responsavel ): ?>
+                      <?php echo $responsavel['display_name']; ?><br>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                  <?php if( $responsaveis_redes_sociais ): ?>
+                    <?php foreach( $responsaveis_redes_sociais as $responsavel ): ?>
+                      <?php echo $responsavel['display_name']; ?><br>
+                    <?php endforeach; ?>
                   <?php endif; ?>
                 </div>
 

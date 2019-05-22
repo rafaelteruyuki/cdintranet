@@ -11,7 +11,7 @@ $responsavel5 = get_field('responsavel_rs');
 
 $responsaveis_atendimento = get_field('atendimento');
 $responsaveis_design = get_field('design');
-$responsaveis_aimprensa = get_field('aimprensa');
+$responsaveis_imprensa = get_field('imprensa');
 $responsaveis_curadoria = get_field('curadoria');
 $responsaveis_redacao = get_field('redacao');
 $responsaveis_imagem_institucional = get_field('imagem_institucional');
