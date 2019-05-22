@@ -18,7 +18,7 @@ $test_users = array(1); // Pauta só é visualizada pelo administrador
 <?php if ( !in_array($current_user_id, $test_users) ) : ?>
 
 <style media="screen">
-  .acf-field-5787b4caf1816 ul li:nth-child(4){ display:none; }
+  .acf-field-5787b4caf1816 ul li:nth-child(6){ display:none; }
   .cd-hidden { display: none; }
 </style>
 
