@@ -421,6 +421,297 @@ function cf_search_distinct( $where ) {
 }
 add_filter( 'posts_distinct', 'cf_search_distinct' );
 
+
+/* --------------------------
+
+CUSTOM ROLE - DESIGN
+
+---------------------------- */
+
+add_role( 'design', 'Design', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+
+/* --------------------------
+
+CUSTOM ROLE - imprensa
+
+---------------------------- */
+
+add_role( 'imprensa', 'Imprensa', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - Curadoria
+
+---------------------------- */
+
+add_role( 'curadoria', 'Curadoria', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - Redacao
+
+---------------------------- */
+
+add_role( 'redacao', 'Redacao', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - Atendimento
+
+---------------------------- */
+
+add_role( 'atendimento', 'Atendimento', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - imagem-institucional
+
+---------------------------- */
+
+add_role( 'imagem-institucional', 'Imagem Institucional', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - tbi
+
+---------------------------- */
+
+add_role( 'tbi', 'Tecnologia e B.I.', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - Gestores
+
+---------------------------- */
+
+add_role( 'gestores', 'Gestores', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+
 /* --------------------------
 
 CUSTOM ROLE - DESIGNER GD2 e GD4
