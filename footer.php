@@ -1,6 +1,6 @@
 <!--Footer-->
 
-<div class="ui inverted vertical segment" style="font-size:0.9em; background-image:url(<?php bloginfo('template_url'); ?>/images/bg.png); background-attachment:fixed;">
+<!-- <div class="ui inverted vertical segment" style="font-size:0.9em; background-image:url(<?php // bloginfo('template_url'); ?>/images/bg.png); background-attachment:fixed;">
     <div class="ui four column grid container stackable cd-margem">
 
       <div class="column">
@@ -9,9 +9,6 @@
           <br>
           Thiago Augusto da Costa
         <h4 class="ui dividing header inverted">GD1 e GD3</h4>
-          <!-- Rafael Teruyuki Yamaguchi -->
-          <!-- Ana Carolina da Silva Sarneiro -->
-          <!-- <br> -->
           Walter Pereira da Fonseca Junior
         <h4 class="ui dividing header inverted">GD2 e GD4</h4>
           Genildo da Silva Marcelo
@@ -48,7 +45,7 @@
       </div>
 
     </div>
-</div>
+</div> -->
 
 <div class="ui inverted vertical segment">
     <div class="ui container center aligned cd-margem">

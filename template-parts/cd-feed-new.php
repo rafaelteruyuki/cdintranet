@@ -31,12 +31,12 @@ if ( in_array($area['value'], $areas_gd2_gd4) ) {
 
   if ( in_array($modalidade['value'], $modalidade_gd2_gd4) || in_array($finalidade['value'], $finalidade_gd2_gd4) ) {
 
-    update_field( 'segmentacao', 'gd2_gd4', $post_id);
+    // update_field( 'segmentacao', 'gd2_gd4', $post_id);
 
     // EVENTO
     if ( $publicacao_pecas && in_array('publicacao', $publicacao_pecas) ) {
 
-      $value = array ('gd2_gd4', 'evento');
+      $value = array ('evento');
       update_field( 'segmentacao', $value, $post_id);
 
     }
@@ -73,12 +73,12 @@ if ( in_array($area['value'], $areas_gd1_gd3) ) {
 
   if ( in_array($modalidade['value'], $modalidade_gd1_gd3) || in_array($finalidade['value'], $finalidade_gd1_gd3) ) {
 
-    update_field( 'segmentacao', 'gd1_gd3', $post_id);
+    // update_field( 'segmentacao', 'gd1_gd3', $post_id);
 
     // EVENTO
     if ( $publicacao_pecas && in_array('publicacao', $publicacao_pecas) ) {
 
-      $value = array ('gd1_gd3', 'evento');
+      $value = array ('evento');
       update_field( 'segmentacao', $value, $post_id);
 
     }
@@ -113,12 +113,12 @@ $finalidade_institucional = array(
 
 if ( in_array($modalidade['value'], $modalidade_institucional) || ( in_array($area['value'], $areas_institucional) && in_array($finalidade['value'], $finalidade_institucional) ) ) {
 
-    update_field( 'segmentacao', 'institucional', $post_id);
+    // update_field( 'segmentacao', 'institucional', $post_id);
 
     // EVENTO
     if ( $publicacao_pecas && in_array('publicacao', $publicacao_pecas) ) {
 
-      $value = array ('institucional', 'evento');
+      $value = array ('evento');
       update_field( 'segmentacao', $value, $post_id);
 
     }

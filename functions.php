@@ -2489,7 +2489,7 @@ POSTS EM ANALISE POR MAIS DE 2 DIAS
 
 ---------------------------- */
 
-function cd_date_diff($date_1 , $date_2) {
+function cd_date_diff() {
 
 	$status = get_field('status');
 
