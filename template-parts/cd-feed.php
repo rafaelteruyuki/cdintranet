@@ -169,6 +169,14 @@ $minhas_tarefas_feed = array(
   $responsavel2,
   $responsavel_portal1,
   $responsavel_portal2,
+  $responsaveis_atendimento,
+  $responsaveis_design,
+  $responsaveis_imprensa,
+  $responsaveis_curadoria,
+  $responsaveis_redacao,
+  $responsaveis_imagem_institucional,
+  $responsaveis_tecnologia_e_bi,
+  $responsaveis_redes_sociais,
   // $cd_author,
 );
 
@@ -191,6 +199,14 @@ $comment_feed = array(
   $responsavel2,
   $responsavel_portal1,
   $responsavel_portal2,
+  $responsaveis_atendimento,
+  $responsaveis_design,
+  $responsaveis_imprensa,
+  $responsaveis_curadoria,
+  $responsaveis_redacao,
+  $responsaveis_imagem_institucional,
+  $responsaveis_tecnologia_e_bi,
+  $responsaveis_redes_sociais,
   $cd_author,
 );
 
