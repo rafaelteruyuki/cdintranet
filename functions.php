@@ -2191,6 +2191,21 @@ function my_save_post( $post_id ) {
 
 		}
 
+		// // PARA A EQUIPE DE ATENDIMENTO
+
+		// $responsaveis_atendimento = get_users('role=atendimento');
+
+		// foreach ( $responsaveis_atendimento as $responsavel_atendimento ) {
+
+		// 	if ( get_field('receber_notificacoes_por_email', 'user_' . $responsavel_atendimento->ID) ) {
+
+		// 		// $array_designers[] = $responsavel_atendimento->user_email;
+		// 		array_push($destinos, $responsavel_atendimento->user_email);
+
+		// 	}
+
+		// }
+
 	// $destinos = array_merge($destinos, $array_designers);
 
 	//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
@@ -2548,7 +2563,7 @@ function comment_notification_email( $comment_id ) {
 
 		//RESPONSAVEIS NOVOS
 
-		$responsaveis = get_field('responsaveis', $post);
+		$responsaveis = get_field('responsaveis_gcr', $post);
 
 		if( $responsaveis ) {
 
