@@ -5,7 +5,7 @@ global $current_user;
 //FEED GD2 E GD4
 
 if ( current_user_can( 'designer_gd2_gd4' ) ) {
-  $segmentacao = array(
+  $segmentacao_gd2_gd4 = array(
     'key'		=> 'segmentacao',
     'value'		=> 'gd2_gd4',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -15,7 +15,7 @@ if ( current_user_can( 'designer_gd2_gd4' ) ) {
 //FEED GD1 E GD3
 
 if ( current_user_can( 'designer_gd1_gd3' ) ) {
-  $segmentacao = array(
+  $segmentacao_gd1_gd3 = array(
     'key'		=> 'segmentacao',
     'value'		=> 'gd1_gd3',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -25,7 +25,7 @@ if ( current_user_can( 'designer_gd1_gd3' ) ) {
 //FEED INSTITUCIONAL
 
 if ( current_user_can( 'designer_institucional' ) ) {
-  $segmentacao = array(
+  $segmentacao_institucional = array(
     'key'		=> 'segmentacao',
     'value'		=> 'institucional',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -43,7 +43,7 @@ if ( current_user_can( 'portal' ) && current_user_can( 'redacao' ) ) {
 }
 
 if ( current_user_can( 'redes_sociais' ) ) {
-  $segmentacao = array(
+  $segmentacao_redes_sociais = array(
     'key'		=> 'segmentacao',
     'value'		=> 'redes_sociais',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -164,6 +164,11 @@ if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
 $minhas_tarefas_feed = array(
 'relation'		=> 'OR',
   $segmentacao,
+  $segmentacao_gd2_gd4,
+  $segmentacao_gd1_gd3,
+  $segmentacao_institucional,
+  $segmentacao_portal,
+  $segmentacao_redes_sociais,
   $participante,
   $responsavel1,
   $responsavel2,
@@ -194,6 +199,11 @@ $minhas_solicitacoes_feed = array(
 $comment_feed = array(
 'relation'		=> 'OR',
   $segmentacao,
+  $segmentacao_gd2_gd4,
+  $segmentacao_gd1_gd3,
+  $segmentacao_institucional,
+  $segmentacao_portal,
+  $segmentacao_redes_sociais,
   $participante,
   $responsavel1,
   $responsavel2,
