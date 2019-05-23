@@ -9,18 +9,11 @@ $responsavel3 = get_field('responsavel_portal');
 $responsavel4 = get_field('responsavel_portal_2');
 $responsavel5 = get_field('responsavel_rs');
 
-$responsaveis_atendimento = get_field('atendimento');
-$responsaveis_design = get_field('design');
-$responsaveis_imprensa = get_field('imprensa');
-$responsaveis_curadoria = get_field('curadoria');
-$responsaveis_redacao = get_field('redacao');
-$responsaveis_imagem_institucional = get_field('imagem_institucional');
-$responsaveis_tecnologia_e_bi = get_field('tecnologia_e_bi');
-$responsaveis_redes_sociais = get_field('redes_sociais');
+$responsaveis_gcr = get_field('responsaveis_gcr');
 
 $prazo_atendimento = get_field('prazo_atendimento');
 $prazo_design = get_field('prazo_design');
-$prazo_aimprensa = get_field('prazo_aimprensa');
+$prazo_imprensa = get_field('prazo_imprensa');
 $prazo_curadoria = get_field('prazo_curadoria');
 $prazo_redacao = get_field('prazo_redacao');
 $prazo_imagem_institucional = get_field('prazo_imagem_institucional');
