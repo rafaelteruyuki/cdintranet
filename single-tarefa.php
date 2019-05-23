@@ -428,6 +428,36 @@
 
         ?>
 
+        <?php if ( get_field('assunto') ) : ?>
+
+        <!-- ASSUNTO-->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Assunto</div>
+            <div class="description">
+              <?php the_field('assunto'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('fonte') ) : ?>
+
+        <!-- FONTE-->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Fonte</div>
+            <div class="description">
+              <?php the_field('fonte'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
         <?php if ( get_field('tipo_de_criacao') ) : ?>
 
         <!-- CRIACAO DE PECAS-->
@@ -503,6 +533,55 @@
 
           <?php endif; ?>
 
+          <?php if ( get_field('breve_descricao') ) : ?>
+
+          <!-- BREVE DESCRIÇAO -->
+          <div class="item">
+            <!-- <i class="right triangle icon"></i> -->
+            <div class="content">
+              <div class="header">Breve descrição</div>
+              <div class="description" style="word-break: break-word;">
+                <?php the_field('breve_descricao'); ?>
+              </div>
+            </div>
+          </div>
+
+          <?php endif; ?>
+
+          <?php if( have_rows('imagens_conteudo') ) : ?>
+
+          <!-- IMAGENS CONTEUDO -->
+          <div class="item">
+            <!-- <i class="right triangle icon"></i> -->
+            <div class="content">
+              <div class="header">Imagens</div>
+              <div class="description">
+                <?php while( have_rows('imagens_conteudo') ): the_row(); $imagem = get_sub_field('imagem_conteudo'); ?>
+                <a href="<?= $imagem['url']; ?>" class="ui small primary button cd-popup" target="_blank" style="margin-top:10px;" title="<?= $imagem['name'] ?>">Baixar</a>
+                <?php endwhile;?>
+              </div>
+            </div>
+          </div>
+
+          <?php endif; ?>
+
+          <?php if( have_rows('arquivos_conteudo') ) : ?>
+
+          <!-- ARQUIVOS CONTEUDO -->
+          <div class="item">
+            <!-- <i class="right triangle icon"></i> -->
+            <div class="content">
+              <div class="header">Arquivos</div>
+              <div class="description">
+                <?php while( have_rows('arquivos_conteudo') ): the_row(); $arquivo = get_sub_field('arquivo_conteudo'); ?>
+                <a href="<?= $arquivo['url']; ?>" class="ui small primary button cd-popup" target="_blank" style="margin-top:10px;" title="<?= $arquivo['name'] ?>">Baixar</a>
+                <?php endwhile;?>
+              </div>
+            </div>
+          </div>
+
+          <?php endif; ?>
+
           <?php if( have_rows('arquivos') ) : ?>
 
           <!-- ARQUIVOS -->
@@ -517,21 +596,6 @@
               </div>
             </div>
           </div>
-
-        <?php endif; ?>
-
-        <?php if ( get_field('breve_descricao') ) : ?>
-
-        <!-- BREVE DESCRIÇAO -->
-        <div class="item">
-          <!-- <i class="right triangle icon"></i> -->
-          <div class="content">
-            <div class="header">Breve descrição</div>
-            <div class="description" style="word-break: break-word;">
-              <?php the_field('breve_descricao'); ?>
-            </div>
-          </div>
-        </div>
 
         <?php endif; ?>
 
@@ -551,6 +615,21 @@
         </div>
 
       <?php endif; ?>
+
+      <?php if ( get_field('termo_de_autorizacao_de_uso_de_imagem') ) : ?>
+
+        <!-- OBSERVACOES -->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Termo de Autorização de Uso de Imagem</div>
+            <div class="description">
+              Possui
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
 
       <?php if ( get_field('observacoes') ) : ?>
 
@@ -630,7 +709,7 @@
           <div class="content">
             <div class="header">Responsáveis</div>
             <div class="description">
-              <?php if ($responsavel1 || $responsavel2 || $responsavel3 || $responsavel4 || $responsavel5) : ?>
+              <?php if ($responsavel1 || $responsavel2 || $responsavel3 || $responsavel4 || $responsavel5 || $responsaveis_gcr) : ?>
 
                 <div style="margin-top:10px;">
                   <?php if ($responsavel1) : ?>
@@ -663,6 +742,14 @@
                     </span>
                     &nbsp;
                   <?php endif; ?>
+                  <?php if( $responsaveis_gcr ): ?>
+                  	<?php foreach( $responsaveis_gcr as $responsavel_gcr ): ?>
+                      <span class="ui mini circular image cd-popup" title="<?php echo $responsavel_gcr['display_name'] ?>">
+                  		<?php echo $responsavel_gcr['user_avatar']; ?>
+                      </span>
+                  	<?php endforeach; ?>
+                  <?php endif; ?>
+
                 </div>
 
             <?php else : ?>
@@ -671,6 +758,111 @@
             </div>
           </div>
         </div>
+
+        <?php if ( get_field('prazo_atendimento') ) : ?>
+
+        <!-- PRAZOS -->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Prazo Atendimento</div>
+            <div class="description">
+              <?php the_field('prazo_atendimento'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('prazo_design') ) : ?>
+
+        <!-- PRAZOS -->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Prazo Design</div>
+            <div class="description">
+              <?php the_field('prazo_design'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('prazo_imprensa') ) : ?>
+
+        <!-- PRAZOS -->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Prazo Assessoria de Imprensa</div>
+            <div class="description">
+              <?php the_field('prazo_imprensa'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('prazo_redacao') ) : ?>
+
+        <!-- PRAZOS -->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Prazo Redação</div>
+            <div class="description">
+              <?php the_field('prazo_redacao'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('prazo_imagem_institucional') ) : ?>
+
+        <!-- PRAZOS -->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Prazo Imagem Institucional</div>
+            <div class="description">
+              <?php the_field('prazo_imagem_institucional'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('prazo_tecnologia_e_bi') ) : ?>
+
+        <!-- PRAZOS -->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Prazo Tecnologia e BI</div>
+            <div class="description">
+              <?php the_field('prazo_tecnologia_e_bi'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
+
+        <?php if ( get_field('prazo_redes_sociais') ) : ?>
+
+        <!-- PRAZOS -->
+        <div class="item">
+          <!-- <i class="right triangle icon"></i> -->
+          <div class="content">
+            <div class="header">Prazo Redes Sociais</div>
+            <div class="description">
+              <?php the_field('prazo_redes_sociais'); ?>
+            </div>
+          </div>
+        </div>
+
+        <?php endif; ?>
 
         <?php if ( get_field('campanha') ) : ?>
 

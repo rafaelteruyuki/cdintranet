@@ -5,7 +5,7 @@ global $current_user;
 //FEED GD2 E GD4
 
 if ( current_user_can( 'designer_gd2_gd4' ) ) {
-  $segmentacao = array(
+  $segmentacao_gd2_gd4 = array(
     'key'		=> 'segmentacao',
     'value'		=> 'gd2_gd4',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -15,7 +15,7 @@ if ( current_user_can( 'designer_gd2_gd4' ) ) {
 //FEED GD1 E GD3
 
 if ( current_user_can( 'designer_gd1_gd3' ) ) {
-  $segmentacao = array(
+  $segmentacao_gd1_gd3 = array(
     'key'		=> 'segmentacao',
     'value'		=> 'gd1_gd3',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -25,7 +25,7 @@ if ( current_user_can( 'designer_gd1_gd3' ) ) {
 //FEED INSTITUCIONAL
 
 if ( current_user_can( 'designer_institucional' ) ) {
-  $segmentacao = array(
+  $segmentacao_institucional = array(
     'key'		=> 'segmentacao',
     'value'		=> 'institucional',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -34,8 +34,8 @@ if ( current_user_can( 'designer_institucional' ) ) {
 
 //FEED PORTAL
 
-if ( current_user_can( 'portal' ) ) {
-  $segmentacao = array(
+if ( current_user_can( 'portal' ) || current_user_can( 'redacao' ) ) {
+  $segmentacao_portal = array(
     'key'		=> 'segmentacao',
     'value'		=> 'evento',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -43,7 +43,7 @@ if ( current_user_can( 'portal' ) ) {
 }
 
 if ( current_user_can( 'redes_sociais' ) ) {
-  $segmentacao = array(
+  $segmentacao_redes_sociais = array(
     'key'		=> 'segmentacao',
     'value'		=> 'redes_sociais',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -98,6 +98,62 @@ $responsavel_portal2 = array(
   'compare' => '='
 );
 
+// RESPONSAVEIS NOVOS
+
+$responsaveis = array(
+  'key' => 'responsaveis_gcr',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_atendimento = array(
+  'key' => 'atendimento',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_design = array(
+  'key' => 'design',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_imprensa = array(
+  'key' => 'imprensa',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_curadoria = array(
+  'key' => 'curadoria',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_redacao = array(
+  'key' => 'redacao',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_imagem_institucional = array(
+  'key' => 'imagem_institucional',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_tecnologia_e_bi = array(
+  'key' => 'tecnologia_e_bi',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_redes_sociais = array(
+  'key' => 'redes_sociais',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
 // REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC E DE USUARIOS NAO LOGADOS
 if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
   $privado = array(
@@ -113,12 +169,17 @@ if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
 
 $minhas_tarefas_feed = array(
 'relation'		=> 'OR',
-  $segmentacao,
+  $segmentacao_gd2_gd4,
+  $segmentacao_gd1_gd3,
+  $segmentacao_institucional,
+  $segmentacao_portal,
+  $segmentacao_redes_sociais,
   $participante,
   $responsavel1,
   $responsavel2,
   $responsavel_portal1,
   $responsavel_portal2,
+  $responsaveis
   // $cd_author,
 );
 
@@ -135,13 +196,18 @@ $minhas_solicitacoes_feed = array(
 
 $comment_feed = array(
 'relation'		=> 'OR',
-  $segmentacao,
+  $segmentacao_gd2_gd4,
+  $segmentacao_gd1_gd3,
+  $segmentacao_institucional,
+  $segmentacao_portal,
+  $segmentacao_redes_sociais,
   $participante,
   $responsavel1,
   $responsavel2,
   $responsavel_portal1,
   $responsavel_portal2,
-  $cd_author,
+  $responsaveis,
+  $cd_author
 );
 
 ?>
