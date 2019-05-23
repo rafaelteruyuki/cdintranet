@@ -34,8 +34,8 @@ if ( current_user_can( 'designer_institucional' ) ) {
 
 //FEED PORTAL
 
-if ( current_user_can( 'portal' ) && current_user_can( 'redacao' ) ) {
-  $segmentacao = array(
+if ( current_user_can( 'portal' ) || current_user_can( 'redacao' ) ) {
+  $segmentacao_portal = array(
     'key'		=> 'segmentacao',
     'value'		=> 'evento',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -169,7 +169,6 @@ if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
 
 $minhas_tarefas_feed = array(
 'relation'		=> 'OR',
-  $segmentacao,
   $segmentacao_gd2_gd4,
   $segmentacao_gd1_gd3,
   $segmentacao_institucional,
@@ -197,7 +196,6 @@ $minhas_solicitacoes_feed = array(
 
 $comment_feed = array(
 'relation'		=> 'OR',
-  $segmentacao,
   $segmentacao_gd2_gd4,
   $segmentacao_gd1_gd3,
   $segmentacao_institucional,
