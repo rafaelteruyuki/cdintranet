@@ -178,3 +178,14 @@
 .ui_tpicker_second::before {
   display: none !important;
 }
+
+
+.divisor-responsaveis {
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 15px !important;
+  padding-bottom: 30px !important;
+}
+
+.cd-hidden-field {
+  display: none;
+}
