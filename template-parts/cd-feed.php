@@ -100,6 +100,12 @@ $responsavel_portal2 = array(
 
 // RESPONSAVEIS NOVOS
 
+$responsaveis = array(
+  'key' => 'responsaveis_gcr',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
 $responsaveis_atendimento = array(
   'key' => 'atendimento',
   'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
@@ -174,14 +180,7 @@ $minhas_tarefas_feed = array(
   $responsavel2,
   $responsavel_portal1,
   $responsavel_portal2,
-  $responsaveis_atendimento,
-  $responsaveis_design,
-  $responsaveis_imprensa,
-  $responsaveis_curadoria,
-  $responsaveis_redacao,
-  $responsaveis_imagem_institucional,
-  $responsaveis_tecnologia_e_bi,
-  $responsaveis_redes_sociais,
+  $responsaveis
   // $cd_author,
 );
 
@@ -209,15 +208,8 @@ $comment_feed = array(
   $responsavel2,
   $responsavel_portal1,
   $responsavel_portal2,
-  $responsaveis_atendimento,
-  $responsaveis_design,
-  $responsaveis_imprensa,
-  $responsaveis_curadoria,
-  $responsaveis_redacao,
-  $responsaveis_imagem_institucional,
-  $responsaveis_tecnologia_e_bi,
-  $responsaveis_redes_sociais,
-  $cd_author,
+  $responsaveis,
+  $cd_author
 );
 
 ?>

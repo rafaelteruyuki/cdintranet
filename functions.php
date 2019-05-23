@@ -2548,7 +2548,7 @@ function comment_notification_email( $comment_id ) {
 
 		//RESPONSAVEIS NOVOS
 
-		$responsaveis = get_field('responsaveis', $post);
+		$responsaveis = get_field('responsaveis_gcr', $post);
 
 		if( $responsaveis ) {
 
