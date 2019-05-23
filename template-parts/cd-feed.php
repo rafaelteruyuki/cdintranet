@@ -34,8 +34,8 @@ if ( current_user_can( 'designer_institucional' ) ) {
 
 //FEED PORTAL
 
-if ( current_user_can( 'portal' ) ) {
-  $segmentacao_portal = array(
+if ( current_user_can( 'portal' ) && current_user_can( 'redacao' ) ) {
+  $segmentacao = array(
     'key'		=> 'segmentacao',
     'value'		=> 'evento',
     'compare' => 'LIKE' // Para procurar o valor em múltiplos valores salvos (Array)
@@ -98,6 +98,56 @@ $responsavel_portal2 = array(
   'compare' => '='
 );
 
+// RESPONSAVEIS NOVOS
+
+$responsaveis_atendimento = array(
+  'key' => 'atendimento',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_design = array(
+  'key' => 'design',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_imprensa = array(
+  'key' => 'imprensa',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_curadoria = array(
+  'key' => 'curadoria',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_redacao = array(
+  'key' => 'redacao',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_imagem_institucional = array(
+  'key' => 'imagem_institucional',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_tecnologia_e_bi = array(
+  'key' => 'tecnologia_e_bi',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
+$responsaveis_redes_sociais = array(
+  'key' => 'redes_sociais',
+  'value' => '"' . $current_user->ID . '"', // Aspas evitam falsos positivos, ex: ID 43 e ID 143
+  'compare' => 'LIKE', // Para procurar o valor em múltiplos valores salvos (Array)
+);
+
 // REMOVE COMENTARIOS PRIVADOS DOS USUARIOS SENAC E DE USUARIOS NAO LOGADOS
 if ( current_user_can( 'senac' ) || !is_user_logged_in() ) {
   $privado = array(
@@ -124,6 +174,14 @@ $minhas_tarefas_feed = array(
   $responsavel2,
   $responsavel_portal1,
   $responsavel_portal2,
+  $responsaveis_atendimento,
+  $responsaveis_design,
+  $responsaveis_imprensa,
+  $responsaveis_curadoria,
+  $responsaveis_redacao,
+  $responsaveis_imagem_institucional,
+  $responsaveis_tecnologia_e_bi,
+  $responsaveis_redes_sociais,
   // $cd_author,
 );
 
@@ -151,6 +209,14 @@ $comment_feed = array(
   $responsavel2,
   $responsavel_portal1,
   $responsavel_portal2,
+  $responsaveis_atendimento,
+  $responsaveis_design,
+  $responsaveis_imprensa,
+  $responsaveis_curadoria,
+  $responsaveis_redacao,
+  $responsaveis_imagem_institucional,
+  $responsaveis_tecnologia_e_bi,
+  $responsaveis_redes_sociais,
   $cd_author,
 );
 

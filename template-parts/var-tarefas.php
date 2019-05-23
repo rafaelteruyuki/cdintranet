@@ -9,6 +9,26 @@ $responsavel3 = get_field('responsavel_portal');
 $responsavel4 = get_field('responsavel_portal_2');
 $responsavel5 = get_field('responsavel_rs');
 
+$responsaveis_atendimento = get_field('atendimento');
+$responsaveis_design = get_field('design');
+$responsaveis_imprensa = get_field('imprensa');
+$responsaveis_curadoria = get_field('curadoria');
+$responsaveis_redacao = get_field('redacao');
+$responsaveis_imagem_institucional = get_field('imagem_institucional');
+$responsaveis_tecnologia_e_bi = get_field('tecnologia_e_bi');
+$responsaveis_redes_sociais = get_field('redes_sociais');
+
+$prazo_atendimento = get_field('prazo_atendimento');
+$prazo_design = get_field('prazo_design');
+$prazo_aimprensa = get_field('prazo_aimprensa');
+$prazo_curadoria = get_field('prazo_curadoria');
+$prazo_redacao = get_field('prazo_redacao');
+$prazo_imagem_institucional = get_field('prazo_imagem_institucional');
+$prazo_tecnologia_e_bi = get_field('prazo_tecnologia_e_bi');
+$prazo_redes_sociais = get_field('prazo_redes_sociais');
+$campanha = get_field('campanha');
+$investimento = get_field('investimento');
+
 $finalidade = get_field('finalidade');
 $modalidade = get_field('modalidade_curso');
 $tipo_de_evento = get_field('tipo_de_evento');
@@ -44,6 +64,14 @@ switch ($status['value']) {
         $corStatus = 'orange';
         break;
     case "emproducao":
+        $percent = 50;
+        $corStatus = 'yellow';
+        break;
+    case "producaogcr":
+        $percent = 50;
+        $corStatus = 'yellow';
+        break;
+    case "producaounidade":
         $percent = 50;
         $corStatus = 'yellow';
         break;

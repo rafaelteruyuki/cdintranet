@@ -21,7 +21,7 @@ function carrega_scripts() {
 	}
 	wp_enqueue_style( 'jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css',false,'1.1','all');
 	wp_enqueue_style( 'form-solicitacao', get_template_directory_uri() . '/css/form-solicitacao.css',false,'1.1','all');
-	wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.5','all');
+	wp_enqueue_style( 'main', get_template_directory_uri() . '/css/main.css',false,'1.6','all');
 	wp_enqueue_style( 'popup', get_template_directory_uri() . '/components/popup.css',false,'1.1','all');
 
 	// Javascript
@@ -420,6 +420,297 @@ function cf_search_distinct( $where ) {
     return $where;
 }
 add_filter( 'posts_distinct', 'cf_search_distinct' );
+
+
+/* --------------------------
+
+CUSTOM ROLE - DESIGN
+
+---------------------------- */
+
+add_role( 'design', 'Design', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+
+/* --------------------------
+
+CUSTOM ROLE - imprensa
+
+---------------------------- */
+
+add_role( 'imprensa', 'Imprensa', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - Curadoria
+
+---------------------------- */
+
+add_role( 'curadoria', 'Curadoria', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - Redacao
+
+---------------------------- */
+
+add_role( 'redacao', 'Redacao', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - Atendimento
+
+---------------------------- */
+
+add_role( 'atendimento', 'Atendimento', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - imagem-institucional
+
+---------------------------- */
+
+add_role( 'imagem-institucional', 'Imagem Institucional', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - tbi
+
+---------------------------- */
+
+add_role( 'tbi', 'Tecnologia e B.I.', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
+/* --------------------------
+
+CUSTOM ROLE - Gestores
+
+---------------------------- */
+
+add_role( 'gestores', 'Gestores', array(
+	'edit_dashboard'			=> true,
+	'delete_others_pages'		=> true,
+	'delete_others_posts'		=> true,
+	'delete_pages'				=> true,
+	'delete_posts'				=> true,
+	'delete_private_pages'		=> true,
+	'delete_private_posts'		=> true,
+	'delete_published_pages'	=> true,
+	'delete_published_posts'	=> true,
+	'edit_others_pages'			=> true,
+	'edit_others_posts'			=> true,
+	'edit_pages'				=> true,
+	'edit_posts'				=> true,
+	'edit_private_pages'		=> true,
+	'edit_private_posts'		=> true,
+	'edit_published_pages'		=> true,
+	'edit_published_posts'		=> true,
+	'manage_categories'			=> true,
+	'manage_links'				=> true,
+	'moderate_comments'			=> true,
+	'publish_pages'				=> true,
+	'publish_posts'				=> true,
+	'read'						=> true,
+	'read_private_pages'		=> true,
+	'read_private_posts'		=> true,
+	'unfiltered_html'			=> true,
+	'upload_files'				=> true
+));
+
 
 /* --------------------------
 
@@ -1258,7 +1549,7 @@ REDIRECT USUARIOS PARA A HOME APOS LOGIN
 
 	/* --------------------------
 
-	SEARCH & FILTER - FILTROS MINHAS TAREFAS
+	SEARCH & FILTER - FILTROS MINHAS TAREFAS / MINHAS SOLICITAÇÕES
 
 	---------------------------- */
 
@@ -2507,7 +2798,7 @@ POSTS EM ANALISE POR MAIS DE 2 DIAS
 
 ---------------------------- */
 
-function cd_date_diff($date_1 , $date_2) {
+function cd_date_diff() {
 
 	$status = get_field('status');
 
