@@ -2255,6 +2255,24 @@ function comment_notification_email( $comment_id ) {
 
 		}
 
+		//RESPONSAVEIS NOVOS
+
+		$responsaveis = get_field('responsaveis', $post);
+
+		if( $responsaveis ) {
+
+			foreach( $responsaveis as $responsavel ) {
+
+				if ( get_field('receber_notificacoes_por_email', 'user_' . $responsavel['ID']) ) {
+
+					array_push($destinos, $responsavel['user_email']);
+
+				}
+
+			}
+
+		}
+
 		//Checa cada item do array $destinos e compara com o $email (email do usuário logado). Se o email for diferente, insere no $to.
 
 		$to = array();
