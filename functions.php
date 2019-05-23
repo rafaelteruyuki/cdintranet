@@ -1207,8 +1207,9 @@ function save_acf_user_field( $user_id ) {
 		$user = get_user_by( 'id', $user_id );
 		$name = $user->display_name;
 		$email = $user->user_email;
+		$admin_email = get_option( 'admin_email' );
 
-		$to = 'rafael.franchin@sp.senac.br';
+		$to = $admin_email;
 		$headers = 'From: ' . $name . ' <' . $email . '>' . "\r\n";
 		$subject = 'CD Intranet - Novo usuário';
 		$message =
