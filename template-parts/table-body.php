@@ -36,14 +36,6 @@ include ( locate_template('template-parts/var-tarefas.php') );
   <td class="left aligned" style="white-space:nowrap;  max-width:200px; font-weight:bold; position:relative;<?php if ( current_user_can('edit_dashboard') ) : ?> padding-right: 55px; <?php endif; ?>">
     <div style="overflow:hidden; text-overflow:ellipsis;">
     <?php echo $bg_icon['icon']; new_task(); echo ' '; the_title(); ?><?php if ( get_field('formato_da_postagem') ) { echo ' - '; the_field('formato_da_postagem'); } if ( get_field('campanha') ) { echo ' - '; the_field('campanha'); } ?>
-    <?php if ( current_user_can('edit_dashboard') ) : ?>
-      <?php if (!$texto_luares) : ?><i class="file text icon" style="color: #CCC; position:absolute; right:25px;"></i><?php endif; ?>
-      <?php if ($texto_luares['value'] == 'solicitar-texto') : ?><i style="position:absolute; right:25px;" class="red file text icon cd-popup" title="Solicitar texto" data-variation="very wide mini inverted"></i><?php endif; ?>
-      <?php if ($texto_luares['value'] == 'texto-solicitado') : ?><i style="position:absolute; right:25px;" class="green file text icon cd-popup" title="Texto solicitado" data-variation="very wide mini inverted"></i><?php endif; ?>
-      <?php if (!$imagem_gd) : ?><i class="file image outline icon" style="color: #CCC; position:absolute; right:5px;"></i><?php endif; ?>
-      <?php if ($imagem_gd['value'] == 'solicitar-imagem') : ?><i style="position:absolute; right:5px;" class="red file image outline icon cd-popup" title="Solicitar imagem" data-variation="very wide mini inverted"></i><?php endif; ?>
-      <?php if ($imagem_gd['value'] == 'imagem-solicitada') : ?><i style="position:absolute; right:5px;" class="green file image outline icon cd-popup" title="Imagem solicitada" data-variation="very wide mini inverted"></i><?php endif; ?>
-    <?php endif; ?>
     </div>
   </td>
   <td class="collapsing"><?php $area = get_field('area_divulgacao_tarefa'); if ($area) { echo $area['label']; } ?></td>
