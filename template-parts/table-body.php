@@ -33,16 +33,71 @@ include ( locate_template('template-parts/var-tarefas.php') );
     ?>
 
   </td>
+
   <td class="left aligned" style="white-space:nowrap;  max-width:200px; font-weight:bold; position:relative;<?php if ( current_user_can('edit_dashboard') ) : ?> padding-right: 55px; <?php endif; ?>">
     <div style="overflow:hidden; text-overflow:ellipsis;">
     <?php echo $bg_icon['icon']; new_task(); echo ' '; the_title(); ?><?php if ( get_field('formato_da_postagem') ) { echo ' - '; the_field('formato_da_postagem'); } if ( get_field('campanha') ) { echo ' - '; the_field('campanha'); } ?>
     </div>
   </td>
+
   <td class="collapsing"><?php $area = get_field('area_divulgacao_tarefa'); if ($area) { echo $area['label']; } ?></td>
+
   <td class="collapsing data-solicitacao"><?php $data = get_the_date('d/m/y'); echo $data; ?></td>
+  
   <!-- <td class="collapsing data-inicio"><?php // if ( get_field('data_de_inicio_do_evento') ) { $data_ini_evento = get_field('data_de_inicio_do_evento'); $data_ini_evento = substr($data_ini_evento, 0, strpos($data_ini_evento, " -")); echo $data_ini_evento; } elseif ( get_field('data_de_inicio_do_curso') ) { the_field('data_de_inicio_do_curso'); } elseif ( get_field('data_inicial') ) { $data_ini_rs = get_field('data_inicial'); $data_ini_rs = substr($data_ini_rs, 0, strpos($data_ini_rs, " -")); echo $data_ini_rs; } else { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } ?></td> -->
   <!-- <td class="collapsing data-publicacao"><?php // if ( $publicacao && in_array('publicacao', $publicacao) ) the_field('previsao_de_publicacao'); elseif ($finalidade['value'] === "pauta") the_field('previsao_de_publicacao'); else echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Sem publicação</span>'; ?></td> -->
   <!-- <td class="collapsing data-previsao"><?php // if ( $finalidade['value'] === "pauta" ) { echo '<span style="color: rgba(0, 0, 0, 0.4); font-style: italic;">Não disponível</span>'; } else { the_field('previsao_conclusao'); } ?></td> -->
+
+  <?php 
+    $current_user = wp_get_current_user();
+    $current_user_roles = $current_user->roles;
+    global $wp_roles;
+    
+    
+
+    foreach ($current_user_roles as $role): 
+      if ($role != 'senac'): ?>
+        <td class="collapsing"> 
+          <?php
+              switch ($role) {
+                case "design":
+                  echo $prazo_design;
+                  break;
+            
+                case "imprensa":
+                  echo $prazo_imprensa;
+                  break;
+            
+                case "curadoria":
+                  echo $prazo_curadoria;
+                  break;
+            
+                case "redacao":
+                  echo $prazo_redacao;
+                  break;
+            
+                case "atendimento":
+                  echo $prazo_atendimento;
+                  break;
+            
+                case "imagem-institucional":
+                  echo $prazo_imagem_institucional;
+                  break;
+            
+                case "tbi":
+                  echo $prazo_tecnologia_e_bi;
+                  break;
+            
+                case "redes_sociais":
+                  echo $prazo_redes_sociais;
+                  break;
+              }
+          ?></td>
+    <?php 
+    endif;
+    endforeach; ?>
+
+
   <td class="left aligned collapsing" data-sort-value="<?php if ($responsavel1) echo $responsavel1['display_name'] . ' '; if ($responsavel2) echo $responsavel2['display_name'] . ' '; if ($responsavel3) echo $responsavel3['display_name'] . ' '; if ($responsavel4) echo $responsavel4['display_name'] . ' '; if ($responsavel5) echo $responsavel5['display_name'] . ' ';?>">
 		<?php if ($responsavel1) : ?><span class="ui avatar image cd-popup" title="<?php echo $responsavel1['display_name'] ?>" data-variation="very wide mini inverted"><?php echo $responsavel1['user_avatar']; ?></span><?php endif; ?>
 		<?php if ($responsavel2) : ?><span class="ui avatar image cd-popup" title="<?php echo $responsavel2['display_name'] ?>" data-variation="very wide mini inverted"><?php echo $responsavel2['user_avatar']; ?></span><?php endif; ?>
